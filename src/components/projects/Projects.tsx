@@ -35,7 +35,7 @@ function Projects() {
   const project = projects[activeProject];
 
   /*
-   * Section entrance + subtle 3D pointer movement.
+   * Initial section entrance + mouse-controlled 3D tilt.
    */
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -59,7 +59,7 @@ function Projects() {
         stage,
         {
           opacity: 0,
-          y: 80,
+          y: 100,
         },
         {
           opacity: 1,
@@ -75,25 +75,18 @@ function Projects() {
       );
 
       const handlePointerMove = (event: PointerEvent) => {
-        /*
-         * Disable 3D tilt on touch-sized layouts.
-         */
-        if (window.innerWidth <= 700) {
-          return;
-        }
-
         const rect = cards.getBoundingClientRect();
 
         if (!rect.width || !rect.height) {
           return;
         }
 
-        const pointerX = (event.clientX - rect.left) / rect.width - 0.5;
-        const pointerY = (event.clientY - rect.top) / rect.height - 0.5;
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
 
         gsap.to(cards, {
-          rotateY: pointerX * 7,
-          rotateX: -pointerY * 5,
+          rotateY: x * 7,
+          rotateX: -y * 5,
           duration: 0.7,
           ease: "power3.out",
           overwrite: true,
@@ -122,8 +115,7 @@ function Projects() {
   }, []);
 
   /*
-   * Animate image cards whenever the active image changes
-   * or when switching to another project.
+   * Animate the 3D cards whenever the active project or image changes.
    */
   useLayoutEffect(() => {
     const cards = cardsRef.current;
@@ -217,35 +209,41 @@ function Projects() {
 
       const { xPercent, z, rotateY, scale, opacity, zIndex } = positionValues;
 
-      const animation = {
+      if (prefersReducedMotion) {
+        gsap.set(card, {
+          xPercent,
+          z,
+          rotateY,
+          rotateZ: 0,
+          scale,
+          opacity,
+          zIndex,
+        });
+
+        card.style.pointerEvents = position === 0 ? "auto" : "none";
+        card.style.visibility = absolutePosition > 2 ? "hidden" : "visible";
+
+        return;
+      }
+
+      gsap.to(card, {
         xPercent,
         z,
         rotateY,
-        rotateZ: position === 0 ? 0 : position < 0 ? -1.2 : 1.2,
+        rotateZ: position === 0 ? 0 : position < 0 ? -1.5 : 1.5,
         scale,
         opacity,
         zIndex,
-      };
-
-      if (prefersReducedMotion) {
-        gsap.set(card, animation);
-      } else {
-        gsap.to(card, {
-          ...animation,
-          duration: 0.8,
-          ease: "power4.out",
-          overwrite: true,
-        });
-      }
+        duration: 0.8,
+        ease: "power4.out",
+        overwrite: true,
+      });
 
       card.style.pointerEvents = position === 0 ? "auto" : "none";
       card.style.visibility = absolutePosition > 2 ? "hidden" : "visible";
     });
-  }, [activeImage, project.images.length]);
+  }, [activeProject, activeImage, project.images.length]);
 
-  /*
-   * Move through images inside the current project.
-   */
   const changeImage = (direction: 1 | -1) => {
     const total = project.images.length;
 
@@ -254,11 +252,6 @@ function Projects() {
     );
   };
 
-  /*
-   * Switch between the real portfolio projects.
-   *
-   * Every project starts from its first gallery image.
-   */
   const selectProject = (index: number) => {
     if (index === activeProject) {
       return;
@@ -291,10 +284,28 @@ function Projects() {
           className="vivid-projects__stage"
           style={{ perspective: "1400px" }}
         >
+          <div className="vivid-projects__project-info">
+            <div className="vivid-projects__project-index">
+              <span>{project.number}</span>
+              <span>/ {String(projects.length).padStart(2, "0")}</span>
+            </div>
+
+            <div className="vivid-projects__project-copy">
+              <h3>{project.title}</h3>
+
+              <div className="vivid-projects__project-meta">
+                <span>{project.location}</span>
+                <span>{project.category}</span>
+              </div>
+
+              <p>{project.description}</p>
+            </div>
+          </div>
+
           <div ref={cardsRef} className="vivid-projects__cards">
             {project.images.map((image, index) => (
               <article
-                key={image}
+                key={`${project.number}-${image}`}
                 className={`vivid-projects__card ${
                   index === activeImage ? "is-active" : ""
                 }`}
@@ -316,65 +327,55 @@ function Projects() {
                 )}
               </article>
             ))}
-          </div>
 
-          <div className="vivid-projects__carousel-footer">
             <div className="vivid-projects__image-number">
               <span>{String(activeImage + 1).padStart(2, "0")}</span>
 
               <span>/ {String(project.images.length).padStart(2, "0")}</span>
             </div>
-
-            <div className="vivid-projects__controls">
-              <button
-                type="button"
-                aria-label={`Previous image in ${project.title}`}
-                onClick={() => changeImage(-1)}
-              >
-                <span>←</span>
-              </button>
-
-              <button
-                type="button"
-                aria-label={`Next image in ${project.title}`}
-                onClick={() => changeImage(1)}
-              >
-                <span>→</span>
-              </button>
-            </div>
           </div>
-        </div>
 
-        <nav
-          className="vivid-projects__project-selector"
-          aria-label="Selected projects"
-        >
-          {projects.map((item, index) => (
+          <div className="vivid-projects__controls">
             <button
-              key={item.id}
               type="button"
-              className={
-                index === activeProject
-                  ? "vivid-projects__project-button is-active"
-                  : "vivid-projects__project-button"
-              }
-              aria-current={index === activeProject ? "true" : undefined}
-              onClick={() => selectProject(index)}
+              aria-label={`Previous image of ${project.title}`}
+              onClick={() => changeImage(-1)}
             >
-              <span className="vivid-projects__project-number">
-                {item.number}
-              </span>
-
-              <span className="vivid-projects__project-content">
-                <strong>{item.title}</strong>
-
-                <small>
-                  {item.category} · {item.location}
-                </small>
-              </span>
+              <span aria-hidden="true">←</span>
             </button>
-          ))}
-        </nav>
+
+            <button
+              type="button"
+              aria-label={`Next image of ${project.title}`}
+              onClick={() => changeImage(1)}
+            >
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <nav
+            className="vivid-projects__project-list"
+            aria-label="Selected projects"
+          >
+            {projects.map((item, index) => (
+              <button
+                key={item.number}
+                type="button"
+                className={index === activeProject ? "is-active" : ""}
+                onClick={() => selectProject(index)}
+                aria-current={index === activeProject ? "true" : undefined}
+              >
+                <span className="vivid-projects__project-list-number">
+                  {item.number}
+                </span>
+
+                <span className="vivid-projects__project-list-title">
+                  {item.title}
+                </span>
+              </button>
+            ))}
+          </nav>
+        </div>
       </div>
     </section>
   );
