@@ -1,36 +1,47 @@
 .vivid-projects {
   position: relative;
   width: 100%;
+  min-height: 100vh;
   padding: clamp(8rem, 14vw, 14rem) 0;
   overflow: hidden;
   background: var(--vivid-white);
   color: var(--vivid-black);
 }
 
-.vivid-projects::before {
-  content: "";
+.vivid-projects__background {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: linear-gradient(
-    90deg,
-    transparent 0,
-    transparent calc(25% - 0.5px),
-    rgba(20, 20, 20, 0.045) 25%,
-    transparent calc(25% + 0.5px),
-    transparent calc(50% - 0.5px),
-    rgba(20, 20, 20, 0.045) 50%,
-    transparent calc(50% + 0.5px),
-    transparent calc(75% - 0.5px),
-    rgba(20, 20, 20, 0.045) 75%,
-    transparent calc(75% + 0.5px)
-  );
+
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(25% - 0.5px),
+      rgba(20, 20, 20, 0.045) 25%,
+      transparent calc(25% + 0.5px),
+      transparent calc(50% - 0.5px),
+      rgba(20, 20, 20, 0.045) 50%,
+      transparent calc(50% + 0.5px),
+      transparent calc(75% - 0.5px),
+      rgba(20, 20, 20, 0.045) 75%,
+      transparent calc(75% + 0.5px)
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0,
+      transparent calc(50% - 0.5px),
+      rgba(20, 20, 20, 0.035) 50%,
+      transparent calc(50% + 0.5px)
+    );
 }
 
 .vivid-projects__header {
   position: relative;
   z-index: 1;
+
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
+
   margin: 0 auto;
 }
 
@@ -49,6 +60,7 @@
 
 .vivid-projects__eyebrow p {
   margin: 0;
+
   font-size: 0.65rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -57,6 +69,7 @@
 .vivid-projects h2 {
   max-width: 1000px;
   margin: 0;
+
   font-size: clamp(4rem, 8vw, 9rem);
   font-weight: 300;
   line-height: 0.86;
@@ -67,129 +80,328 @@
   color: var(--vivid-pista);
 }
 
-.vivid-projects__intro {
-  max-width: 520px;
-  margin: 3rem 0 0 auto;
-  color: rgba(20, 20, 20, 0.65);
-  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-  font-weight: 300;
-  line-height: 1.7;
-}
+/* ==================================================
+   CAROUSEL LAYOUT
+================================================== */
 
-.vivid-projects__list {
+.vivid-projects__layout {
   position: relative;
   z-index: 1;
+
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
-  margin: clamp(8rem, 14vw, 14rem) auto 0;
+
+  margin: clamp(7rem, 12vw, 12rem) auto 0;
 }
 
-.vivid-project {
+.vivid-projects__stage {
   position: relative;
-  margin-bottom: clamp(9rem, 16vw, 16rem);
+
+  width: 100%;
+  min-height: min(62vw, 780px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.vivid-project:last-child {
-  margin-bottom: 0;
-}
+/* ==================================================
+   CAROUSEL
+================================================== */
 
-.vivid-project__image-frame {
+.vivid-projects__cards {
   position: relative;
-  width: 78%;
-  min-height: min(58vw, 760px);
+
+  width: min(100%, 1100px);
+  height: clamp(320px, 44vw, 600px);
+
+  transform-style: preserve-3d;
+  will-change: transform;
+  isolation: isolate;
+}
+
+/*
+ * IMPORTANT:
+ * No translate/transform is used here to center the card.
+ * GSAP controls xPercent, so using margin-left keeps the
+ * center position stable on every screen size.
+ */
+.vivid-projects__card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  width: clamp(260px, 48%, 560px);
+  height: 100%;
+
+  margin-left: clamp(-280px, -24%, -130px);
+
   overflow: hidden;
-  background: var(--vivid-black);
-  clip-path: inset(0);
+
+  background: #111;
+  border-radius: 2px;
+
+  transform-style: preserve-3d;
+  transform-origin: center center;
+
+  will-change: transform, opacity;
+
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.18);
+
+  backface-visibility: hidden;
 }
 
-.vivid-project:nth-child(even) .vivid-project__image-frame {
-  margin-left: auto;
+.vivid-projects__card.is-active {
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-.vivid-project__image {
+.vivid-projects__card img {
   width: 100%;
   height: 100%;
-  min-height: inherit;
+
+  display: block;
+
   object-fit: cover;
-  object-position: center;
-  will-change: transform;
+
+  user-select: none;
+  pointer-events: none;
 }
 
-.vivid-project__overlay {
+.vivid-projects__card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.04) 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.02) 0%,
+      transparent 48%,
+      rgba(0, 0, 0, 0.52) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.08),
+      transparent 25%,
+      transparent 75%,
+      rgba(0, 0, 0, 0.08)
+    );
 }
 
-.vivid-project__number {
+/* ==================================================
+   IMAGE LABEL
+================================================== */
+
+.vivid-projects__card-label {
   position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  color: var(--vivid-white);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-}
 
-.vivid-project__details {
-  position: relative;
-  width: 42%;
-  margin-top: -5rem;
-  margin-left: auto;
-  padding: 2.5rem;
-  background: var(--vivid-white);
-}
+  right: 1.75rem;
+  bottom: 1.5rem;
 
-.vivid-project:nth-child(even) .vivid-project__details {
-  margin-right: auto;
-  margin-left: 0;
-}
+  z-index: 2;
 
-.vivid-project__meta {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  color: rgba(20, 20, 20, 0.5);
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 0.35rem;
+
+  color: var(--vivid-white);
+
   font-size: 0.55rem;
-  letter-spacing: 0.18em;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+
+  text-align: right;
   text-transform: uppercase;
 }
 
-.vivid-project__title {
-  margin: 0;
-  font-size: clamp(2.5rem, 5vw, 6rem);
-  font-weight: 300;
-  line-height: 0.9;
-  letter-spacing: -0.06em;
+.vivid-projects__card-label span:last-child {
+  color: var(--vivid-pista);
+  font-size: 0.48rem;
 }
+
+/* ==================================================
+   CAROUSEL FOOTER
+================================================== */
+
+.vivid-projects__carousel-footer {
+  position: relative;
+  z-index: 70;
+
+  width: min(100%, 560px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: clamp(1rem, 1.8vw, 1.5rem);
+}
+
+/* ==================================================
+   IMAGE NUMBER
+================================================== */
+
+.vivid-projects__image-number {
+  position: relative;
+
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+
+  gap: 0.45rem;
+
+  margin-bottom: 1rem;
+
+  color: var(--vivid-black);
+
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+
+  pointer-events: none;
+}
+
+.vivid-projects__image-number span:first-child {
+  color: var(--vivid-red);
+
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.vivid-projects__image-number span:last-child {
+  color: rgba(20, 20, 20, 0.4);
+}
+
+/* ==================================================
+   ARROWS
+================================================== */
+
+.vivid-projects__controls {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.65rem;
+}
+
+.vivid-projects__controls button {
+  width: 54px;
+  height: 54px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(20, 20, 20, 0.2);
+
+  background: transparent;
+  color: var(--vivid-black);
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.vivid-projects__controls button:hover {
+  border-color: var(--vivid-black);
+
+  background: var(--vivid-black);
+  color: var(--vivid-white);
+
+  transform: translateY(-3px);
+}
+
+.vivid-projects__controls button:focus-visible {
+  outline: 2px solid var(--vivid-red);
+  outline-offset: 4px;
+}
+
+.vivid-projects__controls button span {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* ==================================================
+   TABLET / SMALL DESKTOP
+================================================== */
+
+@media (max-width: 1100px) {
+  .vivid-projects__cards {
+    width: 100%;
+    height: clamp(340px, 50vw, 560px);
+  }
+
+  .vivid-projects__card {
+    width: min(48%, 520px);
+    margin-left: min(-24%, -250px);
+  }
+}
+
+/* ==================================================
+   TABLET
+================================================== */
 
 @media (max-width: 900px) {
-  .vivid-project__image-frame {
-    width: 88%;
-    min-height: 70vw;
+  .vivid-projects {
+    padding-top: 8rem;
+    padding-bottom: 9rem;
   }
 
-  .vivid-project__details {
-    width: 52%;
+  .vivid-projects__header {
+    width: calc(100% - 3rem);
+  }
+
+  .vivid-projects__layout {
+    width: calc(100% - 3rem);
+    margin-top: 6rem;
+  }
+
+  .vivid-projects__stage {
+    min-height: 78vw;
+  }
+
+  .vivid-projects__cards {
+    width: 100%;
+    height: min(60vw, 500px);
+  }
+
+  .vivid-projects__card {
+    width: min(52%, 480px);
+    margin-left: min(-26%, -240px);
+  }
+
+  .vivid-projects__carousel-footer {
+    width: min(100%, 480px);
+    margin-top: 1.25rem;
+  }
+
+  .vivid-projects__card-label {
+    right: 1.25rem;
+    bottom: 1.25rem;
+
+    font-size: 0.5rem;
   }
 }
+
+/* ==================================================
+   MOBILE
+================================================== */
 
 @media (max-width: 700px) {
   .vivid-projects {
-    padding: 7rem 0;
+    min-height: auto;
+    padding: 7rem 0 8rem;
   }
 
-  .vivid-projects__header,
-  .vivid-projects__list {
+  .vivid-projects__header {
     width: calc(100% - 2.5rem);
-  }
-
-  .vivid-projects__eyebrow {
-    margin-bottom: 1.75rem;
   }
 
   .vivid-projects h2 {
@@ -197,69 +409,160 @@
     line-height: 0.9;
   }
 
-  .vivid-projects__intro {
-    margin-top: 2rem;
-    font-size: 0.92rem;
-    line-height: 1.65;
-  }
-
-  .vivid-projects__list {
+  .vivid-projects__layout {
+    width: calc(100% - 2.5rem);
     margin-top: 5rem;
   }
 
-  .vivid-project {
-    margin-bottom: 7rem;
-  }
-
-  .vivid-project__image-frame,
-  .vivid-project:nth-child(even) .vivid-project__image-frame {
+  .vivid-projects__stage {
     width: 100%;
-    min-height: 115vw;
-    margin-left: 0;
+    min-height: auto;
   }
 
-  .vivid-project__number {
-    top: 1.25rem;
-    left: 1.25rem;
-    font-size: 0.55rem;
+  /*
+   * Keep enough horizontal space for the side cards,
+   * while preventing the center card from becoming tiny.
+   */
+  .vivid-projects__cards {
+    width: 100%;
+    height: 72vw;
+    min-height: 250px;
+    max-height: 420px;
   }
 
-  .vivid-project__details,
-  .vivid-project:nth-child(even) .vivid-project__details {
-    width: calc(100% - 1.5rem);
-    margin: -2rem 0 0 auto;
-    padding: 1.75rem 1.25rem 0.5rem;
+  .vivid-projects__card {
+    width: min(68vw, 330px);
+    height: 100%;
+
+    margin-left: min(-34vw, -165px);
+
+    border-radius: 1px;
   }
 
-  .vivid-project__meta {
-    margin-bottom: 1rem;
-    font-size: 0.48rem;
-    letter-spacing: 0.13em;
+  /*
+   * The carousel footer belongs directly below the
+   * center image rather than at the bottom of the stage.
+   */
+  .vivid-projects__carousel-footer {
+    width: 100%;
+    margin-top: 1rem;
   }
 
-  .vivid-project__title {
-    font-size: clamp(2.5rem, 12vw, 4rem);
+  .vivid-projects__image-number {
+    margin-bottom: 0.85rem;
+  }
+
+  .vivid-projects__controls {
+    gap: 0.6rem;
+  }
+
+  .vivid-projects__controls button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .vivid-projects__controls button span {
+    font-size: 1rem;
+  }
+
+  .vivid-projects__card-label {
+    right: 1rem;
+    bottom: 1rem;
+
+    font-size: 0.46rem;
+  }
+
+  .vivid-projects__card-label span:last-child {
+    font-size: 0.4rem;
   }
 }
 
-@media (max-width: 360px) {
-  .vivid-projects__header,
-  .vivid-projects__list {
+/* ==================================================
+   SMALL MOBILE
+================================================== */
+
+@media (max-width: 500px) {
+  .vivid-projects__layout {
     width: calc(100% - 2rem);
   }
 
-  .vivid-project__meta {
-    flex-direction: column;
-    gap: 0.5rem;
+  .vivid-projects__cards {
+    height: 68vw;
+    min-height: 225px;
+    max-height: 330px;
   }
 
-  .vivid-project__title {
-    font-size: 2.4rem;
+  .vivid-projects__card {
+    width: min(67vw, 290px);
+    margin-left: min(-33.5vw, -145px);
+  }
+
+  .vivid-projects__card-label {
+    display: none;
+  }
+
+  .vivid-projects__image-number {
+    margin-bottom: 0.75rem;
+    font-size: 0.5rem;
+  }
+
+  .vivid-projects__image-number span:first-child {
+    font-size: 0.9rem;
+  }
+
+  .vivid-projects__controls button {
+    width: 46px;
+    height: 46px;
   }
 }
 
+/* ==================================================
+   VERY SMALL MOBILE
+================================================== */
+
+@media (max-width: 360px) {
+  .vivid-projects__header {
+    width: calc(100% - 1.75rem);
+  }
+
+  .vivid-projects__layout {
+    width: calc(100% - 1.75rem);
+  }
+
+  .vivid-projects h2 {
+    font-size: 2.9rem;
+  }
+
+  .vivid-projects__cards {
+    height: 66vw;
+    min-height: 210px;
+  }
+
+  .vivid-projects__card {
+    width: 66vw;
+    margin-left: -33vw;
+  }
+
+  .vivid-projects__carousel-footer {
+    margin-top: 0.9rem;
+  }
+
+  .vivid-projects__controls button {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ==================================================
+   REDUCED MOTION
+================================================== */
+
 @media (prefers-reduced-motion: reduce) {
-  .vivid-project__image {
-    transform: none !important;
+  .vivid-projects__card {
+    transition: none !important;
+  }
+
+  .vivid-projects__controls button {
+    transition: none !important;
   }
 }
