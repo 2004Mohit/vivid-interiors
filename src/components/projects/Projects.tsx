@@ -1,36 +1,10 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { projects } from "../../data/projects";
 import "./projects.css";
 
 gsap.registerPlugin(ScrollTrigger);
-
-type Project = {
-  number: string;
-  title: string;
-  location: string;
-  sector: string;
-  description: string;
-  images: string[];
-};
-
-const projects: Project[] = [
-  {
-    number: "01",
-    title: "Emirus 801",
-    location: "Pune / India",
-    sector: "Residential",
-    description:
-      "A refined residential interior where warm timber, soft textures and considered lighting create a calm contemporary home.",
-    images: [
-      "/images/01_Emirus_801/01_07_emirus_801_baner_pune_p010.jpeg",
-      "/images/01_Emirus_801/01_05_emirus_801_baner_pune_p009.jpeg",
-      "/images/01_Emirus_801/01_06_emirus_801_baner_pune_p009.jpeg",
-      "/images/01_Emirus_801/01_08_emirus_801_baner_pune_p011.jpeg",
-      "/images/01_Emirus_801/01_11_emirus_801_baner_pune_p013.jpeg",
-    ],
-  },
-];
 
 const getRelativePosition = (
   index: number,
@@ -102,9 +76,7 @@ function Projects() {
 
       const handlePointerMove = (event: PointerEvent) => {
         /*
-         * Disable the 3D tilt on touch-sized layouts.
-         * This prevents the mobile carousel from shifting while
-         * the user is interacting with it.
+         * Disable 3D tilt on touch-sized layouts.
          */
         if (window.innerWidth <= 700) {
           return;
@@ -150,7 +122,8 @@ function Projects() {
   }, []);
 
   /*
-   * Animate the image cards whenever the active image changes.
+   * Animate image cards whenever the active image changes
+   * or when switching to another project.
    */
   useLayoutEffect(() => {
     const cards = cardsRef.current;
@@ -177,74 +150,72 @@ function Projects() {
       const position = getRelativePosition(index, activeImage, total);
       const absolutePosition = Math.abs(position);
 
-      let xPercent = 0;
-      let z = 0;
-      let rotateY = 0;
-      let scale = 1;
-      let opacity = 1;
-      let zIndex = 50;
+      let positionValues: {
+        xPercent: number;
+        z: number;
+        rotateY: number;
+        scale: number;
+        opacity: number;
+        zIndex: number;
+      };
 
-      /*
-       * Center image.
-       */
       if (position === 0) {
-        xPercent = 0;
-        z = 80;
-        rotateY = 0;
-        scale = 1;
-        opacity = 1;
-        zIndex = 50;
+        positionValues = {
+          xPercent: 0,
+          z: 80,
+          rotateY: 0,
+          scale: 1,
+          opacity: 1,
+          zIndex: 50,
+        };
       } else if (position === -1) {
-        /*
-         * Immediate left image.
-         */
-        xPercent = -88;
-        z = -100;
-        rotateY = 13;
-        scale = 0.78;
-        opacity = 0.72;
-        zIndex = 40;
+        positionValues = {
+          xPercent: -48,
+          z: -110,
+          rotateY: 16,
+          scale: 0.78,
+          opacity: 0.72,
+          zIndex: 40,
+        };
       } else if (position === 1) {
-        /*
-         * Immediate right image.
-         */
-        xPercent = 88;
-        z = -100;
-        rotateY = -13;
-        scale = 0.78;
-        opacity = 0.72;
-        zIndex = 40;
+        positionValues = {
+          xPercent: 48,
+          z: -110,
+          rotateY: -16,
+          scale: 0.78,
+          opacity: 0.72,
+          zIndex: 40,
+        };
       } else if (position === -2) {
-        /*
-         * Far-left image.
-         */
-        xPercent = -150;
-        z = -220;
-        rotateY = 22;
-        scale = 0.58;
-        opacity = 0.32;
-        zIndex = 30;
+        positionValues = {
+          xPercent: -82,
+          z: -240,
+          rotateY: 24,
+          scale: 0.58,
+          opacity: 0.34,
+          zIndex: 30,
+        };
       } else if (position === 2) {
-        /*
-         * Far-right image.
-         */
-        xPercent = 150;
-        z = -220;
-        rotateY = -22;
-        scale = 0.58;
-        opacity = 0.32;
-        zIndex = 30;
+        positionValues = {
+          xPercent: 82,
+          z: -240,
+          rotateY: -24,
+          scale: 0.58,
+          opacity: 0.34,
+          zIndex: 30,
+        };
       } else {
-        /*
-         * Remaining images stay hidden behind the carousel.
-         */
-        xPercent = position < 0 ? -190 : 190;
-        z = -320;
-        rotateY = position < 0 ? 28 : -28;
-        scale = 0.45;
-        opacity = 0;
-        zIndex = 10;
+        positionValues = {
+          xPercent: position < 0 ? -105 : 105,
+          z: -350,
+          rotateY: position < 0 ? 30 : -30,
+          scale: 0.45,
+          opacity: 0,
+          zIndex: 10,
+        };
       }
+
+      const { xPercent, z, rotateY, scale, opacity, zIndex } = positionValues;
 
       const animation = {
         xPercent,
@@ -272,6 +243,9 @@ function Projects() {
     });
   }, [activeImage, project.images.length]);
 
+  /*
+   * Move through images inside the current project.
+   */
   const changeImage = (direction: 1 | -1) => {
     const total = project.images.length;
 
@@ -281,9 +255,9 @@ function Projects() {
   };
 
   /*
-   * Kept for future projects.
-   * Currently there is only one project, so this does not affect
-   * the current layout.
+   * Switch between the real portfolio projects.
+   *
+   * Every project starts from its first gallery image.
    */
   const selectProject = (index: number) => {
     if (index === activeProject) {
@@ -293,8 +267,6 @@ function Projects() {
     setActiveProject(index);
     setActiveImage(0);
   };
-
-  void selectProject;
 
   return (
     <section ref={sectionRef} className="vivid-projects">
@@ -356,7 +328,7 @@ function Projects() {
             <div className="vivid-projects__controls">
               <button
                 type="button"
-                aria-label="Previous project image"
+                aria-label={`Previous image in ${project.title}`}
                 onClick={() => changeImage(-1)}
               >
                 <span>←</span>
@@ -364,7 +336,7 @@ function Projects() {
 
               <button
                 type="button"
-                aria-label="Next project image"
+                aria-label={`Next image in ${project.title}`}
                 onClick={() => changeImage(1)}
               >
                 <span>→</span>
@@ -372,6 +344,37 @@ function Projects() {
             </div>
           </div>
         </div>
+
+        <nav
+          className="vivid-projects__project-selector"
+          aria-label="Selected projects"
+        >
+          {projects.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              className={
+                index === activeProject
+                  ? "vivid-projects__project-button is-active"
+                  : "vivid-projects__project-button"
+              }
+              aria-current={index === activeProject ? "true" : undefined}
+              onClick={() => selectProject(index)}
+            >
+              <span className="vivid-projects__project-number">
+                {item.number}
+              </span>
+
+              <span className="vivid-projects__project-content">
+                <strong>{item.title}</strong>
+
+                <small>
+                  {item.category} · {item.location}
+                </small>
+              </span>
+            </button>
+          ))}
+        </nav>
       </div>
     </section>
   );

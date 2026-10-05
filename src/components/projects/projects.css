@@ -566,3 +566,158 @@
     transition: none !important;
   }
 }
+
+/* --------------------------------------------------
+   PROJECT SELECTOR
+-------------------------------------------------- */
+
+.vivid-projects__project-selector {
+  width: min(100%, 1100px);
+  margin: clamp(4rem, 7vw, 7rem) auto 0;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  border-top: 1px solid rgba(20, 20, 20, 0.14);
+  border-left: 1px solid rgba(20, 20, 20, 0.14);
+}
+
+.vivid-projects__project-button {
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+
+  padding: 1.25rem 1.15rem;
+
+  border: 0;
+  border-right: 1px solid rgba(20, 20, 20, 0.14);
+  border-bottom: 1px solid rgba(20, 20, 20, 0.14);
+
+  background: transparent;
+  color: rgba(20, 20, 20, 0.42);
+
+  cursor: pointer;
+  text-align: left;
+
+  transition:
+    color 0.3s ease,
+    background 0.3s ease,
+    padding-left 0.3s ease;
+}
+
+.vivid-projects__project-button:hover {
+  color: var(--vivid-black);
+  background: rgba(20, 20, 20, 0.025);
+  padding-left: 1.4rem;
+}
+
+.vivid-projects__project-button.is-active {
+  color: var(--vivid-black);
+  background: rgba(20, 20, 20, 0.035);
+}
+
+.vivid-projects__project-button:focus-visible {
+  outline: 2px solid var(--vivid-red);
+  outline-offset: -2px;
+}
+
+.vivid-projects__project-number {
+  color: var(--vivid-red);
+
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+}
+
+.vivid-projects__project-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.vivid-projects__project-content strong {
+  overflow: hidden;
+
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.vivid-projects__project-content small {
+  overflow: hidden;
+
+  color: rgba(20, 20, 20, 0.42);
+
+  font-size: 0.52rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.vivid-projects__project-button.is-active
+  .vivid-projects__project-content
+  small {
+  color: var(--vivid-pista);
+}
+
+/* --------------------------------------------------
+   PROJECT SELECTOR — TABLET
+-------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .vivid-projects__project-selector {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 4.5rem;
+  }
+}
+
+/* --------------------------------------------------
+   PROJECT SELECTOR — MOBILE
+-------------------------------------------------- */
+
+@media (max-width: 600px) {
+  .vivid-projects__project-selector {
+    grid-template-columns: 1fr;
+    margin-top: 4rem;
+  }
+
+  .vivid-projects__project-button {
+    grid-template-columns: 38px minmax(0, 1fr);
+    padding: 1rem;
+  }
+
+  .vivid-projects__project-button:hover {
+    padding-left: 1.15rem;
+  }
+
+  .vivid-projects__project-content strong {
+    font-size: 0.68rem;
+  }
+
+  .vivid-projects__project-content small {
+    font-size: 0.5rem;
+  }
+}
+
+/* --------------------------------------------------
+   REDUCED MOTION
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vivid-projects__project-button {
+    transition: none;
+  }
+}
