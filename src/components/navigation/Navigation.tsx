@@ -217,7 +217,11 @@ function Navigation() {
           className="vivid-navigation__brand"
           aria-label="Vivid Interiors home"
         >
-          <span className="vivid-navigation__mark">V</span>
+          <img
+            src="/vivid-logo.png"
+            alt="Vivid Interiors"
+            className="vivid-navigation__mark"
+          />
 
           <span className="vivid-navigation__brand-text">Vivid Interiors</span>
         </a>

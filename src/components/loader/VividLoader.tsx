@@ -7,8 +7,7 @@ interface VividLoaderProps {
 
 function VividLoader({ onComplete }: VividLoaderProps) {
   const loaderRef = useRef<HTMLDivElement>(null);
-  const markRef = useRef<HTMLDivElement>(null);
-  const triangleRef = useRef<HTMLDivElement>(null);
+  const markRef = useRef<HTMLImageElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -16,12 +15,11 @@ function VividLoader({ onComplete }: VividLoaderProps) {
   useLayoutEffect(() => {
     const loader = loaderRef.current;
     const mark = markRef.current;
-    const triangle = triangleRef.current;
     const title = titleRef.current;
     const subtitle = subtitleRef.current;
     const progress = progressRef.current;
 
-    if (!loader || !mark || !triangle || !title || !subtitle || !progress) {
+    if (!loader || !mark || !title || !subtitle || !progress) {
       return;
     }
 
@@ -47,22 +45,6 @@ function VividLoader({ onComplete }: VividLoaderProps) {
             rotate: 0,
             duration: 1.1,
           },
-        )
-        .fromTo(
-          triangle,
-          {
-            opacity: 0,
-            scale: 0,
-            y: -20,
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.55,
-            ease: "back.out(2)",
-          },
-          "-=0.5",
         )
         .fromTo(
           title,
@@ -141,10 +123,12 @@ function VividLoader({ onComplete }: VividLoaderProps) {
   return (
     <div ref={loaderRef} className="vivid-loader">
       <div className="vivid-loader__content">
-        <div className="vivid-loader__mark" ref={markRef}>
-          <div className="vivid-loader__v">V</div>
-          <div className="vivid-loader__triangle" ref={triangleRef} />
-        </div>
+        <img
+          ref={markRef}
+          src="/vivid-logo.png"
+          alt="Vivid Interiors"
+          className="vivid-loader__mark"
+        />
 
         <h1 ref={titleRef}>Vivid Interiors</h1>
 

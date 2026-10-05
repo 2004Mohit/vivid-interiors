@@ -38,37 +38,13 @@
 }
 
 .vivid-navigation__mark {
-  display: grid;
-  place-items: center;
+  display: block;
 
   width: 2rem;
   height: 2rem;
 
-  color: var(--vivid-pista);
-
-  font-size: 1.8rem;
-  font-weight: 500;
-  line-height: 1;
-
-  position: relative;
-}
-
-.vivid-navigation__mark::after {
-  content: "";
-
-  position: absolute;
-
-  top: 0.05rem;
-  left: 50%;
-
-  width: 0.42rem;
-  height: 0.36rem;
-
-  background: var(--vivid-red);
-
-  clip-path: polygon(50% 100%, 0 0, 100% 0);
-
-  transform: translateX(-50%);
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .vivid-navigation__brand-text {
