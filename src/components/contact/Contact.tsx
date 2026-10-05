@@ -153,7 +153,7 @@ function Contact() {
   };
 
   return (
-    <section ref={sectionRef} className="vivid-contact">
+    <section ref={sectionRef} id="contact" className="vivid-contact">
       <div ref={gridRef} className="vivid-contact__grid" />
 
       <div className="vivid-contact__inner">

@@ -7,11 +7,11 @@
   color: var(--vivid-white);
 }
 
-.vivid-sectors::before {
-  content: "";
+.vivid-sectors__background {
   position: absolute;
   inset: 0;
   pointer-events: none;
+
   background-image: linear-gradient(
     90deg,
     transparent 0,
@@ -25,13 +25,16 @@
     rgba(255, 255, 255, 0.055) 75%,
     transparent calc(75% + 0.5px)
   );
+
   opacity: 0.55;
 }
 
 .vivid-sectors__header {
   position: relative;
   z-index: 1;
+
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
+
   margin: 0 auto;
 }
 
@@ -39,27 +42,34 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+
   margin-bottom: 2.5rem;
 }
 
 .vivid-sectors__eyebrow span {
   color: var(--vivid-red);
+
   font-size: 0.65rem;
   letter-spacing: 0.2em;
 }
 
 .vivid-sectors__eyebrow p {
   margin: 0;
+
   font-size: 0.65rem;
   letter-spacing: 0.25em;
+
   text-transform: uppercase;
 }
 
 .vivid-sectors h2 {
   max-width: 950px;
+
   margin: 0;
+
   font-size: clamp(4rem, 8vw, 9rem);
   font-weight: 300;
+
   line-height: 0.86;
   letter-spacing: -0.065em;
 }
@@ -69,62 +79,87 @@
 }
 
 .vivid-sectors__intro {
-  max-width: 520px;
+  max-width: 560px;
+
   margin: 3rem 0 0 auto;
+
   color: rgba(255, 255, 255, 0.68);
+
   font-size: clamp(0.95rem, 1.2vw, 1.15rem);
   font-weight: 300;
+
   line-height: 1.7;
 }
 
 .vivid-sectors__stage {
   position: relative;
   z-index: 1;
+
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+
+  grid-template-columns:
+    minmax(0, 1.45fr)
+    minmax(300px, 0.55fr);
+
   gap: clamp(2rem, 6vw, 7rem);
+
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
+
   margin: clamp(7rem, 12vw, 12rem) auto 0;
 }
 
 .vivid-sectors__image-frame {
   position: relative;
+
   min-height: min(58vw, 780px);
+
   overflow: hidden;
+
   background: #111;
+
   clip-path: inset(0);
 }
 
 .vivid-sectors__image {
   width: 100%;
   height: 100%;
+
   min-height: inherit;
+
   object-fit: cover;
   object-position: center;
+
   will-change: transform;
 }
 
 .vivid-sectors__image-overlay {
   position: absolute;
   inset: 0;
+
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.08),
     transparent 45%,
-    rgba(0, 0, 0, 0.58)
+    rgba(0, 0, 0, 0.64)
   );
 }
 
 .vivid-sectors__image-meta {
   position: absolute;
+
   right: 2rem;
   bottom: 2rem;
+
   display: flex;
   flex-direction: column;
+
   gap: 0.45rem;
+
   color: rgba(255, 255, 255, 0.8);
+
   font-size: 0.55rem;
   letter-spacing: 0.2em;
+
   text-align: right;
 }
 
@@ -136,20 +171,25 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   padding: 2rem 0;
 }
 
 .vivid-sectors__counter {
   display: flex;
   align-items: baseline;
+
   gap: 0.5rem;
+
   margin-bottom: 2rem;
+
   font-size: 0.6rem;
   letter-spacing: 0.2em;
 }
 
 .vivid-sectors__counter span:first-child {
   color: var(--vivid-red);
+
   font-size: 1.2rem;
 }
 
@@ -159,39 +199,150 @@
 
 .vivid-sectors h3 {
   margin: 0;
+
   color: var(--vivid-pista);
+
   font-size: clamp(2.5rem, 4vw, 5rem);
   font-weight: 300;
+
   line-height: 0.95;
   letter-spacing: -0.055em;
 }
 
 .vivid-sectors__content > p {
   max-width: 390px;
-  margin: 2rem 0 4rem;
+
+  margin: 2rem 0 2.5rem;
+
   color: rgba(255, 255, 255, 0.68);
+
   font-size: 1rem;
   font-weight: 300;
+
   line-height: 1.7;
+}
+
+.vivid-sectors__portfolio {
+  margin-bottom: 2.5rem;
+
+  padding: 1.15rem 0;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.vivid-sectors__portfolio-heading {
+  display: flex;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  color: rgba(255, 255, 255, 0.42);
+
+  font-size: 0.52rem;
+  letter-spacing: 0.16em;
+
+  text-transform: uppercase;
+}
+
+.vivid-sectors__portfolio-heading span:last-child {
+  color: var(--vivid-red);
+}
+
+.vivid-sectors__portfolio-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.45rem;
+
+  margin-top: 0.9rem;
+}
+
+.vivid-sectors__portfolio-list span {
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+.vivid-sectors__portfolio-empty {
+  margin: 0.9rem 0 0 !important;
+
+  color: rgba(255, 255, 255, 0.52) !important;
+
+  font-size: 0.72rem !important;
+  line-height: 1.55 !important;
+}
+
+.vivid-sectors__portfolio button {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 0.8rem;
+
+  margin-top: 1rem;
+  padding: 0;
+
+  color: var(--vivid-white);
+
+  font-size: 0.58rem;
+  font-weight: 500;
+
+  letter-spacing: 0.16em;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+}
+
+.vivid-sectors__portfolio button span:last-child {
+  color: var(--vivid-pista);
+
+  font-size: 1rem;
+
+  transition: transform 0.35s ease;
+}
+
+.vivid-sectors__portfolio button:hover span:last-child {
+  transform: translate(4px, -4px);
+}
+
+.vivid-sectors__portfolio button:focus-visible,
+.vivid-sectors__categories button:focus-visible {
+  outline: 2px solid var(--vivid-pista);
+  outline-offset: 5px;
 }
 
 .vivid-sectors__categories {
   display: flex;
   flex-direction: column;
+
   border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .vivid-sectors__categories button {
   display: grid;
+
   grid-template-columns: 40px 1fr;
+
   align-items: center;
+
   gap: 1rem;
+
   width: 100%;
+
   padding: 1rem 0;
+
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
   color: rgba(255, 255, 255, 0.45);
+
   cursor: pointer;
+
   text-align: left;
+
   transition:
     color 0.35s ease,
     padding-left 0.35s ease;
@@ -199,6 +350,7 @@
 
 .vivid-sectors__categories button span {
   color: var(--vivid-red);
+
   font-size: 0.58rem;
   letter-spacing: 0.15em;
 }
@@ -206,30 +358,40 @@
 .vivid-sectors__categories button strong {
   font-size: 0.72rem;
   font-weight: 500;
+
   letter-spacing: 0.14em;
+
   text-transform: uppercase;
 }
 
 .vivid-sectors__categories button:hover,
 .vivid-sectors__categories button.is-active {
   padding-left: 0.7rem;
+
   color: var(--vivid-pista);
 }
 
 .vivid-sectors__progress {
   position: relative;
   z-index: 1;
+
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
+
   height: 1px;
+
   margin: clamp(4rem, 8vw, 8rem) auto 0;
+
   overflow: hidden;
+
   background: rgba(255, 255, 255, 0.15);
 }
 
 .vivid-sectors__progress div {
   width: 100%;
   height: 100%;
+
   background: var(--vivid-pista);
+
   transform: scaleX(0);
   transform-origin: left center;
 }
@@ -274,12 +436,14 @@
 
   .vivid-sectors__intro {
     margin-top: 2rem;
+
     font-size: 0.92rem;
     line-height: 1.65;
   }
 
   .vivid-sectors__stage {
     gap: 3rem;
+
     margin-top: 5rem;
   }
 
@@ -290,6 +454,7 @@
   .vivid-sectors__image-meta {
     right: 1.25rem;
     bottom: 1.25rem;
+
     font-size: 0.48rem;
   }
 
@@ -298,8 +463,13 @@
   }
 
   .vivid-sectors__content > p {
-    margin: 1.5rem 0 3rem;
+    margin: 1.5rem 0 2rem;
+
     font-size: 0.92rem;
+  }
+
+  .vivid-sectors__portfolio {
+    margin-bottom: 2rem;
   }
 
   .vivid-sectors__categories button {

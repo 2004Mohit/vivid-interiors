@@ -22,16 +22,21 @@ const menuItems = [
   },
   {
     number: "03",
+    label: "Expertise",
+    href: "#services",
+  },
+  {
+    number: "04",
+    label: "Sectors",
+    href: "#sectors",
+  },
+  {
+    number: "05",
     label: "Projects",
     href: "#projects",
   },
   {
-    number: "04",
-    label: "Expertise",
-    href: "#expertise",
-  },
-  {
-    number: "05",
+    number: "06",
     label: "Contact",
     href: "#contact",
   },

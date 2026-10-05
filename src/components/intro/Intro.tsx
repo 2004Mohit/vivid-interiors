@@ -189,7 +189,7 @@ function Intro() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="vivid-intro">
+    <section ref={sectionRef} id="about" className="vivid-intro">
       <div className="vivid-intro__grid">
         <div className="vivid-intro__heading">
           <p ref={eyebrowRef} className="vivid-intro__eyebrow">

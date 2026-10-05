@@ -3,6 +3,8 @@ export type Sector = {
   number: string;
   title: string;
   description: string;
+  projectIds: string[];
+  imageProjectId: string;
 };
 
 export const sectors: Sector[] = [
@@ -11,48 +13,77 @@ export const sectors: Sector[] = [
     number: "01",
     title: "Residential",
     description:
-      "Personal interiors shaped around everyday living, comfort, material and light.",
+      "Residential interiors are one of VIVID's documented areas of work, with portfolio examples across Pune.",
+    projectIds: [
+      "emirus-801",
+      "emirus-701",
+      "swarnvilas",
+      "sky-i-manas-lake",
+      "ganga-legend",
+      "marigold",
+    ],
+    imageProjectId: "emirus-801",
   },
-  {
-    id: "bungalows",
-    number: "02",
-    title: "Bungalows",
-    description:
-      "Distinctive homes where architecture, interiors and personality come together.",
-  },
-  {
-    id: "studio-apartments",
-    number: "03",
-    title: "Studio Apartments",
-    description:
-      "Thoughtful compact spaces designed to feel open, functional and refined.",
-  },
+
   {
     id: "commercial",
-    number: "04",
-    title: "Commercial Spaces",
+    number: "02",
+    title: "Commercial",
     description:
-      "Purposeful environments designed around identity, experience and function.",
+      "Commercial interiors are documented alongside a portfolio of workplaces and commercial environments.",
+    projectIds: [
+      "bramhacorp-kalyani-nagar",
+      "devar-infratech",
+      "gartech-chale",
+    ],
+    imageProjectId: "bramhacorp-kalyani-nagar",
   },
+
   {
-    id: "jewellery",
-    number: "05",
+    id: "jewellery-shops",
+    number: "03",
     title: "Jewellery Shops",
     description:
-      "Elegant retail environments where display, lighting and brand identity meet.",
+      "Jewellery shops are a documented VIVID sector, represented in the portfolio by S. S. Nagarkar Jewellers.",
+    projectIds: ["nagarkar-jewellers"],
+    imageProjectId: "nagarkar-jewellers",
   },
+
   {
-    id: "offices",
+    id: "studio-apartments",
+    number: "04",
+    title: "Studio Apartments",
+    description:
+      "Studio apartments are part of VIVID's documented areas of work.",
+    projectIds: [],
+    imageProjectId: "emirus-701",
+  },
+
+  {
+    id: "sample-flats",
+    number: "05",
+    title: "Sample Flats",
+    description: "Sample flats are part of VIVID's documented areas of work.",
+    projectIds: [],
+    imageProjectId: "swarnvilas",
+  },
+
+  {
+    id: "it-offices",
     number: "06",
     title: "IT Offices",
     description:
-      "Contemporary workspaces balancing collaboration, productivity and character.",
+      "IT offices are a documented area of work, with portfolio examples including the Vivid Interiors Office.",
+    projectIds: ["vivid-office", "gartech-production-office"],
+    imageProjectId: "vivid-office",
   },
+
   {
     id: "hospitality",
     number: "07",
     title: "Hospitality",
-    description:
-      "Atmospheric spaces created to make every arrival, stay and experience memorable.",
+    description: "Hospitality is included in VIVID's documented areas of work.",
+    projectIds: [],
+    imageProjectId: "sky-i-manas-lake",
   },
 ];

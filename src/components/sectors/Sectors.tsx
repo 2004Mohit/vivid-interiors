@@ -1,77 +1,45 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { projects } from "../../data/projects";
+import { sectors } from "../../data/sectors";
 import "./sectors.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type Sector = {
-  number: string;
-  title: string;
-  description: string;
-  image: string;
+type SectorsProps = {
+  onSelectSector: (sectorId: string | null) => void;
 };
 
-const sectors: Sector[] = [
-  {
-    number: "01",
-    title: "Residential",
-    description:
-      "Personal interiors shaped around everyday living, comfort, material and light.",
-    image: "/images/01_Emirus_801/01_07_emirus_801_baner_pune_p010.jpeg",
-  },
-  {
-    number: "02",
-    title: "Bungalows",
-    description:
-      "Distinctive homes where architecture, interiors and personality come together.",
-    image: "/images/01_Emirus_801/01_05_emirus_801_baner_pune_p009.jpeg",
-  },
-  {
-    number: "03",
-    title: "Studio Apartments",
-    description:
-      "Thoughtful compact spaces designed to feel open, functional and refined.",
-    image: "/images/01_Emirus_801/01_06_emirus_801_baner_pune_p009.jpeg",
-  },
-  {
-    number: "04",
-    title: "Commercial Spaces",
-    description:
-      "Purposeful environments designed around identity, experience and function.",
-    image: "/images/01_Emirus_801/01_08_emirus_801_baner_pune_p011.jpeg",
-  },
-  {
-    number: "05",
-    title: "Jewellery Shops",
-    description:
-      "Elegant retail environments where display, lighting and brand identity meet.",
-    image: "/images/01_Emirus_801/01_11_emirus_801_baner_pune_p013.jpeg",
-  },
-  {
-    number: "06",
-    title: "IT Offices",
-    description:
-      "Contemporary workspaces balancing collaboration, productivity and character.",
-    image: "/images/01_Emirus_801/01_12_emirus_801_baner_pune_p014.jpeg",
-  },
-  {
-    number: "07",
-    title: "Hospitality",
-    description:
-      "Atmospheric spaces created to make every arrival, stay and experience memorable.",
-    image: "/images/01_Emirus_801/01_13_emirus_801_baner_pune_p015.jpeg",
-  },
-];
-
-function Sectors() {
+function Sectors({ onSelectSector }: SectorsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const imageFrameRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const portfolioRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+
+  const [activeSector, setActiveSector] = useState(0);
+
+  const sector = sectors[activeSector];
+
+  const representativeProject = projects.find(
+    (project) => project.id === sector.imageProjectId,
+  );
+
+  const relatedProjects = useMemo(
+    () =>
+      sector.projectIds
+        .map((projectId) =>
+          projects.find((project) => project.id === projectId),
+        )
+        .filter((project): project is (typeof projects)[number] =>
+          Boolean(project),
+        ),
+    [sector],
+  );
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -80,7 +48,7 @@ function Sectors() {
     const number = numberRef.current;
     const title = titleRef.current;
     const description = descriptionRef.current;
-    const progress = progressRef.current;
+    const portfolio = portfolioRef.current;
 
     if (
       !section ||
@@ -89,8 +57,64 @@ function Sectors() {
       !number ||
       !title ||
       !description ||
-      !progress
+      !portfolio
     ) {
+      return;
+    }
+
+    const context = gsap.context(() => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (prefersReducedMotion) {
+        gsap.set([number, title, description, portfolio], {
+          clearProps: "all",
+        });
+
+        return;
+      }
+
+      gsap
+        .timeline()
+        .fromTo(
+          image,
+          {
+            scale: 1.04,
+          },
+          {
+            scale: 1,
+            duration: 0.9,
+            ease: "power3.out",
+          },
+        )
+        .fromTo(
+          [number, title, description, portfolio],
+          {
+            opacity: 0,
+            y: 18,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            stagger: 0.06,
+            ease: "power3.out",
+          },
+          "-=0.65",
+        );
+    }, section);
+
+    return () => context.revert();
+  }, [activeSector]);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const image = imageRef.current;
+    const imageFrame = imageFrameRef.current;
+    const progress = progressRef.current;
+
+    if (!section || !image || !imageFrame || !progress) {
       return;
     }
 
@@ -103,41 +127,22 @@ function Sectors() {
         return;
       }
 
-      const intro = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 75%",
-          once: true,
+      gsap.fromTo(
+        imageFrame,
+        {
+          clipPath: "inset(12% 10% 12% 10%)",
         },
-      });
-
-      intro
-        .fromTo(
-          imageFrame,
-          {
-            clipPath: "inset(12% 10% 12% 10%)",
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.3,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 75%",
+            once: true,
           },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: 1.4,
-            ease: "power4.out",
-          },
-        )
-        .fromTo(
-          [number, title, description],
-          {
-            opacity: 0,
-            y: 35,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            stagger: 0.12,
-            ease: "power3.out",
-          },
-          "-=0.8",
-        );
+        },
+      );
 
       gsap.fromTo(
         image,
@@ -177,11 +182,32 @@ function Sectors() {
     return () => context.revert();
   }, []);
 
+  const selectSector = (index: number) => {
+    if (index === activeSector) {
+      return;
+    }
+
+    setActiveSector(index);
+  };
+
+  const exploreSector = () => {
+    onSelectSector(relatedProjects.length > 0 ? sector.id : null);
+
+    window.setTimeout(() => {
+      document.querySelector("#projects")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 50);
+  };
+
   return (
-    <section ref={sectionRef} className="vivid-sectors">
+    <section ref={sectionRef} id="sectors" className="vivid-sectors">
+      <div className="vivid-sectors__background" />
+
       <div className="vivid-sectors__header">
         <div className="vivid-sectors__eyebrow">
-          <span>02</span>
+          <span>04</span>
           <p>Sectors</p>
         </div>
 
@@ -192,48 +218,91 @@ function Sectors() {
         </h2>
 
         <p className="vivid-sectors__intro">
-          From private residences to workspaces and hospitality environments,
-          every project is approached as an individual expression of its people,
-          purpose and place.
+          VIVID&apos;s documented work spans residential, commercial, jewellery
+          shops, studio apartments, sample flats, IT offices and hospitality.
         </p>
       </div>
 
       <div className="vivid-sectors__stage">
         <div ref={imageFrameRef} className="vivid-sectors__image-frame">
-          <img
-            ref={imageRef}
-            src={sectors[0].image}
-            alt={`${sectors[0].title} interior designed by Vivid Interiors`}
-            className="vivid-sectors__image"
-          />
+          {representativeProject && (
+            <img
+              ref={imageRef}
+              key={representativeProject.id}
+              src={representativeProject.images[0]}
+              alt={`${representativeProject.title} interior portfolio view`}
+              className="vivid-sectors__image"
+            />
+          )}
 
           <div className="vivid-sectors__image-overlay" />
 
           <div className="vivid-sectors__image-meta">
             <span>VIVID INTERIORS</span>
-            <span>PUNE / INDIA</span>
+
+            <span>
+              {representativeProject?.title ?? "PORTFOLIO"}
+
+              {representativeProject?.location
+                ? ` / ${representativeProject.location}`
+                : ""}
+            </span>
           </div>
         </div>
 
         <div className="vivid-sectors__content">
           <div className="vivid-sectors__counter">
-            <span ref={numberRef}>{sectors[0].number}</span>
+            <span ref={numberRef}>{sector.number}</span>
+
             <span>/ {String(sectors.length).padStart(2, "0")}</span>
           </div>
 
-          <h3 ref={titleRef}>{sectors[0].title}</h3>
+          <h3 ref={titleRef}>{sector.title}</h3>
 
-          <p ref={descriptionRef}>{sectors[0].description}</p>
+          <p ref={descriptionRef}>{sector.description}</p>
 
-          <div className="vivid-sectors__categories">
-            {sectors.map((sector, index) => (
+          <div ref={portfolioRef} className="vivid-sectors__portfolio">
+            <div className="vivid-sectors__portfolio-heading">
+              <span>Portfolio connection</span>
+
+              <span>{relatedProjects.length.toString().padStart(2, "0")}</span>
+            </div>
+
+            {relatedProjects.length > 0 ? (
+              <div className="vivid-sectors__portfolio-list">
+                {relatedProjects.slice(0, 3).map((project) => (
+                  <span key={project.id}>{project.title}</span>
+                ))}
+              </div>
+            ) : (
+              <p className="vivid-sectors__portfolio-empty">
+                No featured project is currently mapped to this sector. The
+                sector remains available for future documented portfolio work.
+              </p>
+            )}
+
+            <button type="button" onClick={exploreSector}>
+              <span>
+                {relatedProjects.length > 0
+                  ? "View related projects"
+                  : "View all projects"}
+              </span>
+
+              <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+
+          <div className="vivid-sectors__categories" aria-label="Vivid sectors">
+            {sectors.map((item, index) => (
               <button
-                key={sector.number}
+                key={item.id}
                 type="button"
-                className={index === 0 ? "is-active" : ""}
+                className={index === activeSector ? "is-active" : ""}
+                onClick={() => selectSector(index)}
+                aria-current={index === activeSector ? "true" : undefined}
               >
-                <span>{sector.number}</span>
-                <strong>{sector.title}</strong>
+                <span>{item.number}</span>
+                <strong>{item.title}</strong>
               </button>
             ))}
           </div>
