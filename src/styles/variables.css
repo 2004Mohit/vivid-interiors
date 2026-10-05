@@ -1,0 +1,18 @@
+:root {
+  --vivid-pista: #c6db62;
+  --vivid-red: #ec3237;
+
+  --vivid-black: #0b0b0b;
+  --vivid-charcoal: #151515;
+  --vivid-white: #f7f7f2;
+  --vivid-grey: #a5a5a0;
+  --vivid-border: rgba(11, 11, 11, 0.14);
+
+  --font-display: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --container-width: 1440px;
+  --page-padding: clamp(1.25rem, 4vw, 5rem);
+
+  --ease-vivid: cubic-bezier(0.16, 1, 0.3, 1);
+}

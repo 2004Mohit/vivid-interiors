@@ -1,0 +1,44 @@
+.vivid-cursor,
+.vivid-cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.vivid-cursor {
+  width: 8px;
+  height: 8px;
+  background: var(--vivid-red);
+}
+
+.vivid-cursor-follower {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(198, 219, 98, 0.7);
+}
+
+.vivid-cursor span {
+  position: absolute;
+  inset: -8px;
+}
+
+@media (pointer: coarse) {
+  .vivid-cursor,
+  .vivid-cursor-follower {
+    display: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .vivid-cursor {
+    display: none !important;
+  }
+
+  body {
+    cursor: auto;
+  }
+}

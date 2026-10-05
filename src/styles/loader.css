@@ -1,0 +1,115 @@
+.vivid-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: var(--vivid-black);
+  color: var(--vivid-white);
+  clip-path: inset(0 0 0 0);
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.vivid-loader__content {
+  width: min(90vw, 700px);
+  text-align: center;
+}
+
+.vivid-loader__mark {
+  position: relative;
+  width: clamp(90px, 10vw, 150px);
+  height: clamp(110px, 13vw, 180px);
+  margin: 0 auto 3rem;
+}
+
+.vivid-loader__v {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--vivid-pista);
+  font-size: clamp(6rem, 12vw, 10rem);
+  font-weight: 500;
+  line-height: 1;
+  transform: scaleX(0.82);
+}
+
+.vivid-loader__triangle {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  width: 30px;
+  height: 26px;
+  transform: translateX(-50%);
+  background: var(--vivid-red);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.vivid-loader h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 500;
+  line-height: 0.95;
+}
+
+.vivid-loader p {
+  margin: 1.25rem 0 0;
+  color: var(--vivid-pista);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.vivid-loader__progress {
+  width: min(240px, 45vw);
+  height: 1px;
+  margin: 3rem auto 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.vivid-loader__progress > div {
+  width: 100%;
+  height: 100%;
+  background: var(--vivid-pista);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (max-width: 700px) {
+  .vivid-loader__content {
+    width: min(88vw, 500px);
+  }
+
+  .vivid-loader__mark {
+    width: clamp(70px, 24vw, 120px);
+    height: clamp(85px, 29vw, 145px);
+    margin-bottom: 2rem;
+  }
+
+  .vivid-loader__v {
+    font-size: clamp(4.5rem, 20vw, 7rem);
+  }
+
+  .vivid-loader__triangle {
+    width: 22px;
+    height: 19px;
+  }
+
+  .vivid-loader h1 {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+  }
+
+  .vivid-loader p {
+    margin-top: 1rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+  }
+
+  .vivid-loader__progress {
+    width: min(220px, 60vw);
+    margin-top: 2.25rem;
+  }
+}

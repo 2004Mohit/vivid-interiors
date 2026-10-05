@@ -1,0 +1,406 @@
+.vivid-contact {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--vivid-black);
+  color: var(--vivid-white);
+}
+
+.vivid-contact__grid {
+  position: absolute;
+  inset: -5%;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(20% - 0.5px),
+      rgba(255, 255, 255, 0.055) 20%,
+      transparent calc(20% + 0.5px),
+      transparent calc(40% - 0.5px),
+      rgba(255, 255, 255, 0.045) 40%,
+      transparent calc(40% + 0.5px),
+      transparent calc(60% - 0.5px),
+      rgba(255, 255, 255, 0.045) 60%,
+      transparent calc(60% + 0.5px),
+      transparent calc(80% - 0.5px),
+      rgba(255, 255, 255, 0.055) 80%,
+      transparent calc(80% + 0.5px)
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0,
+      transparent calc(25% - 0.5px),
+      rgba(255, 255, 255, 0.035) 25%,
+      transparent calc(25% + 0.5px),
+      transparent calc(50% - 0.5px),
+      rgba(255, 255, 255, 0.035) 50%,
+      transparent calc(50% + 0.5px),
+      transparent calc(75% - 0.5px),
+      rgba(255, 255, 255, 0.035) 75%,
+      transparent calc(75% + 0.5px)
+    );
+  will-change: transform;
+}
+
+.vivid-contact__inner {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
+  margin: 0 auto;
+  padding: clamp(7rem, 12vw, 11rem) 0 clamp(5rem, 8vw, 8rem);
+}
+
+.vivid-contact__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vivid-contact__eyebrow span {
+  color: var(--vivid-red);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+}
+
+.vivid-contact__eyebrow p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.vivid-contact h2 {
+  max-width: 1100px;
+  margin: clamp(6rem, 11vw, 10rem) 0 clamp(7rem, 12vw, 11rem);
+  font-size: clamp(4rem, 8vw, 9rem);
+  font-weight: 300;
+  line-height: 0.87;
+  letter-spacing: -0.065em;
+}
+
+.vivid-contact h2 span {
+  color: var(--vivid-pista);
+}
+
+.vivid-contact h2 b {
+  color: var(--vivid-red);
+  font-weight: inherit;
+}
+
+.vivid-contact__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: clamp(4rem, 8vw, 10rem);
+  align-items: start;
+}
+
+.vivid-contact__form {
+  width: 100%;
+}
+
+.vivid-contact__form-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.vivid-contact__form-heading span,
+.vivid-contact__detail-number {
+  color: var(--vivid-red);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+}
+
+.vivid-contact__form-heading h3 {
+  margin: 0;
+  color: var(--vivid-pista);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.vivid-contact__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem 1.5rem;
+}
+
+.vivid-contact__fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.vivid-contact__fields label > span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.vivid-contact__fields input,
+.vivid-contact__fields select,
+.vivid-contact__fields textarea {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--vivid-white);
+  font-size: 0.95rem;
+  font-weight: 300;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.vivid-contact__fields input,
+.vivid-contact__fields select {
+  min-height: 3rem;
+}
+
+.vivid-contact__fields textarea {
+  min-height: 8rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.vivid-contact__fields input::placeholder,
+.vivid-contact__fields textarea::placeholder {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.vivid-contact__fields select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.vivid-contact__fields select option {
+  background: var(--vivid-black);
+  color: var(--vivid-white);
+}
+
+.vivid-contact__fields input:focus,
+.vivid-contact__fields select:focus,
+.vivid-contact__fields textarea:focus {
+  border-color: var(--vivid-pista);
+}
+
+.vivid-contact__field--full {
+  grid-column: 1 / -1;
+}
+
+.vivid-contact__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  width: min(100%, 360px);
+  margin-top: 2.75rem;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--vivid-white);
+  cursor: pointer;
+  font-size: 0.63rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition:
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.vivid-contact__submit i {
+  color: var(--vivid-pista);
+  font-size: 1.2rem;
+  font-style: normal;
+  transition:
+    color 0.35s ease,
+    transform 0.35s ease;
+}
+
+.vivid-contact__submit:hover {
+  border-color: var(--vivid-pista);
+  background: var(--vivid-pista);
+  color: var(--vivid-black);
+}
+
+.vivid-contact__submit:hover i {
+  color: var(--vivid-black);
+  transform: translate(3px, -3px);
+}
+
+.vivid-contact__form-note {
+  max-width: 430px;
+  margin: 1.25rem 0 0;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.55rem;
+  line-height: 1.6;
+}
+
+.vivid-contact__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.vivid-contact__details {
+  display: grid;
+  gap: 3.5rem;
+}
+
+.vivid-contact__detail-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.vivid-contact__detail-block > p {
+  margin: 0 0 0.6rem;
+  color: var(--vivid-pista);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.vivid-contact__detail-block a {
+  color: var(--vivid-white);
+  font-size: 0.88rem;
+  font-weight: 300;
+  transition: color 0.3s ease;
+}
+
+.vivid-contact__detail-block a:hover {
+  color: var(--vivid-pista);
+}
+
+.vivid-contact__detail-block address {
+  max-width: 360px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.78rem;
+  font-style: normal;
+  line-height: 1.7;
+}
+
+.vivid-contact__map {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  overflow: hidden;
+  background: #161616;
+  filter: grayscale(1);
+  transition: filter 0.6s ease;
+}
+
+.vivid-contact__map:hover {
+  filter: grayscale(0.25);
+}
+
+.vivid-contact__map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.vivid-contact__map iframe {
+  display: block;
+  width: 100%;
+  height: 320px;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .vivid-contact__content {
+    grid-template-columns: 1fr;
+    gap: 5rem;
+  }
+
+  .vivid-contact__aside {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .vivid-contact__inner {
+    width: calc(100% - 2.5rem);
+    padding: 6rem 0 5rem;
+  }
+
+  .vivid-contact h2 {
+    margin: 5rem 0 6rem;
+    font-size: clamp(3.2rem, 15vw, 5rem);
+    line-height: 0.9;
+  }
+
+  .vivid-contact__content {
+    gap: 4rem;
+  }
+
+  .vivid-contact__fields {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .vivid-contact__field--full {
+    grid-column: auto;
+  }
+
+  .vivid-contact__submit {
+    width: 100%;
+  }
+
+  .vivid-contact__aside {
+    display: flex;
+    gap: 3.5rem;
+  }
+
+  .vivid-contact__details {
+    gap: 2.75rem;
+  }
+
+  .vivid-contact__map,
+  .vivid-contact__map iframe {
+    min-height: 280px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 360px) {
+  .vivid-contact__inner {
+    width: calc(100% - 2rem);
+  }
+
+  .vivid-contact h2 {
+    font-size: 2.9rem;
+  }
+
+  .vivid-contact__submit {
+    padding: 1rem;
+    font-size: 0.58rem;
+  }
+
+  .vivid-contact__map,
+  .vivid-contact__map iframe {
+    min-height: 250px;
+    height: 250px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vivid-contact__grid {
+    transform: none !important;
+  }
+}
