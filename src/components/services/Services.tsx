@@ -1,86 +1,177 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { services, type Service } from "../../data/services";
 import { projects } from "../../data/projects";
-import { services } from "../../data/services";
 import "./services.css";
 
-gsap.registerPlugin(ScrollTrigger);
+const expertiseImages = projects
+  .flatMap((project) => project.images)
+  .slice(0, services.length);
 
 function Services() {
   const sectionRef = useRef<HTMLElement>(null);
-  const visualRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
+  const trailRef = useRef<HTMLDivElement>(null);
 
   const [activeService, setActiveService] = useState(0);
+  const [transitionKey, setTransitionKey] = useState(0);
 
   const service = services[activeService];
-  const portfolioImage = projects[0]?.images[0] ?? "";
+  const currentImage = expertiseImages[activeService] ?? "";
 
+  /*
+   * Reveal the heading when the section enters the viewport.
+   *
+   * This intentionally does NOT use ScrollTrigger scrub.
+   * That keeps this section lighter during scrolling.
+   */
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const visual = visualRef.current;
-    const image = imageRef.current;
 
-    if (!section || !visual || !image) {
+    if (!section) {
       return;
     }
 
-    const context = gsap.context(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
-      if (prefersReducedMotion) {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    const headingElements = section.querySelectorAll(
+      ".vivid-services__hero-copy > *",
+    );
+
+    gsap.set(headingElements, {
+      y: 28,
+      opacity: 0,
+    });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) {
+          return;
+        }
+
+        gsap.to(headingElements, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.07,
+          ease: "power3.out",
+        });
+
+        observer.disconnect();
+      },
+      {
+        threshold: 0.18,
+      },
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+      gsap.killTweensOf(headingElements);
+    };
+  }, []);
+
+  /*
+   * Keep the active expertise item visible inside
+   * the horizontal trail.
+   */
+  useEffect(() => {
+    const trail = trailRef.current;
+
+    if (!trail) {
+      return;
+    }
+
+    const activeButton = trail.querySelector<HTMLButtonElement>(
+      `[data-expertise-index="${activeService}"]`,
+    );
+
+    if (!activeButton) {
+      return;
+    }
+
+    // Scroll ONLY the trail. scrollIntoView also scrolls page ancestors.
+    const trailBounds = trail.getBoundingClientRect();
+    const buttonBounds = activeButton.getBoundingClientRect();
+    const left =
+      trail.scrollLeft +
+      buttonBounds.left -
+      trailBounds.left -
+      (trail.clientWidth - buttonBounds.width) / 2;
+
+    trail.scrollTo({
+      left: Math.max(0, Math.min(left, trail.scrollWidth - trail.clientWidth)),
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  }, [activeService]);
+
+  /*
+   * Convert vertical mouse-wheel movement into horizontal
+   * trail movement on desktop.
+   *
+   * A native non-passive listener is used so preventDefault()
+   * is valid and does not produce browser console errors.
+   *
+   * Mobile touch scrolling remains completely native.
+   */
+  useEffect(() => {
+    const trail = trailRef.current;
+
+    if (!trail) {
+      return;
+    }
+
+    const handleWheel = (event: globalThis.WheelEvent) => {
+      if (
+        Math.abs(event.deltaY) <= Math.abs(event.deltaX) ||
+        window.innerWidth <= 700
+      ) {
         return;
       }
 
-      gsap.fromTo(
-        visual,
-        {
-          clipPath: "inset(10% 8% 10% 8%)",
-          opacity: 0,
-        },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          opacity: 1,
-          duration: 1.2,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-            once: true,
-          },
-        },
-      );
+      event.preventDefault();
 
-      gsap.fromTo(
-        image,
-        {
-          scale: 1.12,
-        },
-        {
-          scale: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: visual,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        },
-      );
-    }, section);
+      trail.scrollLeft += event.deltaY;
+    };
 
-    return () => context.revert();
+    trail.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
+
+    return () => {
+      trail.removeEventListener("wheel", handleWheel);
+    };
   }, []);
 
-  const selectService = (index: number) => {
-    if (index === activeService) {
+  const changeService = (nextIndex: number) => {
+    if (services.length === 0) return;
+    const normalizedIndex =
+      ((nextIndex % services.length) + services.length) % services.length;
+
+    if (normalizedIndex === activeService) {
       return;
     }
 
-    setActiveService(index);
+    setActiveService(normalizedIndex);
+
+    /*
+     * Changing this key forces the liquid image
+     * transition to replay for every expertise change.
+     */
+    setTransitionKey((value) => value + 1);
+  };
+
+  const selectService = (index: number) => {
+    changeService(index);
   };
 
   const scrollToProjects = () => {
@@ -90,11 +181,57 @@ function Services() {
     });
   };
 
+  const renderDetail = (
+    item: Service,
+    variant: "desktop" | "mobile",
+    reserve = false,
+  ) => (
+    <div
+      key={`${reserve ? "reserve" : "active"}-${variant}-${item.id}`}
+      className={`vivid-services__detail-copy vivid-services__detail-copy--${variant}${reserve ? " vivid-services__detail-reserve" : ""}`}
+      aria-hidden={reserve ? true : undefined}
+      inert={reserve ? true : undefined}
+    >
+      <p className="vivid-services__counter">
+        <span>{item.number}</span>
+        <span>/ {String(services.length).padStart(2, "0")}</span>
+      </p>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+      <button
+        type="button"
+        className="vivid-services__portfolio-link"
+        onClick={scrollToProjects}
+        tabIndex={reserve ? -1 : undefined}
+      >
+        <span>Explore portfolio</span>
+        <span aria-hidden="true">↗</span>
+      </button>
+    </div>
+  );
+
+  // Invisible, inert copies share one grid cell and reserve the tallest
+  // service at the current width/font. Navigation cannot change page height.
+  const renderDetailSlot = (variant: "desktop" | "mobile") => (
+    <div
+      className={`vivid-services__detail-slot vivid-services__detail-slot--${variant}`}
+    >
+      {services.map((item) => renderDetail(item, variant, true))}
+      {service ? renderDetail(service, variant) : null}
+    </div>
+  );
+
+  if (!service) return null;
+
   return (
     <section ref={sectionRef} id="services" className="vivid-services">
       <div className="vivid-services__background" />
 
-      <div className="vivid-services__header">
+      {/* =========================================================
+          HEADER
+      ========================================================= */}
+
+      <div className="vivid-services__header vivid-services__hero-copy">
         <div className="vivid-services__eyebrow">
           <span>03</span>
           <p>Expertise</p>
@@ -113,60 +250,142 @@ function Services() {
         </p>
       </div>
 
-      <div className="vivid-services__stage">
-        <div ref={visualRef} className="vivid-services__visual">
-          <img
-            ref={imageRef}
-            src={portfolioImage}
-            alt="Vivid Interiors residential portfolio interior"
-            className="vivid-services__image"
-          />
+      {/* =========================================================
+          MAIN EXPERIENCE
+      ========================================================= */}
 
-          <div className="vivid-services__visual-overlay" />
+      <div className="vivid-services__experience">
+        {/* ---------------------------------------------------------
+            LARGE IMAGE
+        --------------------------------------------------------- */}
 
-          <div className="vivid-services__visual-meta">
-            <span>DOCUMENTED EXPERTISE</span>
-            <span>VIVID INTERIORS / PUNE</span>
-          </div>
-        </div>
+        <div className="vivid-services__visual-wrap">
+          <div className="vivid-services__visual">
+            <div key={transitionKey} className="vivid-services__image-layer">
+              {currentImage ? (
+                <img
+                  src={currentImage}
+                  alt={service.imageAlt ?? `${service.title} — Vivid Interiors`}
+                  className="vivid-services__image"
+                />
+              ) : null}
+            </div>
 
-        <div className="vivid-services__content">
-          <div className="vivid-services__active">
-            <div className="vivid-services__counter">
+            <div
+              key={`glow-${transitionKey}`}
+              className="vivid-services__liquid-glow"
+            />
+
+            <div className="vivid-services__visual-overlay" />
+
+            <div className="vivid-services__visual-meta">
+              <span>DOCUMENTED EXPERTISE</span>
+              <span>VIVID INTERIORS / PUNE</span>
+            </div>
+
+            <div className="vivid-services__visual-index">
               <span>{service.number}</span>
               <span>/ {String(services.length).padStart(2, "0")}</span>
             </div>
+          </div>
+        </div>
 
-            <h3>{service.title}</h3>
+        {/* ---------------------------------------------------------
+            ACTIVE EXPERTISE CONTENT
+        --------------------------------------------------------- */}
 
-            <p>{service.description}</p>
+        <div className="vivid-services__detail">
+          <div className="vivid-services__detail-topline">
+            <span>VIVID / EXPERTISE</span>
+
+            <span>
+              {service.number} / {String(services.length).padStart(2, "0")}
+            </span>
+          </div>
+
+          {/* =========================================================
+      DESKTOP DETAIL COPY
+      Stays exactly where it currently is on laptop/desktop.
+  ========================================================= */}
+
+          {renderDetailSlot("desktop")}
+
+          {/* =========================================================
+      PREVIOUS / NEXT CONTROLS
+  ========================================================= */}
+
+          <div className="vivid-services__controls">
+            <button
+              type="button"
+              className="vivid-services__arrow"
+              onClick={() => changeService(activeService - 1)}
+              aria-label="Previous expertise"
+            >
+              <span aria-hidden="true">←</span>
+            </button>
+
+            <div className="vivid-services__progress-label">
+              <span>{service.number}</span>
+              <span>—</span>
+              <span>{String(services.length).padStart(2, "0")}</span>
+            </div>
 
             <button
               type="button"
-              className="vivid-services__portfolio-link"
-              onClick={scrollToProjects}
+              className="vivid-services__arrow"
+              onClick={() => changeService(activeService + 1)}
+              aria-label="Next expertise"
             >
-              <span>Explore portfolio</span>
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">→</span>
             </button>
           </div>
+        </div>
+      </div>
 
-          <div className="vivid-services__list" aria-label="Vivid expertise">
+      {/* =========================================================
+          HORIZONTAL EXPERTISE TRAIL
+      ========================================================= */}
+
+      <div className="vivid-services__trail-shell">
+        <div className="vivid-services__trail-header">
+          <span>EXPLORE ALL EXPERTISE</span>
+
+          <span>
+            {service.number} / {String(services.length).padStart(2, "0")}
+          </span>
+        </div>
+
+        <div
+          ref={trailRef}
+          className="vivid-services__trail"
+          aria-label="Expertise navigation"
+        >
+          <div className="vivid-services__trail-track">
             {services.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
+                data-expertise-index={index}
                 className={index === activeService ? "is-active" : ""}
                 onClick={() => selectService(index)}
                 aria-current={index === activeService ? "true" : undefined}
               >
                 <span>{item.number}</span>
+
                 <strong>{item.title}</strong>
               </button>
             ))}
           </div>
         </div>
       </div>
+      {/* =========================================================
+          MOBILE DETAIL COPY
+          
+          This exists after the expertise trail only on mobile.
+          It is hidden on laptop/desktop.
+      ========================================================= */}
+
+      {renderDetailSlot("mobile")}
     </section>
   );
 }

@@ -2,7 +2,6 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../../data/projects";
-import { sectors } from "../../data/sectors";
 import "./projects.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -25,12 +24,7 @@ const getRelativePosition = (
   return difference;
 };
 
-type ProjectsProps = {
-  selectedSector: string | null;
-  onClearSector: () => void;
-};
-
-function Projects({ selectedSector, onClearSector }: ProjectsProps) {
+function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -38,21 +32,7 @@ function Projects({ selectedSector, onClearSector }: ProjectsProps) {
   const [activeProject, setActiveProject] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
 
-  const selectedSectorData = selectedSector
-    ? sectors.find((sector) => sector.id === selectedSector)
-    : undefined;
-
-  const hasMappedProjects = Boolean(
-    selectedSectorData && selectedSectorData.projectIds.length > 0,
-  );
-
-  const visibleProjects = hasMappedProjects
-    ? projects.filter((project) =>
-        selectedSectorData?.projectIds.includes(project.id),
-      )
-    : projects;
-
-  const project = visibleProjects[activeProject] ?? visibleProjects[0];
+  const project = projects[activeProject] ?? projects[0];
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -298,20 +278,6 @@ function Projects({ selectedSector, onClearSector }: ProjectsProps) {
           <br />
           <span>to be experienced.</span>
         </h2>
-
-        <div className="vivid-projects__filter-state">
-          {selectedSectorData && (
-            <>
-              <span>
-                Showing {hasMappedProjects ? selectedSectorData.title : "all"}
-              </span>
-
-              <button type="button" onClick={onClearSector}>
-                Clear sector
-              </button>
-            </>
-          )}
-        </div>
       </div>
 
       <div className="vivid-projects__layout">
@@ -398,7 +364,7 @@ function Projects({ selectedSector, onClearSector }: ProjectsProps) {
             className="vivid-projects__project-list"
             aria-label="Selected projects"
           >
-            {visibleProjects.map((item, index) => (
+            {projects.map((item, index) => (
               <button
                 key={item.id}
                 type="button"

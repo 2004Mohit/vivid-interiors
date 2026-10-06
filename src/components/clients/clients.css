@@ -1,0 +1,382 @@
+/* =========================================================
+   VIVID CLIENTS / LOGO MARQUEE
+========================================================= */
+
+.vivid-clients {
+  position: relative;
+
+  isolation: isolate;
+
+  width: calc(100% - 48px);
+
+  max-width: 1600px;
+
+  margin: 24px auto;
+
+  overflow: hidden;
+
+  padding: clamp(5rem, 9vw, 9rem) 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 30px;
+
+  background:
+    radial-gradient(
+      circle at 15% 30%,
+      rgba(198, 219, 98, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 70%,
+      rgba(198, 219, 98, 0.055),
+      transparent 28%
+    ),
+    linear-gradient(145deg, rgba(16, 20, 10, 0.92), rgba(4, 5, 4, 0.9));
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.025),
+    0 24px 80px rgba(0, 0, 0, 0.48),
+    0 0 100px rgba(198, 219, 98, 0.035);
+
+  backdrop-filter: blur(16px) saturate(125%);
+  -webkit-backdrop-filter: blur(16px) saturate(125%);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.vivid-clients__header {
+  width: min(calc(100% - 2 * var(--page-padding)), var(--container-width));
+
+  margin: 0 auto clamp(3rem, 6vw, 5rem);
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(140px, 0.35fr)
+    minmax(300px, 1fr)
+    minmax(240px, 0.7fr);
+
+  gap: clamp(2rem, 5vw, 6rem);
+
+  align-items: end;
+}
+
+.vivid-clients__eyebrow {
+  align-self: start;
+
+  padding-top: 0.65rem;
+}
+
+.vivid-clients__eyebrow span {
+  font-size: 0.62rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+
+  color: var(--vivid-pista);
+}
+
+.vivid-clients__header h2 {
+  margin: 0;
+
+  font-size: clamp(3.2rem, 7vw, 7.2rem);
+
+  line-height: 0.88;
+
+  font-weight: 400;
+
+  letter-spacing: -0.055em;
+
+  color: var(--vivid-white);
+
+  opacity: 1 !important;
+
+  position: relative;
+
+  z-index: 3;
+}
+
+.vivid-clients__header h2 span {
+  color: var(--vivid-pista);
+}
+
+.vivid-clients__header p {
+  max-width: 30rem;
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  font-size: 0.82rem;
+
+  line-height: 1.7;
+}
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.vivid-clients__marquee {
+  position: relative;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  padding: 1.5rem 0;
+}
+
+.vivid-clients__track {
+  display: flex;
+
+  width: max-content;
+
+  animation: vivid-client-marquee 42s linear infinite;
+
+  will-change: transform;
+}
+
+.vivid-clients__group {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1.25rem;
+
+  padding-right: 1.25rem;
+}
+
+/* =========================================================
+   LOGO CARD
+========================================================= */
+
+.vivid-clients__logo-card {
+  flex: 0 0 auto;
+
+  width: clamp(190px, 20vw, 290px);
+
+  height: clamp(110px, 12vw, 165px);
+
+  padding: 0.7rem;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 1.1rem;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(232, 236, 226, 0.92)
+  );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 15px 50px rgba(0, 0, 0, 0.28);
+
+  transition:
+    transform 400ms var(--ease-vivid),
+    border-color 400ms var(--ease-vivid),
+    box-shadow 400ms var(--ease-vivid);
+}
+
+.vivid-clients__logo-card:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(198, 219, 98, 0.7);
+
+  box-shadow:
+    0 18px 55px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(198, 219, 98, 0.08);
+}
+
+.vivid-clients__logo-inner {
+  width: 100%;
+
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 0.75rem;
+
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.vivid-clients__logo {
+  display: block;
+
+  width: auto;
+
+  height: auto;
+
+  max-width: 86%;
+
+  max-height: 78%;
+
+  object-fit: contain;
+}
+
+/* =========================================================
+   TEXT FALLBACK LOGOS
+========================================================= */
+
+.vivid-clients__text-logo {
+  display: block;
+
+  max-width: 82%;
+
+  text-align: center;
+
+  color: #111;
+
+  font-family: var(--font-body);
+
+  font-size: clamp(0.8rem, 1.2vw, 1.15rem);
+
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  letter-spacing: -0.025em;
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   EDGE FADE
+========================================================= */
+
+.vivid-clients__fade {
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+
+  width: clamp(60px, 10vw, 180px);
+
+  z-index: 5;
+
+  pointer-events: none;
+}
+
+.vivid-clients__fade--left {
+  left: 0;
+
+  background: linear-gradient(
+    90deg,
+    #080a06 0%,
+    rgba(8, 10, 6, 0.82) 30%,
+    rgba(8, 10, 6, 0) 100%
+  );
+}
+
+.vivid-clients__fade--right {
+  right: 0;
+
+  background: linear-gradient(
+    270deg,
+    #080a06 0%,
+    rgba(8, 10, 6, 0.82) 30%,
+    rgba(8, 10, 6, 0) 100%
+  );
+}
+
+/* =========================================================
+   PAUSE ON HOVER
+========================================================= */
+
+.vivid-clients__marquee:hover .vivid-clients__track {
+  animation-play-state: paused;
+}
+
+/* =========================================================
+   INFINITE LOOP
+========================================================= */
+
+@keyframes vivid-client-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.625rem));
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+  .vivid-clients__header {
+    grid-template-columns: 1fr;
+
+    gap: 1.5rem;
+  }
+
+  .vivid-clients__header p {
+    max-width: 32rem;
+  }
+
+  .vivid-clients__track {
+    animation-duration: 34s;
+  }
+}
+
+@media (max-width: 600px) {
+  .vivid-clients {
+    padding: 4.5rem 0;
+  }
+
+  .vivid-clients__header {
+    width: calc(100% - 2 * var(--page-padding));
+
+    margin-bottom: 2.5rem;
+  }
+
+  .vivid-clients__header h2 {
+    font-size: clamp(3rem, 15vw, 5rem);
+  }
+
+  .vivid-clients__logo-card {
+    width: 170px;
+
+    height: 105px;
+  }
+
+  .vivid-clients__group {
+    gap: 0.8rem;
+
+    padding-right: 0.8rem;
+  }
+
+  .vivid-clients__track {
+    animation-duration: 28s;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .vivid-clients__track {
+    animation: none;
+  }
+
+  .vivid-clients__logo-card {
+    transition: none;
+  }
+}

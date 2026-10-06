@@ -200,10 +200,6 @@ function Hero() {
           <br />
           personality, material and light.
         </p>
-
-        <p ref={locationRef} className="vivid-hero__location">
-          EMIRUS 801 <span>/</span> PUNE
-        </p>
       </div>
 
       <div ref={scrollRef} className="vivid-hero__scroll">

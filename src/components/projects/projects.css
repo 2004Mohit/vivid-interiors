@@ -569,7 +569,7 @@
   .vivid-projects__cards {
     width: 100%;
     height: 68vw;
-    transform: none;
+    transform: translateX(-90px);
   }
 
   .vivid-projects__card {

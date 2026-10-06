@@ -9,10 +9,10 @@ import Services from "./components/services/Services";
 import Sectors from "./components/sectors/Sectors";
 import Projects from "./components/projects/Projects";
 import Contact from "./components/contact/Contact";
-
+import Clients from "./components/clients/Clients";
+// dev2 website
 function App() {
   const [loading, setLoading] = useState(true);
-  const [selectedSector, setSelectedSector] = useState<string | null>(null);
 
   useLenis();
 
@@ -31,12 +31,11 @@ function App() {
 
         <Services />
 
-        <Sectors onSelectSector={setSelectedSector} />
+        <Sectors />
 
-        <Projects
-          selectedSector={selectedSector}
-          onClearSector={() => setSelectedSector(null)}
-        />
+        <Projects />
+
+        <Clients />
 
         <Contact />
       </main>

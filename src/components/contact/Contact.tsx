@@ -299,13 +299,25 @@ function Contact() {
             </div>
 
             <div ref={mapRef} className="vivid-contact__map">
-              <iframe
-                title="Vivid Interiors location in Pune"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2675.369407620625!2d73.82907576112922!3d18.50431676685247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bfa781197ae9%3A0x6740901f6f49b9c2!2sSS%20Estonia!5e0!3m2!1sen!2sin!4v1630482572983!5m2!1sen!2sin"
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=SS+Estonia,+Gulawani+Maharaj+Road,+Erandwane,+Pune,+Maharashtra+411004"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="vivid-contact__map-link"
+                aria-label="Open Vivid Interiors studio location in Google Maps"
+              >
+                <iframe
+                  title="Vivid Interiors location in Pune"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2675.369407620625!2d73.82907576112922!3d18.50431676685247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bfa781197ae9%3A0x6740901f6f49b9c2!2sSS%20Estonia!5e0!3m2!1sen!2sin!4v1630482572983!5m2!1sen!2sin"
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+
+                <span className="vivid-contact__map-mobile-overlay">
+                  OPEN IN GOOGLE MAPS ↗
+                </span>
+              </a>
             </div>
           </div>
         </div>
