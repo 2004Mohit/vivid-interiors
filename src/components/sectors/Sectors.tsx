@@ -1,208 +1,92 @@
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { projects } from "../../data/projects";
+import { useRef, useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { sectors } from "../../data/sectors";
 import "./sectors.css";
 
-gsap.registerPlugin(ScrollTrigger);
-
-type SectorsProps = {
-  onSelectSector: (sectorId: string | null) => void;
-};
-
-function Sectors({ onSelectSector }: SectorsProps) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const imageFrameRef = useRef<HTMLDivElement>(null);
-  const numberRef = useRef<HTMLSpanElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const portfolioRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-
+function Sectors() {
   const [activeSector, setActiveSector] = useState(0);
+
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
   const sector = sectors[activeSector];
 
-  const representativeProject = projects.find(
-    (project) => project.id === sector.imageProjectId,
+  // Keep each image mounted with a stable key. Changing its list position
+  // animates its geometry, matching the original append/prepend carousel.
+  const carouselSectors = sectors.map(
+    (_, position) =>
+      sectors[(activeSector - 1 + position + sectors.length) % sectors.length],
   );
 
-  const relatedProjects = useMemo(
-    () =>
-      sector.projectIds
-        .map((projectId) =>
-          projects.find((project) => project.id === projectId),
-        )
-        .filter((project): project is (typeof projects)[number] =>
-          Boolean(project),
-        ),
-    [sector],
-  );
+  const totalSectors = sectors.length;
 
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    const image = imageRef.current;
-    const imageFrame = imageFrameRef.current;
-    const number = numberRef.current;
-    const title = titleRef.current;
-    const description = descriptionRef.current;
-    const portfolio = portfolioRef.current;
+  const goToSector = (index: number) => {
+    if (totalSectors === 0) return;
+    const nextIndex = (index + totalSectors) % totalSectors;
 
-    if (
-      !section ||
-      !image ||
-      !imageFrame ||
-      !number ||
-      !title ||
-      !description ||
-      !portfolio
-    ) {
-      return;
-    }
-
-    const context = gsap.context(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      if (prefersReducedMotion) {
-        gsap.set([number, title, description, portfolio], {
-          clearProps: "all",
-        });
-
-        return;
-      }
-
-      gsap
-        .timeline()
-        .fromTo(
-          image,
-          {
-            scale: 1.04,
-          },
-          {
-            scale: 1,
-            duration: 0.9,
-            ease: "power3.out",
-          },
-        )
-        .fromTo(
-          [number, title, description, portfolio],
-          {
-            opacity: 0,
-            y: 18,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.65,
-            stagger: 0.06,
-            ease: "power3.out",
-          },
-          "-=0.65",
-        );
-    }, section);
-
-    return () => context.revert();
-  }, [activeSector]);
-
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    const image = imageRef.current;
-    const imageFrame = imageFrameRef.current;
-    const progress = progressRef.current;
-
-    if (!section || !image || !imageFrame || !progress) {
-      return;
-    }
-
-    const context = gsap.context(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      if (prefersReducedMotion) {
-        return;
-      }
-
-      gsap.fromTo(
-        imageFrame,
-        {
-          clipPath: "inset(12% 10% 12% 10%)",
-        },
-        {
-          clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.3,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-            once: true,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        image,
-        {
-          scale: 1.12,
-        },
-        {
-          scale: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: imageFrame,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        progress,
-        {
-          scaleX: 0,
-        },
-        {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-            end: "bottom 70%",
-            scrub: true,
-          },
-        },
-      );
-    }, section);
-
-    return () => context.revert();
-  }, []);
-
-  const selectSector = (index: number) => {
-    if (index === activeSector) {
-      return;
-    }
-
-    setActiveSector(index);
+    setActiveSector(nextIndex);
   };
 
-  const exploreSector = () => {
-    onSelectSector(relatedProjects.length > 0 ? sector.id : null);
-
-    window.setTimeout(() => {
-      document.querySelector("#projects")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 50);
+  const nextSector = () => {
+    goToSector(activeSector + 1);
   };
+
+  const previousSector = () => {
+    goToSector(activeSector - 1);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+    touchStartY.current = event.touches[0]?.clientY ?? null;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX.current === null || touchStartY.current === null) {
+      return;
+    }
+
+    const endX = event.changedTouches[0]?.clientX ?? touchStartX.current;
+    const endY = event.changedTouches[0]?.clientY ?? touchStartY.current;
+
+    const deltaX = endX - touchStartX.current;
+    const deltaY = endY - touchStartY.current;
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    /*
+     * Only treat the gesture as a sector swipe when
+     * horizontal movement is clearly greater than vertical movement.
+     */
+    if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+      return;
+    }
+
+    if (deltaX < 0) {
+      nextSector();
+    } else {
+      previousSector();
+    }
+  };
+
+  const getRelativePosition = (index: number) => {
+    let difference = index - activeSector;
+
+    if (difference > totalSectors / 2) {
+      difference -= totalSectors;
+    }
+
+    if (difference < -totalSectors / 2) {
+      difference += totalSectors;
+    }
+
+    return difference;
+  };
+
+  if (!sector) return null;
 
   return (
-    <section ref={sectionRef} id="sectors" className="vivid-sectors">
+    <section id="sectors" className="vivid-sectors">
       <div className="vivid-sectors__background" />
 
       <div className="vivid-sectors__header">
@@ -223,94 +107,82 @@ function Sectors({ onSelectSector }: SectorsProps) {
         </p>
       </div>
 
-      <div className="vivid-sectors__stage">
-        <div ref={imageFrameRef} className="vivid-sectors__image-frame">
-          {representativeProject && (
-            <img
-              ref={imageRef}
-              key={representativeProject.id}
-              src={representativeProject.images[0]}
-              alt={`${representativeProject.title} interior portfolio view`}
-              className="vivid-sectors__image"
-            />
-          )}
+      <div
+        className="vivid-sectors__experience"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={() => {
+          touchStartX.current = null;
+          touchStartY.current = null;
+        }}
+        tabIndex={0}
+        role="region"
+        aria-label="Sector carousel"
+        aria-roledescription="carousel"
+        onKeyDown={(event) => {
+          if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            goToSector(activeSector + (event.key === "ArrowRight" ? 1 : -1));
+          }
+        }}
+      >
+        <div className="vivid-sectors__visual">
+          <div className="vivid-sectors__image-frame">
+            <ul className="vivid-sectors__slider" aria-label="Sector images">
+              {carouselSectors.map((item) => {
+                if (!item) return null;
+                return (
+                  <li
+                    key={item.id}
+                    className="vivid-sectors__slide"
+                    aria-hidden={item.id !== sector.id}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.imageAlt}
+                      className="vivid-sectors__image"
+                      draggable={false}
+                      decoding="async"
+                    />
+                  </li>
+                );
+              })}
+            </ul>
 
-          <div className="vivid-sectors__image-overlay" />
+            <div className="vivid-sectors__image-overlay" />
 
-          <div className="vivid-sectors__image-meta">
-            <span>VIVID INTERIORS</span>
+            <div className="vivid-sectors__image-meta">
+              <span>VIVID INTERIORS</span>
 
-            <span>
-              {representativeProject?.title ?? "PORTFOLIO"}
-
-              {representativeProject?.location
-                ? ` / ${representativeProject.location}`
-                : ""}
-            </span>
+              <span>{sector.title}</span>
+            </div>
           </div>
         </div>
 
         <div className="vivid-sectors__content">
-          <div className="vivid-sectors__counter">
-            <span ref={numberRef}>{sector.number}</span>
+          <div className="vivid-sectors__navigation">
+            <button
+              type="button"
+              onClick={previousSector}
+              aria-label="Previous sector"
+            >
+              <ArrowLeft aria-hidden="true" />
+            </button>
 
-            <span>/ {String(sectors.length).padStart(2, "0")}</span>
-          </div>
-
-          <h3 ref={titleRef}>{sector.title}</h3>
-
-          <p ref={descriptionRef}>{sector.description}</p>
-
-          <div ref={portfolioRef} className="vivid-sectors__portfolio">
-            <div className="vivid-sectors__portfolio-heading">
-              <span>Portfolio connection</span>
-
-              <span>{relatedProjects.length.toString().padStart(2, "0")}</span>
-            </div>
-
-            {relatedProjects.length > 0 ? (
-              <div className="vivid-sectors__portfolio-list">
-                {relatedProjects.slice(0, 3).map((project) => (
-                  <span key={project.id}>{project.title}</span>
-                ))}
-              </div>
-            ) : (
-              <p className="vivid-sectors__portfolio-empty">
-                No featured project is currently mapped to this sector. The
-                sector remains available for future documented portfolio work.
-              </p>
-            )}
-
-            <button type="button" onClick={exploreSector}>
-              <span>
-                {relatedProjects.length > 0
-                  ? "View related projects"
-                  : "View all projects"}
-              </span>
-
-              <span aria-hidden="true">↗</span>
+            <button type="button" onClick={nextSector} aria-label="Next sector">
+              <ArrowRight aria-hidden="true" />
             </button>
           </div>
+          <div className="vivid-sectors__counter">
+            <span>{sector.number}</span>
 
-          <div className="vivid-sectors__categories" aria-label="Vivid sectors">
-            {sectors.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                className={index === activeSector ? "is-active" : ""}
-                onClick={() => selectSector(index)}
-                aria-current={index === activeSector ? "true" : undefined}
-              >
-                <span>{item.number}</span>
-                <strong>{item.title}</strong>
-              </button>
-            ))}
+            <span>/ {String(totalSectors).padStart(2, "0")}</span>
           </div>
-        </div>
-      </div>
 
-      <div className="vivid-sectors__progress">
-        <div ref={progressRef} />
+          <h3 key={`title-${sector.id}`}>{sector.title}</h3>
+
+          <p key={`description-${sector.id}`}>{sector.description}</p>
+        </div>
       </div>
     </section>
   );

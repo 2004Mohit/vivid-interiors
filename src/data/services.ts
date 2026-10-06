@@ -3,6 +3,9 @@ export type Service = {
   number: string;
   title: string;
   description: string;
+  /** Optional local image URL; service photos are not required. */
+  image?: string;
+  imageAlt?: string;
 };
 
 export const services: Service[] = [

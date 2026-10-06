@@ -293,24 +293,34 @@
 
 .vivid-contact__map {
   position: relative;
-  width: 100%;
-  min-height: 300px;
-  overflow: hidden;
-  background: #161616;
-  filter: grayscale(1);
-  transition: filter 0.6s ease;
-}
 
-.vivid-contact__map:hover {
-  filter: grayscale(0.25);
+  width: 100%;
+
+  min-height: 300px;
+
+  overflow: hidden;
+
+  background: #161616;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .vivid-contact__map::after {
   content: "";
+
   position: absolute;
+
   inset: 0;
+
   pointer-events: none;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: inherit;
 }
 
 .vivid-contact__map iframe {
@@ -318,6 +328,19 @@
   width: 100%;
   height: 320px;
   border: 0;
+}
+
+.vivid-contact__map-link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.vivid-contact__map-mobile-overlay {
+  display: none;
 }
 
 @media (max-width: 900px) {
@@ -375,6 +398,52 @@
   .vivid-contact__map iframe {
     min-height: 280px;
     height: 280px;
+  }
+
+  .vivid-contact__map-link {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /*
+ * On mobile, the Google Maps iframe itself can consume
+ * touch events without reliably triggering navigation.
+ *
+ * Disable iframe interaction and let the parent link
+ * handle the tap instead.
+ */
+  .vivid-contact__map-link iframe {
+    pointer-events: none;
+  }
+
+  /*
+ * Invisible clickable layer over the complete map.
+ */
+  .vivid-contact__map-mobile-overlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    padding: 1rem;
+
+    pointer-events: none;
+
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.48rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    background: linear-gradient(
+      180deg,
+      transparent 65%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
   }
 }
 
