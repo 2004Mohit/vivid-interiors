@@ -3,35 +3,37 @@
   min-height: 100svh;
   height: 100svh;
   overflow: hidden;
-  background: var(--vivid-black);
-  color: var(--vivid-white);
+  color: var(--vivid-black);
+
+  /* fallback, then the richer colour-mix version */
+  background: linear-gradient(
+    180deg,
+    #f6f6f6 0%,
+    #f1f1f1 45%,
+    var(--vivid-pista) 100%
+  );
+  background: linear-gradient(
+    180deg,
+    #f6f6f6 0%,
+    #f1f1f1 42%,
+    color-mix(in srgb, var(--vivid-pista) 22%, #f1f1f1) 58%,
+    color-mix(in srgb, var(--vivid-pista) 60%, #f1f1f1) 80%,
+    var(--vivid-pista) 100%
+  );
 }
 
-.vivid-hero__image-frame {
+/* three.js canvas fills the hero; pieces fall from the very top edge */
+.vivid-hero__scene {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  z-index: 1;
 }
 
-.vivid-hero__image {
+.vivid-hero__scene canvas {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
-  will-change: transform;
-}
-
-.vivid-hero__overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.58) 0%,
-      rgba(0, 0, 0, 0.2) 48%,
-      rgba(0, 0, 0, 0.12) 100%
-    ),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.42) 0%, transparent 45%);
+  outline: none;
 }
 
 .vivid-hero__content {
@@ -39,16 +41,17 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
   height: 100%;
   margin: 0 auto;
-  padding-bottom: clamp(5rem, 11vh, 9rem);
+  padding-bottom: clamp(4rem, 9vh, 7rem);
+  pointer-events: none; /* clicks reach the 3D scene */
 }
 
 .vivid-hero__eyebrow {
   margin: 0 0 1.5rem;
-  color: var(--vivid-pista);
+  color: var(--vivid-black);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -60,11 +63,11 @@
 }
 
 .vivid-hero h1 {
-  max-width: 900px;
+  max-width: min(46%, 700px);
   margin: 0;
-  font-size: clamp(4rem, 10vw, 10rem);
+  font-size: clamp(3.4rem, 6.6vw, 8rem);
   font-weight: 400;
-  line-height: 0.84;
+  line-height: 0.86;
   letter-spacing: -0.065em;
 }
 
@@ -73,22 +76,25 @@
 }
 
 .vivid-hero__subtitle {
+  max-width: min(44%, 520px);
   margin: 2rem 0 0;
-  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  color: rgba(20, 20, 20, 0.82);
+  font-size: clamp(0.95rem, 1.3vw, 1.25rem);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
-.vivid-hero__location {
-  margin: 2.5rem 0 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.65rem;
-  letter-spacing: 0.25em;
-}
-
-.vivid-hero__location span {
-  margin: 0 0.6rem;
-  color: var(--vivid-red);
+.vivid-hero__hint {
+  position: absolute;
+  right: calc(var(--page-padding) + 3.5rem);
+  bottom: 2.65rem;
+  z-index: 3;
+  margin: 0;
+  color: rgba(20, 20, 20, 0.7);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  pointer-events: none;
 }
 
 .vivid-hero__scroll {
@@ -99,38 +105,32 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(20, 20, 20, 0.75);
   font-size: 0.65rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   writing-mode: vertical-rl;
+  pointer-events: none;
 }
 
 .vivid-hero__scroll i {
   width: 1px;
   height: 55px;
-  background: var(--vivid-pista);
+  background: var(--vivid-black);
 }
 
-@media (max-width: 700px) {
+/* Tablet / mobile: text on top, 3D build underneath */
+@media (max-width: 900px) {
   .vivid-hero {
-    min-height: 100svh;
-    height: 100svh;
-  }
-
-  .vivid-hero__image {
-    object-position: 58% center;
-  }
-
-  .vivid-hero__overlay {
-    background:
-      linear-gradient(90deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.28) 100%),
-      linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, transparent 55%);
+    height: max(100svh, 720px);
+    min-height: 720px;
   }
 
   .vivid-hero__content {
+    justify-content: flex-start;
     width: calc(100% - 2.5rem);
-    padding-bottom: 4.5rem;
+    padding-top: clamp(6.5rem, 15vh, 8rem);
+    padding-bottom: 0;
   }
 
   .vivid-hero__eyebrow {
@@ -143,22 +143,24 @@
 
   .vivid-hero h1 {
     max-width: 100%;
-    font-size: clamp(3.25rem, 17vw, 5.5rem);
+    font-size: clamp(3.25rem, 16vw, 6rem);
     line-height: 0.88;
     letter-spacing: -0.06em;
   }
 
   .vivid-hero__subtitle {
     max-width: 19rem;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     font-size: 0.92rem;
-    line-height: 1.5;
   }
 
-  .vivid-hero__location {
-    margin-top: 1.75rem;
-    font-size: 0.56rem;
-    letter-spacing: 0.2em;
+  .vivid-hero__hint {
+    right: auto;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
+    font-size: 0.55rem;
+    white-space: nowrap;
   }
 
   .vivid-hero__scroll {
@@ -169,7 +171,6 @@
 @media (max-width: 360px) {
   .vivid-hero__content {
     width: calc(100% - 2rem);
-    padding-bottom: 3.25rem;
   }
 
   .vivid-hero__eyebrow {
@@ -184,9 +185,5 @@
   .vivid-hero__subtitle {
     max-width: 17rem;
     font-size: 0.82rem;
-  }
-
-  .vivid-hero__location {
-    font-size: 0.5rem;
   }
 }
