@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import VividCursor from "./components/cursor/VividCursor";
 import VividLoader from "./components/loader/VividLoader";
 import Hero from "./components/hero/Hero";
@@ -10,9 +10,12 @@ import Sectors from "./components/sectors/Sectors";
 import Projects from "./components/projects/Projects";
 import Contact from "./components/contact/Contact";
 import Clients from "./components/clients/Clients";
-// dev2 website
+
 function App() {
   const [loading, setLoading] = useState(true);
+
+  // stable reference: the loader timeline must not restart on re-render
+  const handleLoaded = useCallback(() => setLoading(false), []);
 
   useLenis();
 
@@ -20,7 +23,7 @@ function App() {
     <>
       <VividCursor />
 
-      {loading && <VividLoader onComplete={() => setLoading(false)} />}
+      {loading && <VividLoader onComplete={handleLoaded} />}
 
       <Navigation />
 

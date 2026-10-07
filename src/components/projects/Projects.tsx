@@ -1,10 +1,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, prefersReducedMotion } from "../../lib/gsap";
+import useReveal from "../../hooks/useReveal";
+import Accent from "../ui/Accent";
 import { projects } from "../../data/projects";
 import "./projects.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const getRelativePosition = (
   index: number,
@@ -26,7 +25,6 @@ const getRelativePosition = (
 
 function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
   const [activeProject, setActiveProject] = useState(0);
@@ -34,42 +32,21 @@ function Projects() {
 
   const project = projects[activeProject] ?? projects[0];
 
+  // enter / exit animation for every [data-reveal] element in this section
+  useReveal(sectionRef);
+
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const stage = stageRef.current;
     const cards = cardsRef.current;
 
-    if (!section || !stage || !cards) {
+    if (!section || !cards) {
       return;
     }
 
     const context = gsap.context(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      if (prefersReducedMotion) {
+      if (prefersReducedMotion()) {
         return;
       }
-
-      gsap.fromTo(
-        stage,
-        {
-          opacity: 0,
-          y: 100,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-            once: true,
-          },
-        },
-      );
 
       const handlePointerMove = (event: PointerEvent) => {
         if (window.innerWidth <= 700) {
@@ -268,22 +245,23 @@ function Projects() {
       <div className="vivid-projects__background" />
 
       <div className="vivid-projects__header">
-        <div className="vivid-projects__eyebrow">
+        <div className="vivid-projects__eyebrow" data-reveal="right">
           <span>05</span>
           <p>Selected Projects</p>
         </div>
 
-        <h2>
+        <h2 data-reveal="up" data-reveal-delay="0.1">
           Spaces made
           <br />
-          <span>to be experienced.</span>
+          <Accent>to be experienced.</Accent>
         </h2>
       </div>
 
       <div className="vivid-projects__layout">
         <div
-          ref={stageRef}
           className="vivid-projects__stage"
+          data-reveal="up"
+          data-reveal-duration="1.1"
           style={{
             perspective: "1400px",
           }}

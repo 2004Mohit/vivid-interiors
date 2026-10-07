@@ -12,9 +12,27 @@
 html {
   margin: 0;
   padding: 0;
-  background: #050505;
+  background-color: var(--bg);
   scroll-behavior: auto;
   overflow-x: hidden;
+}
+
+/* Lenis recommended base styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -67,4 +85,17 @@ main {
 .section-inner {
   width: min(100% - (var(--page-padding) * 2), var(--container-width));
   margin-inline: auto;
+}
+
+:focus-visible {
+  outline: 2px solid var(--vivid-red);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }

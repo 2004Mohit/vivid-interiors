@@ -4,46 +4,25 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  type MouseEvent,
 } from "react";
-import gsap from "gsap";
+import { gsap } from "../../lib/gsap";
+import { scrollToTarget } from "../../lib/lenis";
+import ThemeToggle from "../ui/ThemeToggle";
 import "./navigation.css";
 
 const menuItems = [
-  {
-    number: "01",
-    label: "Home",
-    href: "#home",
-  },
-  {
-    number: "02",
-    label: "About",
-    href: "#about",
-  },
-  {
-    number: "03",
-    label: "Expertise",
-    href: "#services",
-  },
-  {
-    number: "04",
-    label: "Sectors",
-    href: "#sectors",
-  },
-  {
-    number: "05",
-    label: "Projects",
-    href: "#projects",
-  },
-  {
-    number: "06",
-    label: "Contact",
-    href: "#contact",
-  },
+  { number: "01", label: "Home", href: "#home" },
+  { number: "02", label: "About", href: "#about" },
+  { number: "03", label: "Expertise", href: "#services" },
+  { number: "04", label: "Sectors", href: "#sectors" },
+  { number: "05", label: "Projects", href: "#projects" },
+  { number: "06", label: "Contact", href: "#contact" },
 ];
 
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  // the bar follows the site theme; no pixel-sniffing needed any more
+  const [scrolled, setScrolled] = useState(() => window.scrollY > 40);
 
   const navigationRef = useRef<HTMLElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
@@ -75,43 +54,22 @@ function Navigation() {
     }
 
     const context = gsap.context(() => {
-      gsap.set(menuPanel, {
-        yPercent: -100,
-      });
-
-      gsap.set(menuItemsElement.children, {
-        yPercent: 110,
-        opacity: 0,
-      });
-
-      gsap.set(menuMeta, {
-        opacity: 0,
-        y: 20,
-      });
-
-      gsap.set(menuImage, {
-        clipPath: "inset(100% 0% 0% 0%)",
-      });
-
-      gsap.set(menuImageElement, {
-        scale: 1.15,
-      });
+      gsap.set(menuPanel, { yPercent: -100 });
+      gsap.set(menuItemsElement.children, { yPercent: 110, opacity: 0 });
+      gsap.set(menuMeta, { opacity: 0, y: 20 });
+      gsap.set(menuImage, { clipPath: "inset(100% 0% 0% 0%)" });
+      gsap.set(menuImageElement, { scale: 1.15 });
 
       menuTimelineRef.current = gsap.timeline({
         paused: true,
-        defaults: {
-          ease: "power4.out",
-        },
+        defaults: { ease: "power4.out" },
         onReverseComplete: () => {
           document.body.classList.remove("menu-open");
         },
       });
 
       menuTimelineRef.current
-        .to(menuPanel, {
-          yPercent: 0,
-          duration: 0.9,
-        })
+        .to(menuPanel, { yPercent: 0, duration: 0.9 })
         .to(
           menuImage,
           {
@@ -123,38 +81,30 @@ function Navigation() {
         )
         .to(
           menuImageElement,
-          {
-            scale: 1,
-            duration: 1.3,
-            ease: "power3.out",
-          },
+          { scale: 1, duration: 1.3, ease: "power3.out" },
           "<",
         )
         .to(
           menuItemsElement.children,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.9,
-            stagger: 0.07,
-          },
+          { yPercent: 0, opacity: 1, duration: 0.9, stagger: 0.07 },
           "-=0.75",
         )
-        .to(
-          menuMeta,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-          },
-          "-=0.45",
-        );
+        .to(menuMeta, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
     }, navigationRef);
 
     return () => {
       menuTimelineRef.current?.kill();
       context.revert();
     };
+  }, []);
+
+  /* ---------- compact bar once the page has scrolled ---------- */
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 40);
+
+    window.addEventListener("scroll", update, { passive: true });
+
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
   const openMenu = () => {
@@ -189,28 +139,14 @@ function Navigation() {
   const handleMenuItemClick = (href: string) => {
     closeMenu();
 
-    window.setTimeout(() => {
-      const target = document.querySelector(href);
-
-      target?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 700);
-  };
-
-  const handleMenuHover = (event: MouseEvent<HTMLAnchorElement>) => {
-    const target = event.currentTarget.dataset.image;
-
-    if (!target || !menuImageElementRef.current) {
-      return;
-    }
-
-    menuImageElementRef.current.src = target;
+    window.setTimeout(() => scrollToTarget(href), 700);
   };
 
   return (
-    <header ref={navigationRef} className="vivid-navigation">
+    <header
+      ref={navigationRef}
+      className={`vivid-navigation${scrolled ? " is-scrolled" : ""}`}
+    >
       <div className="vivid-navigation__bar">
         <a
           href="#home"
@@ -227,10 +163,7 @@ function Navigation() {
         </a>
 
         <div className="vivid-navigation__actions">
-          <a href="#contact" className="vivid-navigation__enquire">
-            <span>Enquire</span>
-            <i />
-          </a>
+          <ThemeToggle />
 
           <button
             ref={menuButtonRef}
@@ -269,7 +202,6 @@ function Navigation() {
                   event.preventDefault();
                   handleMenuItemClick(item.href);
                 }}
-                onMouseEnter={handleMenuHover}
               >
                 <span className="vivid-navigation__number">{item.number}</span>
 

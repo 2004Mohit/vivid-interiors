@@ -7,9 +7,10 @@ html {
 body {
   font-family: var(--font-body);
   font-weight: 400;
-  color: var(--vivid-white);
-  background: #050505;
+  color: var(--text);
+  background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
@@ -22,9 +23,54 @@ h6 {
   font-family: var(--font-display);
   font-weight: 500;
   letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 ::selection {
   background: var(--vivid-pista);
   color: var(--vivid-black);
+}
+
+/* =========================================================
+   BRAND ACCENT WORDS  (<Accent> component)
+
+   dark  : first letter of every word RED, remaining letters PISTA
+   light : whole phrase in the hero's pista (as in the original Hero)
+========================================================= */
+.vivid-accent,
+.vivid-accent__word,
+.vivid-accent__rest {
+  color: var(--pista-display);
+}
+
+.vivid-accent__first {
+  color: var(--pista-display);
+}
+
+:root[data-theme="dark"] .vivid-accent__first {
+  color: var(--vivid-red);
+}
+
+:root[data-theme="dark"] .vivid-accent__rest {
+  color: var(--vivid-pista);
+}
+
+/* keep a word together when the heading wraps */
+.vivid-accent__word {
+  display: inline-block;
+}
+
+/* accent words inside running copy: deeper pista on light, red first letter */
+p .vivid-accent,
+p .vivid-accent__word,
+p .vivid-accent__rest {
+  color: var(--pista-text);
+}
+
+p .vivid-accent__first {
+  color: var(--vivid-red);
 }

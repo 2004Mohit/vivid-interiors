@@ -1,304 +1,151 @@
 /* ==================================================
-   VIVID LIQUID GLASS SYSTEM
+   VIVID LIQUID GLASS SYSTEM  (theme aware)
+
+   light : hero palette  - soft white with a pista wash
+   dark  : slide palette - near-black with pista glow
+   All colours come from tokens in variables.css.
 ================================================== */
 
 html {
-  background: #050505;
+  background-color: var(--bg);
 }
 
 body {
   position: relative;
-
   min-height: 100vh;
-
-  color: var(--vivid-white);
-
-  background:
-    radial-gradient(
-      circle at 8% 20%,
-      rgba(198, 219, 98, 0.08),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 92% 75%,
-      rgba(198, 219, 98, 0.045),
-      transparent 28%
-    ),
-    linear-gradient(145deg, #020302 0%, #080a06 45%, #010101 100%);
+  color: var(--text);
+  background-color: var(--bg);
+  background-image: var(--page-bg);
+  background-attachment: fixed;
 }
 
+/* soft pista atmosphere behind the glass panels */
 body::before {
   content: "";
-
   position: fixed;
   inset: -20%;
-
   z-index: -1;
-
   pointer-events: none;
-
   background:
-    radial-gradient(
-      circle at 25% 20%,
-      rgba(198, 219, 98, 0.18),
-      transparent 24%
-    ),
-    radial-gradient(circle at 75% 65%, rgba(198, 219, 98, 0.1), transparent 26%);
-
+    radial-gradient(circle at 25% 20%, var(--surface-glow-a), transparent 24%),
+    radial-gradient(circle at 75% 65%, var(--surface-glow-b), transparent 26%);
   filter: blur(70px);
-
   transform: translate3d(0, 0, 0);
 }
 
 /* ==================================================
-   FLOATING LIQUID GLASS PANELS
+   FLOATING GLASS PANELS  (every content section)
 ================================================== */
 
 main > .vivid-intro,
 main > .vivid-services,
+main > .vivid-sectors,
 main > .vivid-projects,
+main > .vivid-clients,
 main > .vivid-contact {
   position: relative;
-
   isolation: isolate;
-
   width: calc(100% - 48px);
-
   max-width: 1600px;
-
   margin: 24px auto;
-
   overflow: hidden;
-
-  background:
-    radial-gradient(
-      circle at 12% 8%,
-      rgba(198, 219, 98, 0.16),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 88% 92%,
-      rgba(198, 219, 98, 0.07),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      rgba(20, 24, 12, 0.88),
-      rgba(5, 5, 5, 0.82) 55%,
-      rgba(2, 2, 2, 0.92)
-    ) !important;
-
-  color: var(--vivid-white) !important;
-
-  border: 1px solid rgba(255, 255, 255, 0.14);
-
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--surface-edge);
   border-radius: 30px;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.025),
-    0 0 0 1px rgba(198, 219, 98, 0.025),
-    0 24px 80px rgba(0, 0, 0, 0.48),
-    0 0 100px rgba(198, 219, 98, 0.035);
-
+  box-shadow: var(--surface-shadow);
   backdrop-filter: blur(16px) saturate(125%);
   -webkit-backdrop-filter: blur(16px) saturate(125%);
 }
 
-/* ==================================================
-   GLASS EDGE / LIGHT REFLECTION
-================================================== */
-
+/* glass edge / light reflection */
 main > .vivid-intro::before,
 main > .vivid-services::before,
+main > .vivid-sectors::before,
 main > .vivid-projects::before,
+main > .vivid-clients::before,
 main > .vivid-contact::before {
   content: "";
-
   position: absolute;
-
   inset: 0;
-
   z-index: -1;
-
   pointer-events: none;
-
   border-radius: inherit;
-
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.075),
+    var(--surface-sheen),
     transparent 22%,
     transparent 72%,
-    rgba(198, 219, 98, 0.045)
+    rgb(198 219 98 / 0.07)
   );
 }
 
-/* ==================================================
-   PISTA GLASS GLOW
-================================================== */
-
+/* pista glow */
 main > .vivid-intro::after,
 main > .vivid-services::after,
+main > .vivid-sectors::after,
 main > .vivid-projects::after,
+main > .vivid-clients::after,
 main > .vivid-contact::after {
   content: "";
-
   position: absolute;
-
   top: -30%;
   left: -10%;
-
   width: 55%;
   height: 55%;
-
   z-index: -1;
-
   pointer-events: none;
-
-  background: rgba(198, 219, 98, 0.055);
-
+  background: var(--surface-glow-b);
   filter: blur(80px);
-
   border-radius: 50%;
 }
 
 /* ==================================================
-   ALWAYS-READABLE HEADINGS
+   HEADINGS - always readable, brand colours per theme
 ================================================== */
 
 main > .vivid-intro h2,
-main > .vivid-intro h2 span,
-main > .vivid-intro h2 b,
 main > .vivid-services h2,
-main > .vivid-services h2 span,
 main > .vivid-sectors h2,
-main > .vivid-sectors h2 span,
-main > .vivid-sectors h3,
 main > .vivid-projects h2,
-main > .vivid-projects h2 span,
-main > .vivid-projects h3,
-main > .vivid-contact h2,
-main > .vivid-contact h2 span,
-main > .vivid-contact h2 b {
+main > .vivid-clients h2,
+main > .vivid-contact h2 {
   position: relative;
-
   z-index: 5;
-
-  opacity: 1 !important;
-  visibility: visible !important;
-
-  color: var(--vivid-white);
-
-  -webkit-text-fill-color: currentColor;
-
-  text-shadow: 0 2px 22px rgba(0, 0, 0, 0.28);
+  color: var(--text);
 }
 
-/* Pista words */
+:root[data-theme="dark"] main > section h2 {
+  text-shadow: 0 2px 22px rgb(0 0 0 / 0.28);
+}
 
+/* pista phrases */
 main > .vivid-intro h2 span,
 main > .vivid-services h2 span,
 main > .vivid-sectors h2 span,
 main > .vivid-projects h2 span,
+main > .vivid-clients h2 span,
 main > .vivid-contact h2 span {
-  color: var(--vivid-pista);
+  color: var(--pista-display);
 }
 
-/* Red highlighted letters */
-
+/* red highlighted letters */
 main > .vivid-intro h2 b,
 main > .vivid-contact h2 b {
   color: var(--vivid-red);
 }
 
-/* ==================================================
-   DARK-GLASS TYPOGRAPHY
-================================================== */
-
-.vivid-intro,
-.vivid-services,
-.vivid-projects {
-  color: var(--vivid-white) !important;
+/* dark theme: first letter RED, remaining letters PISTA (per word) */
+:root[data-theme="dark"] main > section .vivid-accent__first {
+  color: var(--vivid-red);
 }
 
-.vivid-intro__eyebrow,
-.vivid-intro__copy p,
-.vivid-services__intro,
-.vivid-services__active p,
-.vivid-services__portfolio-link,
-.vivid-services__list button,
-.vivid-projects__project-copy p,
-.vivid-projects__project-list button,
-.vivid-projects__controls button,
-.vivid-projects__image-number {
-  color: rgba(255, 255, 255, 0.72) !important;
-}
-
-/* Secondary text */
-
-.vivid-services__counter span:last-child,
-.vivid-projects__project-index span:last-child,
-.vivid-projects__image-number span:last-child {
-  color: rgba(255, 255, 255, 0.38) !important;
+:root[data-theme="dark"] main > section .vivid-accent__rest {
+  color: var(--vivid-pista);
 }
 
 /* ==================================================
-   GLASS BORDERS
-================================================== */
-
-.vivid-services__list,
-.vivid-services__list button,
-.vivid-projects__project-list,
-.vivid-projects__project-list button {
-  border-color: rgba(255, 255, 255, 0.14) !important;
-}
-
-/* ==================================================
-   SERVICES
-================================================== */
-
-.vivid-services__list button:hover,
-.vivid-services__list button.is-active {
-  color: var(--vivid-pista) !important;
-}
-
-.vivid-services__portfolio-link {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-/* ==================================================
-   PROJECT CONTROLS
-================================================== */
-
-.vivid-projects__controls button {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.vivid-projects__controls button:hover {
-  border-color: var(--vivid-pista) !important;
-
-  background: rgba(198, 219, 98, 0.16) !important;
-
-  color: var(--vivid-white) !important;
-}
-
-/* ==================================================
-   PROJECT SELECTOR
-================================================== */
-
-.vivid-projects__project-list button:hover {
-  background: rgba(198, 219, 98, 0.08) !important;
-}
-
-.vivid-projects__project-list button.is-active {
-  background: rgba(198, 219, 98, 0.12) !important;
-
-  color: var(--vivid-white) !important;
-}
-
-/* ==================================================
-   REMOVE SECTOR FILTER UI
+   TEXT HELPERS shared by the glass sections
 ================================================== */
 
 .vivid-projects__filter-state {
@@ -314,8 +161,11 @@ main > .vivid-contact h2 b {
   main > .vivid-services,
   main > .vivid-sectors,
   main > .vivid-projects,
+  main > .vivid-clients,
   main > .vivid-contact {
-    border-radius: 0;
+    width: calc(100% - 20px);
+    margin: 10px auto;
+    border-radius: 22px;
   }
 }
 
@@ -328,23 +178,9 @@ main > .vivid-contact h2 b {
   main > .vivid-services,
   main > .vivid-sectors,
   main > .vivid-projects,
+  main > .vivid-clients,
   main > .vivid-contact {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-  }
-}
-
-@media (max-width: 700px) {
-  main > .vivid-intro,
-  main > .vivid-services,
-  main > .vivid-projects,
-  main > .vivid-contact,
-  .vivid-sectors,
-  .vivid-clients {
-    width: calc(100% - 20px);
-
-    margin: 10px auto;
-
-    border-radius: 22px;
   }
 }

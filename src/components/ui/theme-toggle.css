@@ -1,0 +1,106 @@
+.vivid-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+  color: var(--nav-fg);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vivid-theme-toggle__track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 3.6rem;
+  height: 1.85rem;
+  padding: 0 0.48rem;
+  border: 1px solid rgb(var(--fg-rgb) / 0.28);
+  border-radius: 999px;
+  background: rgb(var(--fg-rgb) / 0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+.vivid-theme-toggle:hover .vivid-theme-toggle__track {
+  border-color: var(--vivid-red);
+}
+
+.vivid-theme-toggle:focus-visible .vivid-theme-toggle__track {
+  outline: 2px solid var(--vivid-red);
+  outline-offset: 3px;
+}
+
+.vivid-theme-toggle__icon {
+  position: relative;
+  z-index: 2;
+  width: 0.8rem;
+  height: 0.8rem;
+  stroke-width: 1.8;
+  transition:
+    color 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.vivid-theme-toggle__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0.2rem;
+  z-index: 1;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: var(--vivid-red);
+  transform: translate(0, -50%);
+  transition: transform 0.45s var(--ease-vivid);
+}
+
+/* light: thumb sits under the sun (left) */
+:root[data-theme="light"] .vivid-theme-toggle__icon--sun,
+:root:not([data-theme]) .vivid-theme-toggle__icon--sun {
+  color: #fff;
+}
+
+:root[data-theme="light"] .vivid-theme-toggle__icon--moon {
+  opacity: 0.7;
+}
+
+/* dark: thumb slides under the moon (right) */
+:root[data-theme="dark"] .vivid-theme-toggle__thumb {
+  transform: translate(1.7rem, -50%);
+}
+
+:root[data-theme="dark"] .vivid-theme-toggle__icon--moon {
+  color: #fff;
+}
+
+:root[data-theme="dark"] .vivid-theme-toggle__icon--sun {
+  opacity: 0.7;
+}
+
+@media (max-width: 700px) {
+  .vivid-theme-toggle__track {
+    width: 3.2rem;
+    height: 1.7rem;
+  }
+
+  .vivid-theme-toggle__thumb {
+    width: 1.18rem;
+    height: 1.18rem;
+  }
+
+  :root[data-theme="dark"] .vivid-theme-toggle__thumb {
+    transform: translate(1.5rem, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vivid-theme-toggle__thumb,
+  .vivid-theme-toggle__track,
+  .vivid-theme-toggle__icon {
+    transition: none;
+  }
+}

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
+import { gsap } from "../../lib/gsap";
 
 interface VividLoaderProps {
   onComplete?: () => void;
@@ -11,6 +11,13 @@ function VividLoader({ onComplete }: VividLoaderProps) {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
+
+  // always call the latest callback without restarting the timeline
+  const onCompleteRef = useRef(onComplete);
+
+  useLayoutEffect(() => {
+    onCompleteRef.current = onComplete;
+  });
 
   useLayoutEffect(() => {
     const loader = loaderRef.current;
@@ -28,7 +35,7 @@ function VividLoader({ onComplete }: VividLoaderProps) {
         defaults: {
           ease: "power4.out",
         },
-        onComplete,
+        onComplete: () => onCompleteRef.current?.(),
       });
 
       timeline
@@ -118,7 +125,7 @@ function VividLoader({ onComplete }: VividLoaderProps) {
     }, loaderRef);
 
     return () => context.revert();
-  }, [onComplete]);
+  }, []);
 
   return (
     <div ref={loaderRef} className="vivid-loader">

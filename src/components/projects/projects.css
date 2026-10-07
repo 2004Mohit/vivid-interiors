@@ -4,8 +4,8 @@
   min-height: 100vh;
   padding: clamp(8rem, 14vw, 14rem) 0;
   overflow: hidden;
-  background: var(--vivid-white);
-  color: var(--vivid-black);
+  background: var(--surface-flat);
+  color: var(--text);
 }
 
 .vivid-projects__background {
@@ -18,20 +18,20 @@
       90deg,
       transparent 0,
       transparent calc(25% - 0.5px),
-      rgba(20, 20, 20, 0.045) 25%,
+      rgb(var(--fg-rgb) / 0.045) 25%,
       transparent calc(25% + 0.5px),
       transparent calc(50% - 0.5px),
-      rgba(20, 20, 20, 0.045) 50%,
+      rgb(var(--fg-rgb) / 0.045) 50%,
       transparent calc(50% + 0.5px),
       transparent calc(75% - 0.5px),
-      rgba(20, 20, 20, 0.045) 75%,
+      rgb(var(--fg-rgb) / 0.045) 75%,
       transparent calc(75% + 0.5px)
     ),
     linear-gradient(
       180deg,
       transparent 0,
       transparent calc(50% - 0.5px),
-      rgba(20, 20, 20, 0.035) 50%,
+      rgb(var(--fg-rgb) / 0.035) 50%,
       transparent calc(50% + 0.5px)
     );
 }
@@ -140,7 +140,7 @@
 }
 
 .vivid-projects__project-index span:last-child {
-  color: rgba(20, 20, 20, 0.4);
+  color: rgb(var(--fg-rgb) / 0.4);
 }
 
 .vivid-projects__project-copy {
@@ -192,7 +192,7 @@
 
   margin: 1.5rem 0 0;
 
-  color: rgba(20, 20, 20, 0.62);
+  color: rgb(var(--fg-rgb) / 0.62);
 
   font-size: 0.82rem;
   line-height: 1.7;
@@ -246,7 +246,7 @@
 .vivid-projects__card.is-active {
   box-shadow:
     0 40px 100px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
+    0 0 0 1px rgb(var(--fg-rgb) / 0.08);
 }
 
 .vivid-projects__card img {
@@ -299,7 +299,7 @@
   align-items: flex-end;
   gap: 0.35rem;
 
-  color: var(--vivid-white);
+  color: var(--media-fg);
 
   font-size: 0.55rem;
   font-weight: 500;
@@ -332,7 +332,7 @@
 
   transform: translateX(-50%);
 
-  color: var(--vivid-black);
+  color: var(--text);
 
   font-size: 0.55rem;
   letter-spacing: 0.18em;
@@ -348,7 +348,7 @@
 }
 
 .vivid-projects__image-number span:last-child {
-  color: rgba(20, 20, 20, 0.4);
+  color: rgb(var(--fg-rgb) / 0.4);
 }
 
 /* --------------------------------------------------
@@ -375,10 +375,10 @@
   display: grid;
   place-items: center;
 
-  border: 1px solid rgba(20, 20, 20, 0.2);
+  border: 1px solid rgb(var(--fg-rgb) / 0.2);
 
   background: transparent;
-  color: var(--vivid-black);
+  color: var(--text);
 
   cursor: pointer;
 
@@ -390,10 +390,10 @@
 }
 
 .vivid-projects__controls button:hover {
-  border-color: var(--vivid-black);
+  border-color: var(--btn-solid-bg);
 
-  background: var(--vivid-black);
-  color: var(--vivid-white);
+  background: var(--btn-solid-bg);
+  color: var(--btn-solid-fg);
 
   transform: translateY(-3px);
 }
@@ -423,8 +423,8 @@
 
   margin-top: clamp(5rem, 8vw, 8rem);
 
-  border-top: 1px solid rgba(20, 20, 20, 0.15);
-  border-left: 1px solid rgba(20, 20, 20, 0.15);
+  border-top: 1px solid rgb(var(--fg-rgb) / 0.15);
+  border-left: 1px solid rgb(var(--fg-rgb) / 0.15);
 }
 
 .vivid-projects__project-list button {
@@ -439,11 +439,11 @@
   padding: 1rem 1.15rem;
 
   border: 0;
-  border-right: 1px solid rgba(20, 20, 20, 0.15);
-  border-bottom: 1px solid rgba(20, 20, 20, 0.15);
+  border-right: 1px solid rgb(var(--fg-rgb) / 0.15);
+  border-bottom: 1px solid rgb(var(--fg-rgb) / 0.15);
 
   background: transparent;
-  color: var(--vivid-black);
+  color: var(--text);
 
   text-align: left;
 
@@ -474,12 +474,12 @@
 }
 
 .vivid-projects__project-list button:hover {
-  background: rgba(20, 20, 20, 0.035);
+  background: rgb(var(--fg-rgb) / 0.035);
 }
 
 .vivid-projects__project-list button.is-active {
-  background: var(--vivid-black);
-  color: var(--vivid-white);
+  background: var(--btn-solid-bg);
+  color: var(--btn-solid-fg);
 }
 
 .vivid-projects__project-list button.is-active::before {
@@ -518,7 +518,7 @@
 .vivid-projects__project-list
   button.is-active
   .vivid-projects__project-list-number {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 /* --------------------------------------------------
@@ -801,7 +801,7 @@
 .vivid-projects__filter-state button {
   padding: 0;
 
-  color: rgba(20, 20, 20, 0.55);
+  color: rgb(var(--fg-rgb) / 0.55);
 
   font-size: inherit;
   letter-spacing: inherit;
@@ -815,7 +815,7 @@
 }
 
 .vivid-projects__filter-state button:hover {
-  color: var(--vivid-black);
+  color: var(--text);
 }
 
 .vivid-projects__filter-state button:focus-visible {

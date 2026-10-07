@@ -1,26 +1,48 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { gsap, ScrollTrigger } from "../lib/gsap";
+import { setLenis } from "../lib/lenis";
 
+/**
+ * Smooth scrolling driven by GSAP's ticker so Lenis and ScrollTrigger always
+ * agree on the scroll position (no jitter, one rAF loop for everything).
+ */
 function useLenis() {
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     const lenis = new Lenis({
       autoRaf: false,
-      lerp: 0.08,
+      lerp: 0.085,
       smoothWheel: true,
     });
 
-    let frameId = 0;
+    setLenis(lenis);
+    lenis.on("scroll", ScrollTrigger.update);
 
-    const raf = (time: number) => {
-      lenis.raf(time);
-      frameId = requestAnimationFrame(raf);
-    };
+    const tick = (time: number) => lenis.raf(time * 1000);
 
-    frameId = requestAnimationFrame(raf);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+
+    // stop page scrolling while the full-screen menu is open
+    const observer = new MutationObserver(() => {
+      if (document.body.classList.contains("menu-open")) lenis.stop();
+      else lenis.start();
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     return () => {
-      cancelAnimationFrame(frameId);
+      observer.disconnect();
+      gsap.ticker.remove(tick);
       lenis.destroy();
+      setLenis(null);
     };
   }, []);
 }

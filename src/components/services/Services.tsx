@@ -1,5 +1,7 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useEffect, useRef, useState } from "react";
+import useReveal from "../../hooks/useReveal";
+import { scrollToTarget } from "../../lib/lenis";
+import Accent from "../ui/Accent";
 import { services, type Service } from "../../data/services";
 import { projects } from "../../data/projects";
 import "./services.css";
@@ -18,64 +20,8 @@ function Services() {
   const service = services[activeService];
   const currentImage = expertiseImages[activeService] ?? "";
 
-  /*
-   * Reveal the heading when the section enters the viewport.
-   *
-   * This intentionally does NOT use ScrollTrigger scrub.
-   * That keeps this section lighter during scrolling.
-   */
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-
-    if (!section) {
-      return;
-    }
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (prefersReducedMotion) {
-      return;
-    }
-
-    const headingElements = section.querySelectorAll(
-      ".vivid-services__hero-copy > *",
-    );
-
-    gsap.set(headingElements, {
-      y: 28,
-      opacity: 0,
-    });
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) {
-          return;
-        }
-
-        gsap.to(headingElements, {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.07,
-          ease: "power3.out",
-        });
-
-        observer.disconnect();
-      },
-      {
-        threshold: 0.18,
-      },
-    );
-
-    observer.observe(section);
-
-    return () => {
-      observer.disconnect();
-      gsap.killTweensOf(headingElements);
-    };
-  }, []);
+  // enter / exit animation for every [data-reveal] element in this section
+  useReveal(sectionRef);
 
   /*
    * Keep the active expertise item visible inside
@@ -175,10 +121,7 @@ function Services() {
   };
 
   const scrollToProjects = () => {
-    document.querySelector("#projects")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    scrollToTarget("#projects");
   };
 
   const renderDetail = (
@@ -232,18 +175,22 @@ function Services() {
       ========================================================= */}
 
       <div className="vivid-services__header vivid-services__hero-copy">
-        <div className="vivid-services__eyebrow">
+        <div className="vivid-services__eyebrow" data-reveal="right">
           <span>03</span>
           <p>Expertise</p>
         </div>
 
-        <h2>
+        <h2 data-reveal="up" data-reveal-delay="0.1">
           The work
           <br />
-          <span>behind the space.</span>
+          <Accent>behind the space.</Accent>
         </h2>
 
-        <p className="vivid-services__intro">
+        <p
+          className="vivid-services__intro"
+          data-reveal="up"
+          data-reveal-delay="0.2"
+        >
           VIVID&apos;s documented expertise brings planning, project execution,
           building systems and customised work together around the needs of each
           interior project.
@@ -259,7 +206,7 @@ function Services() {
             LARGE IMAGE
         --------------------------------------------------------- */}
 
-        <div className="vivid-services__visual-wrap">
+        <div className="vivid-services__visual-wrap" data-reveal="mask" data-reveal-duration="1.3">
           <div className="vivid-services__visual">
             <div key={transitionKey} className="vivid-services__image-layer">
               {currentImage ? (
@@ -294,7 +241,7 @@ function Services() {
             ACTIVE EXPERTISE CONTENT
         --------------------------------------------------------- */}
 
-        <div className="vivid-services__detail">
+        <div className="vivid-services__detail" data-reveal="right" data-reveal-delay="0.15">
           <div className="vivid-services__detail-topline">
             <span>VIVID / EXPERTISE</span>
 
@@ -346,7 +293,7 @@ function Services() {
           HORIZONTAL EXPERTISE TRAIL
       ========================================================= */}
 
-      <div className="vivid-services__trail-shell">
+      <div className="vivid-services__trail-shell" data-reveal="up">
         <div className="vivid-services__trail-header">
           <span>EXPLORE ALL EXPERTISE</span>
 
@@ -358,6 +305,7 @@ function Services() {
         <div
           ref={trailRef}
           className="vivid-services__trail"
+          data-lenis-prevent-wheel
           aria-label="Expertise navigation"
         >
           <div className="vivid-services__trail-track">

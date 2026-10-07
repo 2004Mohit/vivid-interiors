@@ -24,7 +24,7 @@
     ),
     linear-gradient(135deg, #11150e 0%, #050605 48%, #020202 100%);
 
-  color: var(--vivid-white);
+  color: var(--text);
 }
 
 /* =========================================================
@@ -45,18 +45,18 @@
       90deg,
       transparent 0,
       transparent calc(25% - 0.5px),
-      rgba(255, 255, 255, 0.045) 25%,
+      rgb(var(--fg-rgb) / 0.045) 25%,
       transparent calc(25% + 0.5px),
       transparent calc(50% - 0.5px),
-      rgba(255, 255, 255, 0.045) 50%,
+      rgb(var(--fg-rgb) / 0.045) 50%,
       transparent calc(50% + 0.5px),
       transparent calc(75% - 0.5px),
-      rgba(255, 255, 255, 0.045) 75%,
+      rgb(var(--fg-rgb) / 0.045) 75%,
       transparent calc(75% + 0.5px)
     ),
     radial-gradient(
       circle at 50% 50%,
-      rgba(255, 255, 255, 0.025),
+      rgb(var(--fg-rgb) / 0.025),
       transparent 55%
     );
 }
@@ -96,7 +96,7 @@
 .vivid-services__eyebrow p {
   margin: 0;
 
-  color: rgba(255, 255, 255, 0.72);
+  color: rgb(var(--fg-rgb) / 0.72);
 
   font-size: 0.65rem;
 
@@ -128,7 +128,7 @@
 
   margin: 3rem 0 0 auto;
 
-  color: rgba(255, 255, 255, 0.62);
+  color: rgb(var(--fg-rgb) / 0.62);
 
   font-size: clamp(0.95rem, 1.2vw, 1.15rem);
 
@@ -180,13 +180,13 @@
 
   background: #0c0e0b;
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgb(var(--fg-rgb) / 0.1);
 
   border-radius: clamp(1rem, 1.8vw, 1.75rem);
 
   box-shadow:
     0 30px 90px rgba(0, 0, 0, 0.38),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+    inset 0 0 0 1px rgb(var(--fg-rgb) / 0.025);
 }
 
 /*
@@ -263,7 +263,7 @@
     ),
     radial-gradient(
       circle at 74% 62%,
-      rgba(255, 255, 255, 0.09),
+      rgb(var(--fg-rgb) / 0.09),
       transparent 24%
     );
 
@@ -318,7 +318,7 @@
 
   gap: 0.4rem;
 
-  color: rgba(255, 255, 255, 0.76);
+  color: rgb(var(--media-fg-rgb) / 0.76);
 
   font-size: 0.52rem;
 
@@ -362,7 +362,7 @@
 }
 
 .vivid-services__visual-index span:last-child {
-  color: rgba(255, 255, 255, 0.48);
+  color: rgb(var(--media-fg-rgb) / 0.48);
 }
 
 /* =========================================================
@@ -394,9 +394,9 @@
 
   padding-bottom: 1.1rem;
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid rgb(var(--fg-rgb) / 0.14);
 
-  color: rgba(255, 255, 255, 0.45);
+  color: rgb(var(--fg-rgb) / 0.45);
 
   font-size: 0.52rem;
 
@@ -456,7 +456,7 @@
 }
 
 .vivid-services__counter span:last-child {
-  color: rgba(255, 255, 255, 0.32);
+  color: rgb(var(--fg-rgb) / 0.32);
 }
 
 /* =========================================================
@@ -488,7 +488,7 @@
 
   margin: 1.8rem 0 0;
 
-  color: rgba(255, 255, 255, 0.62);
+  color: rgb(var(--fg-rgb) / 0.62);
 
   font-size: 0.94rem;
 
@@ -512,7 +512,7 @@
 
   padding: 0;
 
-  color: rgba(255, 255, 255, 0.88);
+  color: rgb(var(--fg-rgb) / 0.88);
 
   font-size: 0.61rem;
 
@@ -552,7 +552,7 @@
 
   padding-top: 1.25rem;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 1px solid rgb(var(--fg-rgb) / 0.14);
 }
 
 .vivid-services__arrow {
@@ -564,11 +564,11 @@
 
   place-items: center;
 
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgb(var(--fg-rgb) / 0.18);
 
   border-radius: 999px;
 
-  color: rgba(255, 255, 255, 0.85);
+  color: rgb(var(--fg-rgb) / 0.85);
 
   font-size: 1rem;
 
@@ -586,7 +586,7 @@
 
   background: rgba(196, 224, 91, 0.1);
 
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 
   transform: translateY(-2px);
 }
@@ -602,7 +602,7 @@
 
   gap: 0.45rem;
 
-  color: rgba(255, 255, 255, 0.35);
+  color: rgb(var(--fg-rgb) / 0.35);
 
   font-size: 0.56rem;
 
@@ -610,7 +610,7 @@
 }
 
 .vivid-services__progress-label span:first-child {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 /* =========================================================
@@ -642,7 +642,7 @@
 
   margin-bottom: 1rem;
 
-  color: rgba(255, 255, 255, 0.38);
+  color: rgb(var(--fg-rgb) / 0.38);
 
   font-size: 0.52rem;
 
@@ -706,11 +706,11 @@
 
   padding: 1.15rem 1rem 1.25rem;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 1px solid rgb(var(--fg-rgb) / 0.14);
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgb(var(--fg-rgb) / 0.08);
 
-  color: rgba(255, 255, 255, 0.34);
+  color: rgb(var(--fg-rgb) / 0.34);
 
   text-align: left;
 
@@ -724,7 +724,7 @@
 }
 
 .vivid-services__trail button + button {
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid rgb(var(--fg-rgb) / 0.08);
 }
 
 /* =========================================================
@@ -801,7 +801,7 @@
 .vivid-services__trail button.is-active {
   background: rgba(196, 224, 91, 0.035);
 
-  color: rgba(255, 255, 255, 0.92);
+  color: rgb(var(--fg-rgb) / 0.92);
 }
 
 /* =========================================================

@@ -1,3 +1,6 @@
+import { useRef } from "react";
+import useReveal from "../../hooks/useReveal";
+import Accent from "../ui/Accent";
 import "./clients.css";
 
 type Client = {
@@ -82,30 +85,36 @@ function ClientLogo({ client }: { client: Client }) {
 }
 
 function Clients() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // enter / exit animation for every [data-reveal] element in this section
+  useReveal(sectionRef);
+
   return (
     <section
+      ref={sectionRef}
       id="clients"
       className="vivid-clients"
       aria-labelledby="clients-heading"
     >
       <div className="vivid-clients__header">
-        <div className="vivid-clients__eyebrow">
+        <div className="vivid-clients__eyebrow" data-reveal="right">
           <span>CLIENTS</span>
         </div>
 
-        <h2 id="clients-heading">
+        <h2 id="clients-heading" data-reveal="up" data-reveal-delay="0.1">
           Groups we&apos;ve
           <br />
-          <span>worked with.</span>
+          <Accent>worked with.</Accent>
         </h2>
 
-        <p>
+        <p data-reveal="up" data-reveal-delay="0.2">
           A selection of organisations, developers, institutions and brands
           we&apos;ve had the opportunity to work with.
         </p>
       </div>
 
-      <div className="vivid-clients__marquee">
+      <div className="vivid-clients__marquee" data-reveal="fade" data-reveal-duration="1.2">
         <div className="vivid-clients__fade vivid-clients__fade--left" />
 
         <div className="vivid-clients__track">

@@ -1,10 +1,16 @@
 import { useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import useReveal from "../../hooks/useReveal";
+import Accent from "../ui/Accent";
 import { sectors } from "../../data/sectors";
 import "./sectors.css";
 
 function Sectors() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeSector, setActiveSector] = useState(0);
+
+  // enter / exit animation for every [data-reveal] element in this section
+  useReveal(sectionRef);
 
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
@@ -69,39 +75,29 @@ function Sectors() {
     }
   };
 
-  const getRelativePosition = (index: number) => {
-    let difference = index - activeSector;
-
-    if (difference > totalSectors / 2) {
-      difference -= totalSectors;
-    }
-
-    if (difference < -totalSectors / 2) {
-      difference += totalSectors;
-    }
-
-    return difference;
-  };
-
   if (!sector) return null;
 
   return (
-    <section id="sectors" className="vivid-sectors">
+    <section ref={sectionRef} id="sectors" className="vivid-sectors">
       <div className="vivid-sectors__background" />
 
       <div className="vivid-sectors__header">
-        <div className="vivid-sectors__eyebrow">
+        <div className="vivid-sectors__eyebrow" data-reveal="right">
           <span>04</span>
           <p>Sectors</p>
         </div>
 
-        <h2>
+        <h2 data-reveal="up" data-reveal-delay="0.1">
           Spaces for
           <br />
-          <span>every way of living.</span>
+          <Accent>every way of living.</Accent>
         </h2>
 
-        <p className="vivid-sectors__intro">
+        <p
+          className="vivid-sectors__intro"
+          data-reveal="up"
+          data-reveal-delay="0.2"
+        >
           VIVID&apos;s documented work spans residential, commercial, jewellery
           shops, studio apartments, sample flats, IT offices and hospitality.
         </p>
@@ -126,7 +122,11 @@ function Sectors() {
           }
         }}
       >
-        <div className="vivid-sectors__visual">
+        <div
+          className="vivid-sectors__visual"
+          data-reveal="mask"
+          data-reveal-duration="1.3"
+        >
           <div className="vivid-sectors__image-frame">
             <ul className="vivid-sectors__slider" aria-label="Sector images">
               {carouselSectors.map((item) => {
@@ -159,7 +159,11 @@ function Sectors() {
           </div>
         </div>
 
-        <div className="vivid-sectors__content">
+        <div
+          className="vivid-sectors__content"
+          data-reveal="right"
+          data-reveal-delay="0.15"
+        >
           <div className="vivid-sectors__navigation">
             <button
               type="button"

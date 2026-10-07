@@ -1,10 +1,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap, prefersReducedMotion } from "../../lib/gsap";
+import useReveal from "../../hooks/useReveal";
+import Accent from "../ui/Accent";
 import "./contact.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const CONTACT_EMAILS = [
   "thestudiovelvet21@gmail.com",
@@ -16,89 +15,22 @@ const ADDRESS =
 
 function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
-  const eyebrowRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const detailsRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
   const [submitted, setSubmitted] = useState(false);
 
+  // enter / exit animation for every [data-reveal] element in this section
+  useReveal(sectionRef);
+
+  // slow ambient drift of the background grid
   useLayoutEffect(() => {
-    const section = sectionRef.current;
-    const eyebrow = eyebrowRef.current;
-    const title = titleRef.current;
-    const form = formRef.current;
-    const details = detailsRef.current;
-    const map = mapRef.current;
     const grid = gridRef.current;
 
-    if (!section || !eyebrow || !title || !form || !details || !map || !grid) {
+    if (!grid || prefersReducedMotion()) {
       return;
     }
 
     const context = gsap.context(() => {
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      if (prefersReducedMotion) {
-        return;
-      }
-
-      const animation = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 72%",
-          once: true,
-        },
-      });
-
-      animation
-        .fromTo(
-          eyebrow,
-          {
-            opacity: 0,
-            y: 25,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power3.out",
-          },
-        )
-        .fromTo(
-          title,
-          {
-            opacity: 0,
-            y: 60,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.1,
-            ease: "power4.out",
-          },
-          "-=0.4",
-        )
-        .fromTo(
-          [form, details, map],
-          {
-            opacity: 0,
-            y: 35,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            stagger: 0.14,
-            ease: "power3.out",
-          },
-          "-=0.65",
-        );
-
       gsap.to(grid, {
         x: 30,
         y: 18,
@@ -107,7 +39,7 @@ function Contact() {
         repeat: -1,
         yoyo: true,
       });
-    }, section);
+    }, grid);
 
     return () => context.revert();
   }, []);
@@ -157,26 +89,26 @@ function Contact() {
       <div ref={gridRef} className="vivid-contact__grid" />
 
       <div className="vivid-contact__inner">
-        <div ref={eyebrowRef} className="vivid-contact__eyebrow">
-          <span>04</span>
-          <p>Let's Talk</p>
+        <div className="vivid-contact__eyebrow" data-reveal="right">
+          <span>06</span>
+          <p>Let&apos;s Talk</p>
         </div>
 
-        <h2 ref={titleRef}>
+        <h2 data-reveal="up" data-reveal-delay="0.1">
           Have a space
           <br />
-          <span>in mind?</span>
+          <Accent>in mind?</Accent>
           <br />
-          Let's shape it
+          Let&apos;s shape it
           <br />
-          <b>together.</b>
+          <Accent>together.</Accent>
         </h2>
 
         <div className="vivid-contact__content">
           <form
-            ref={formRef}
             className="vivid-contact__form"
             onSubmit={handleSubmit}
+            data-reveal="left"
           >
             <div className="vivid-contact__form-heading">
               <span>01</span>
@@ -274,7 +206,7 @@ function Contact() {
           </form>
 
           <div className="vivid-contact__aside">
-            <div ref={detailsRef} className="vivid-contact__details">
+            <div className="vivid-contact__details" data-reveal="right">
               <div className="vivid-contact__detail-block">
                 <span className="vivid-contact__detail-number">02</span>
                 <p>Contact</p>
@@ -298,7 +230,7 @@ function Contact() {
               </div>
             </div>
 
-            <div ref={mapRef} className="vivid-contact__map">
+            <div className="vivid-contact__map" data-reveal="scale" data-reveal-delay="0.1">
               <a
                 href="https://www.google.com/maps/search/?api=1&query=SS+Estonia,+Gulawani+Maharaj+Road,+Erandwane,+Pune,+Maharashtra+411004"
                 target="_blank"

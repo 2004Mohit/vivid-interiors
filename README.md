@@ -1,75 +1,31 @@
-# React + TypeScript + Vite
+# Vivid Interiors
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19 · Vite 8 · TypeScript 6 · Tailwind CSS 4 · GSAP 3 (+ ScrollTrigger) · Lenis · three.js
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev      # development
+npm run build    # type-check + production build
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Theming (Light / Dark)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+* **Toggle** – the sun/moon switch in the navigation bar (`src/components/ui/ThemeToggle.tsx`).
+* **Persistence** – saved in `localStorage` (`vivid-theme`); first visit follows the OS setting.
+  `index.html` applies the theme before first paint, so there is no flash.
+* **Tokens** – `src/styles/variables.css`. `<html data-theme="light|dark">` flips every token.
+  * **Light** = the original Hero palette (soft white + pista wash), used on every section.
+  * **Dark** = the dark glass slide palette, used on every section **including the Hero**.
+* **Brand words** – `<Accent>` (`src/components/ui/Accent.tsx`): in dark mode the first letter of
+  each word is red and the remaining letters are pista.
+* Never hard-code `#fff` / `rgba(255,255,255,…)` in component CSS. Use `--text`, `--fg-rgb`,
+  `--surface`, `--line`… (or `--media-fg-rgb` for text that always sits on photos).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Motion
 
-```
+* `src/hooks/useReveal.ts` – put `data-reveal="up|down|left|right|fade|scale|mask|stagger"`
+  (optional `data-reveal-delay`, `data-reveal-duration`) on any element inside a section that calls
+  `useReveal(sectionRef)`. It animates **in** on arrival and **out** when it leaves the viewport.
+* `src/hooks/useLenis.ts` – Lenis is driven by GSAP's ticker so smooth-scroll and ScrollTrigger share one loop.
+* All animation respects `prefers-reduced-motion`.
