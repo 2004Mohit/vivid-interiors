@@ -26,14 +26,22 @@
   /* colour of text/graphics that always sit on photos or 3D scenes */
   --media-fg-rgb: 255 255 255;
   --media-fg: rgb(var(--media-fg-rgb));
-
 }
 
 /* ---------- LIGHT (hero theme) ---------- */
 :root,
 :root[data-theme="light"] {
   color-scheme: light;
-  --fg-rgb: 20 20 20; /* ink used for text, hairlines, tints */
+
+  --fg-rgb: 20 20 20;
+
+  /*
+    Border lines use a separate RGB token so changing them to
+    black does not affect text, shadows, or other foreground
+    elements that use --fg-rgb.
+  */
+  --border-rgb: 0 0 0;
+
   --text: #0b0b0b;
   --text-soft: rgb(var(--fg-rgb) / 0.72);
   --text-muted: rgb(var(--fg-rgb) / 0.55);
@@ -42,38 +50,62 @@
   --bg: #f1f1f1;
   --bg-elevated: #fafaf7;
   --bg-sunken: #e9e9e4;
-  --page-bg: linear-gradient(180deg, #f6f6f6 0%, #f1f1f1 100%);
+
+  /*
+    The original Hero gradient is now the complete light-theme
+    website background.
+  */
+  --page-bg: linear-gradient(
+    180deg,
+    #f6f6f6 0%,
+    #f1f1f1 42%,
+    color-mix(in srgb, var(--vivid-pista) 22%, #f1f1f1) 58%,
+    color-mix(in srgb, var(--vivid-pista) 60%, #f1f1f1) 80%,
+    var(--vivid-pista) 100%
+  );
 
   /* section surface = the hero wash */
   --surface: linear-gradient(
     180deg,
     #f6f6f6 0%,
-    #f1f1f1 55%,
-    color-mix(in srgb, var(--vivid-pista) 22%, #f1f1f1) 100%
+    #f1f1f1 42%,
+    color-mix(in srgb, var(--vivid-pista) 22%, #f1f1f1) 58%,
+    color-mix(in srgb, var(--vivid-pista) 60%, #f1f1f1) 80%,
+    var(--vivid-pista) 100%
   );
+
   --surface-flat: #f4f4f1;
+
   --surface-glow-a: rgba(198, 219, 98, 0.28);
   --surface-glow-b: rgba(198, 219, 98, 0.14);
-  --surface-edge: rgb(var(--fg-rgb) / 0.1);
+
+  --surface-edge: rgb(var(--border-rgb) / 0.1);
+
   --surface-shadow: 0 24px 70px rgba(20, 20, 20, 0.12);
   --surface-sheen: rgb(255 255 255 / 0.7);
 
-  --line: rgb(var(--fg-rgb) / 0.15);
-  --line-soft: rgb(var(--fg-rgb) / 0.09);
+  /* light-theme structural lines are black */
+  --line: rgb(var(--border-rgb) / 0.15);
+  --line-soft: rgb(var(--border-rgb) / 0.09);
+
   --tint: rgb(var(--fg-rgb) / 0.045);
 
   /* pista on a light page is too pale for small copy: use a deeper olive */
-  --pista-text: #7f9418;
-  --pista-display: var(--vivid-pista); /* large display type keeps brand pista */
+  --pista-text: #53620b;
+  --pista-display: #53620b;
 
   --nav-panel-bg: #f6f6f3;
   --nav-panel-fg: #0b0b0b;
+
   --scrim-edge: #f1f1f1;
   --scrim-edge-0: rgb(241 241 241 / 0);
+
   --card-solid: #ffffff;
+
   --btn-solid-bg: var(--vivid-black);
   --btn-solid-fg: var(--vivid-white);
-  /* the original hero gradient */
+
+  /* original hero gradient */
   --hero-wash: linear-gradient(
     180deg,
     #f6f6f6 0%,
@@ -87,7 +119,15 @@
 /* ---------- DARK (slide theme) ---------- */
 :root[data-theme="dark"] {
   color-scheme: dark;
+
   --fg-rgb: 255 255 255;
+
+  /*
+    Dark theme intentionally keeps its existing gray/white
+    border behaviour unchanged.
+  */
+  --border-rgb: 255 255 255;
+
   --text: #f7f7f2;
   --text-soft: rgb(var(--fg-rgb) / 0.72);
   --text-muted: rgb(var(--fg-rgb) / 0.55);
@@ -96,31 +136,42 @@
   --bg: #050505;
   --bg-elevated: #0c0e0b;
   --bg-sunken: #020302;
+
   --page-bg: linear-gradient(145deg, #020302 0%, #080a06 45%, #010101 100%);
 
   --surface:
-    radial-gradient(circle at 12% 8%, rgba(198, 219, 98, 0.16), transparent 28%),
-    radial-gradient(circle at 88% 92%, rgba(198, 219, 98, 0.07), transparent 30%),
+    radial-gradient(
+      circle at 12% 8%,
+      rgba(198, 219, 98, 0.16),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 88% 92%,
+      rgba(198, 219, 98, 0.07),
+      transparent 30%
+    ),
     linear-gradient(
       135deg,
       rgba(20, 24, 12, 0.88),
       rgba(5, 5, 5, 0.82) 55%,
       rgba(2, 2, 2, 0.92)
     );
+
   --surface-flat: #080a06;
   --surface-glow-a: rgba(198, 219, 98, 0.16);
   --surface-glow-b: rgba(198, 219, 98, 0.07);
   --surface-edge: rgb(var(--fg-rgb) / 0.14);
+
   --surface-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.09),
-    inset 0 -1px 0 rgb(255 255 255 / 0.025),
-    0 0 0 1px rgb(198 219 98 / 0.025),
-    0 24px 80px rgb(0 0 0 / 0.48),
-    0 0 100px rgb(198 219 98 / 0.035);
+    inset 0 -1px 0 rgb(255 255 255 / 0.025), 0 0 0 1px rgb(198 219 98 / 0.025),
+    0 24px 80px rgb(0 0 0 / 0.48), 0 0 100px rgb(198 219 98 / 0.035);
+
   --surface-sheen: rgb(255 255 255 / 0.075);
 
   --line: rgb(var(--fg-rgb) / 0.14);
   --line-soft: rgb(var(--fg-rgb) / 0.08);
+
   --tint: rgb(var(--fg-rgb) / 0.045);
 
   --pista-text: var(--vivid-pista);
@@ -128,14 +179,26 @@
 
   --nav-panel-bg: #0b0b0b;
   --nav-panel-fg: #f7f7f2;
+
   --scrim-edge: #080a06;
   --scrim-edge-0: rgb(8 10 6 / 0);
+
   --card-solid: #f2f4ec;
+
   --btn-solid-bg: var(--vivid-white);
   --btn-solid-fg: var(--vivid-black);
+
   --hero-wash:
-    radial-gradient(circle at 18% 22%, rgba(198, 219, 98, 0.16), transparent 34%),
-    radial-gradient(circle at 86% 88%, rgba(198, 219, 98, 0.1), transparent 36%),
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(198, 219, 98, 0.16),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 86% 88%,
+      rgba(198, 219, 98, 0.1),
+      transparent 36%
+    ),
     linear-gradient(145deg, #0d110a 0%, #060705 50%, #020202 100%);
 }
 

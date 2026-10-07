@@ -37,7 +37,7 @@
 
 .vivid-loader p {
   margin: 1.25rem 0 0;
-  color: var(--vivid-pista);
+  color: var(--pista-text);
   font-size: 0.7rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -45,10 +45,10 @@
 
 .vivid-loader__progress {
   width: min(240px, 45vw);
-  height: 1px;
+  height: 3px;
   margin: 3rem auto 0;
   overflow: hidden;
-  background: rgb(var(--fg-rgb) / 0.2);
+  background: rgb(var(--fg-rgb) / 0.6);
 }
 
 .vivid-loader__progress > div {

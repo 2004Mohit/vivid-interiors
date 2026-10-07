@@ -99,7 +99,8 @@ function Clients() {
     >
       <div className="vivid-clients__header">
         <div className="vivid-clients__eyebrow" data-reveal="right">
-          <span>CLIENTS</span>
+          <span>06</span>
+          <p>CLIENTS</p>
         </div>
 
         <h2 id="clients-heading" data-reveal="up" data-reveal-delay="0.1">
@@ -114,7 +115,11 @@ function Clients() {
         </p>
       </div>
 
-      <div className="vivid-clients__marquee" data-reveal="fade" data-reveal-duration="1.2">
+      <div
+        className="vivid-clients__marquee"
+        data-reveal="fade"
+        data-reveal-duration="1.2"
+      >
         <div className="vivid-clients__fade vivid-clients__fade--left" />
 
         <div className="vivid-clients__track">

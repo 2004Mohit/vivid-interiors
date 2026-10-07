@@ -16,12 +16,12 @@ const menuItems = [
   { number: "03", label: "Expertise", href: "#services" },
   { number: "04", label: "Sectors", href: "#sectors" },
   { number: "05", label: "Projects", href: "#projects" },
-  { number: "06", label: "Contact", href: "#contact" },
+  { number: "06", label: "Clients", href: "#clients" },
+  { number: "07", label: "Contact", href: "#contact" },
 ];
 
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
-  // the bar follows the site theme; no pixel-sniffing needed any more
   const [scrolled, setScrolled] = useState(() => window.scrollY > 40);
 
   const navigationRef = useRef<HTMLElement>(null);
@@ -33,6 +33,12 @@ function Navigation() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const menuTimelineRef = useRef<gsap.core.Timeline | null>(null);
+
+  /*
+   * Stores the section that should be visited after
+   * the navigation panel has completely closed.
+   */
+  const pendingNavigationRef = useRef<string | null>(null);
 
   useLayoutEffect(() => {
     const navigation = navigationRef.current;
@@ -54,22 +60,40 @@ function Navigation() {
     }
 
     const context = gsap.context(() => {
-      gsap.set(menuPanel, { yPercent: -100 });
-      gsap.set(menuItemsElement.children, { yPercent: 110, opacity: 0 });
-      gsap.set(menuMeta, { opacity: 0, y: 20 });
-      gsap.set(menuImage, { clipPath: "inset(100% 0% 0% 0%)" });
-      gsap.set(menuImageElement, { scale: 1.15 });
+      gsap.set(menuPanel, {
+        yPercent: -100,
+      });
+
+      gsap.set(menuItemsElement.children, {
+        yPercent: 110,
+        opacity: 0,
+      });
+
+      gsap.set(menuMeta, {
+        opacity: 0,
+        y: 20,
+      });
+
+      gsap.set(menuImage, {
+        clipPath: "inset(100% 0% 0% 0%)",
+      });
+
+      gsap.set(menuImageElement, {
+        scale: 1.15,
+      });
 
       menuTimelineRef.current = gsap.timeline({
         paused: true,
-        defaults: { ease: "power4.out" },
-        onReverseComplete: () => {
-          document.body.classList.remove("menu-open");
+        defaults: {
+          ease: "power4.out",
         },
       });
 
       menuTimelineRef.current
-        .to(menuPanel, { yPercent: 0, duration: 0.9 })
+        .to(menuPanel, {
+          yPercent: 0,
+          duration: 0.9,
+        })
         .to(
           menuImage,
           {
@@ -81,15 +105,32 @@ function Navigation() {
         )
         .to(
           menuImageElement,
-          { scale: 1, duration: 1.3, ease: "power3.out" },
+          {
+            scale: 1,
+            duration: 1.3,
+            ease: "power3.out",
+          },
           "<",
         )
         .to(
           menuItemsElement.children,
-          { yPercent: 0, opacity: 1, duration: 0.9, stagger: 0.07 },
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 0.9,
+            stagger: 0.07,
+          },
           "-=0.75",
         )
-        .to(menuMeta, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
+        .to(
+          menuMeta,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+          },
+          "-=0.45",
+        );
     }, navigationRef);
 
     return () => {
@@ -98,17 +139,50 @@ function Navigation() {
     };
   }, []);
 
-  /* ---------- compact bar once the page has scrolled ---------- */
+  /* ---------- compact navigation bar ---------- */
+
   useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 40);
+    const update = () => {
+      setScrolled(window.scrollY > 40);
+    };
 
-    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("scroll", update, {
+      passive: true,
+    });
 
-    return () => window.removeEventListener("scroll", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+    };
   }, []);
 
+  /* ---------- perform actual navigation ---------- */
+
+  const navigateToTarget = useCallback((href: string) => {
+    const element = document.querySelector<HTMLElement>(href);
+
+    if (!element) {
+      console.warn(`Navigation target not found: ${href}`);
+      return;
+    }
+
+    /*
+     * Give the browser one frame after removing menu-open.
+     * This is important because body overflow is restored here.
+     */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scrollToTarget(element);
+      });
+    });
+  }, []);
+
+  /* ---------- open menu ---------- */
+
   const openMenu = () => {
+    pendingNavigationRef.current = null;
+
     document.body.classList.add("menu-open");
+
     setIsOpen(true);
 
     requestAnimationFrame(() => {
@@ -116,11 +190,73 @@ function Navigation() {
     });
   };
 
+  /* ---------- close menu ---------- */
+
   const closeMenu = useCallback(() => {
+    pendingNavigationRef.current = null;
+
     menuButtonRef.current?.focus();
+
     menuTimelineRef.current?.reverse();
+
     setIsOpen(false);
+
+    /*
+     * Always restore body scrolling after the close animation.
+     */
+    gsap.delayedCall(0.95, () => {
+      if (!pendingNavigationRef.current) {
+        document.body.classList.remove("menu-open");
+      }
+    });
   }, []);
+
+  /* ---------- menu item navigation ---------- */
+
+  const handleMenuItemClick = useCallback(
+    (href: string) => {
+      const element = document.querySelector<HTMLElement>(href);
+
+      if (!element) {
+        console.warn(`Navigation target not found: ${href}`);
+        return;
+      }
+
+      /*
+       * Store the requested destination BEFORE closing the menu.
+       */
+      pendingNavigationRef.current = href;
+
+      /*
+       * Reverse the menu.
+       */
+      menuTimelineRef.current?.reverse();
+
+      setIsOpen(false);
+
+      /*
+       * The menu animation is 0.9s.
+       * Wait until it has visually disappeared, then restore
+       * page scrolling and start Lenis.
+       */
+      gsap.delayedCall(0.95, () => {
+        const target = pendingNavigationRef.current;
+
+        if (!target) {
+          return;
+        }
+
+        pendingNavigationRef.current = null;
+
+        document.body.classList.remove("menu-open");
+
+        navigateToTarget(target);
+      });
+    },
+    [navigateToTarget],
+  );
+
+  /* ---------- keyboard escape ---------- */
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -136,12 +272,6 @@ function Navigation() {
     };
   }, [isOpen, closeMenu]);
 
-  const handleMenuItemClick = (href: string) => {
-    closeMenu();
-
-    window.setTimeout(() => scrollToTarget(href), 700);
-  };
-
   return (
     <header
       ref={navigationRef}
@@ -152,6 +282,10 @@ function Navigation() {
           href="#home"
           className="vivid-navigation__brand"
           aria-label="Vivid Interiors home"
+          onClick={(event) => {
+            event.preventDefault();
+            handleMenuItemClick("#home");
+          }}
         >
           <img
             src="/vivid-logo.png"

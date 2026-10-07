@@ -68,7 +68,7 @@
 }
 
 :root[data-theme="dark"] .vivid-hero h1 .vivid-accent__rest {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 .vivid-hero__subtitle {

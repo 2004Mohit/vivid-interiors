@@ -15,7 +15,7 @@
   width: 3.6rem;
   height: 1.85rem;
   padding: 0 0.48rem;
-  border: 1px solid rgb(var(--fg-rgb) / 0.28);
+  border: 1px solid rgb(var(--border-rgb) / 0.18);
   border-radius: 999px;
   background: rgb(var(--fg-rgb) / 0.06);
   backdrop-filter: blur(8px);
@@ -26,11 +26,11 @@
 }
 
 .vivid-theme-toggle:hover .vivid-theme-toggle__track {
-  border-color: var(--vivid-red);
+  border-color: var(--vivid-charcoal);
 }
 
 .vivid-theme-toggle:focus-visible .vivid-theme-toggle__track {
-  outline: 2px solid var(--vivid-red);
+  outline: 2px solid var(--vivid-charcoal);
   outline-offset: 3px;
 }
 

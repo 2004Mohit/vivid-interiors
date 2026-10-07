@@ -56,7 +56,7 @@ p {
 }
 
 :root[data-theme="dark"] .vivid-accent__rest {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 /* keep a word together when the heading wraps */

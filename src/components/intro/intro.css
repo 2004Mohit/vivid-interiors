@@ -45,7 +45,7 @@
 }
 
 .vivid-intro h2 span {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 .vivid-intro h2 b {
@@ -83,7 +83,7 @@
 }
 
 .vivid-word--pista {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 .vivid-intro__visual {
@@ -200,7 +200,7 @@
 }
 
 .vivid-intro__image-label span {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
   font-size: 0.52rem;
 }
 
@@ -219,7 +219,7 @@
 }
 
 .vivid-intro__statement span {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 .vivid-intro__statement b {
@@ -237,8 +237,8 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
   width: min(calc(100% - (var(--page-padding) * 2)), var(--container-width));
   margin: clamp(5rem, 9vw, 9rem) auto 0;
-  border-top: 1px solid rgb(var(--fg-rgb) / 0.18);
-  border-bottom: 1px solid rgb(var(--fg-rgb) / 0.12);
+  border-top: 1px solid rgb(var(--border-rgb) / 0.5);
+  border-bottom: 1px solid rgb(var(--border-rgb) / 0.5);
 }
 
 .vivid-intro__stat {
@@ -251,12 +251,12 @@
 }
 
 .vivid-intro__stat:not(:last-child) {
-  border-right: 1px solid rgb(var(--fg-rgb) / 0.12);
+  border-right: 1px solid rgb(var(--border-rgb) / 0.5);
 }
 
 .vivid-intro__stat-value {
   display: block;
-  color: var(--vivid-pista);
+  color: var(--pista-text);
   font-size: clamp(2.3rem, 4vw, 4.5rem);
   font-weight: 300;
   line-height: 0.95;
@@ -277,10 +277,10 @@
 .vivid-intro__stat::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: 3px;
   left: 1.5rem;
   width: 24px;
-  height: 1px;
+  height: 3px;
   background: var(--vivid-red);
 }
 
@@ -294,7 +294,7 @@
   }
 
   .vivid-intro__stat:nth-child(n + 4) {
-    border-top: 1px solid rgb(var(--fg-rgb) / 0.12);
+    border-top: 1px solid rgb(var(--border-rgb) / 0.5);
   }
 
   .vivid-intro__grid {
@@ -324,7 +324,7 @@
   }
 
   .vivid-intro__stat:nth-child(3) {
-    border-right: 1px solid rgb(var(--fg-rgb) / 0.12);
+    border-right: 1px solid rgb(var(--border-rgb) / 0.5);
   }
 
   .vivid-intro__stat:nth-child(even) {
@@ -332,7 +332,7 @@
   }
 
   .vivid-intro__stat:nth-child(n + 3) {
-    border-top: 1px solid rgb(var(--fg-rgb) / 0.12);
+    border-top: 1px solid rgb(var(--border-rgb) / 0.5);
   }
 
   .vivid-intro__stat-value {

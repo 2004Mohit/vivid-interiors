@@ -121,7 +121,26 @@ function Services() {
   };
 
   const scrollToProjects = () => {
+    const target = document.getElementById("projects");
+
+    if (!target) {
+      return;
+    }
+
     scrollToTarget("#projects");
+
+    window.setTimeout(() => {
+      const targetTop = target.getBoundingClientRect().top + window.scrollY;
+
+      const currentScroll = window.scrollY;
+
+      if (Math.abs(targetTop - currentScroll) > 10) {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, 100);
   };
 
   const renderDetail = (
@@ -206,7 +225,11 @@ function Services() {
             LARGE IMAGE
         --------------------------------------------------------- */}
 
-        <div className="vivid-services__visual-wrap" data-reveal="mask" data-reveal-duration="1.3">
+        <div
+          className="vivid-services__visual-wrap"
+          data-reveal="mask"
+          data-reveal-duration="1.3"
+        >
           <div className="vivid-services__visual">
             <div key={transitionKey} className="vivid-services__image-layer">
               {currentImage ? (
@@ -241,7 +264,11 @@ function Services() {
             ACTIVE EXPERTISE CONTENT
         --------------------------------------------------------- */}
 
-        <div className="vivid-services__detail" data-reveal="right" data-reveal-delay="0.15">
+        <div
+          className="vivid-services__detail"
+          data-reveal="right"
+          data-reveal-delay="0.15"
+        >
           <div className="vivid-services__detail-topline">
             <span>VIVID / EXPERTISE</span>
 

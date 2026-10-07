@@ -17,7 +17,7 @@
 
   padding: clamp(5rem, 9vw, 9rem) 0;
 
-  border: 1px solid rgb(var(--fg-rgb) / 0.14);
+  border: 1px solid rgb(var(--border-rgb) / 0.14);
 
   border-radius: 30px;
 
@@ -68,19 +68,27 @@
 .vivid-clients__eyebrow {
   align-self: start;
 
-  padding-top: 0.65rem;
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  margin-bottom: 2.5rem;
 }
 
 .vivid-clients__eyebrow span {
-  font-size: 0.62rem;
+  color: var(--vivid-red);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+}
 
-  font-weight: 700;
-
-  letter-spacing: 0.18em;
-
+.vivid-clients__eyebrow p {
+  margin: 0;
+  color: rgb(var(--fg-rgb) / 0.8);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-
-  color: var(--pista-text);
 }
 
 .vivid-clients__header h2 {
@@ -104,7 +112,7 @@
 }
 
 .vivid-clients__header h2 span {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 .vivid-clients__header p {
@@ -166,7 +174,7 @@
 
   padding: 0.7rem;
 
-  border: 1px solid rgb(var(--fg-rgb) / 0.14);
+  border: 1px solid rgb(var(--border-rgb) / 0.14);
 
   border-radius: 1.1rem;
 

@@ -77,7 +77,7 @@
 }
 
 .vivid-projects h2 span {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 }
 
 /* --------------------------------------------------
@@ -310,7 +310,7 @@
 }
 
 .vivid-projects__card-label span:last-child {
-  color: var(--vivid-pista);
+  color: var(--pista-text);
 
   font-size: 0.48rem;
 }
@@ -375,7 +375,7 @@
   display: grid;
   place-items: center;
 
-  border: 1px solid rgb(var(--fg-rgb) / 0.2);
+  border: 1px solid rgb(var(--border-rgb) / 0.7);
 
   background: transparent;
   color: var(--text);
@@ -423,8 +423,8 @@
 
   margin-top: clamp(5rem, 8vw, 8rem);
 
-  border-top: 1px solid rgb(var(--fg-rgb) / 0.15);
-  border-left: 1px solid rgb(var(--fg-rgb) / 0.15);
+  border-top: 1px solid rgb(var(--border-rgb) / 0.7);
+  border-left: 1px solid rgb(var(--border-rgb) / 0.7);
 }
 
 .vivid-projects__project-list button {
@@ -439,8 +439,8 @@
   padding: 1rem 1.15rem;
 
   border: 0;
-  border-right: 1px solid rgb(var(--fg-rgb) / 0.15);
-  border-bottom: 1px solid rgb(var(--fg-rgb) / 0.15);
+  border-right: 1px solid rgb(var(--border-rgb) / 0.7);
+  border-bottom: 1px solid rgb(var(--border-rgb) / 0.7);
 
   background: transparent;
   color: var(--text);
@@ -518,7 +518,7 @@
 .vivid-projects__project-list
   button.is-active
   .vivid-projects__project-list-number {
-  color: var(--pista-text);
+  color: var(--vivid-red);
 }
 
 /* --------------------------------------------------

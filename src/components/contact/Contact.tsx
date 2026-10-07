@@ -90,7 +90,7 @@ function Contact() {
 
       <div className="vivid-contact__inner">
         <div className="vivid-contact__eyebrow" data-reveal="right">
-          <span>06</span>
+          <span>07</span>
           <p>Let&apos;s Talk</p>
         </div>
 
