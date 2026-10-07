@@ -23,6 +23,7 @@ const menuItems = [
 function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(() => window.scrollY > 40);
+  const [activeHref, setActiveHref] = useState<string | null>(null);
 
   const navigationRef = useRef<HTMLElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
@@ -36,7 +37,7 @@ function Navigation() {
 
   /*
    * Stores the section that should be visited after
-   * the navigation panel has completely closed.
+   * the mobile navigation panel has completely closed.
    */
   const pendingNavigationRef = useRef<string | null>(null);
 
@@ -155,7 +156,24 @@ function Navigation() {
     };
   }, []);
 
-  /* ---------- perform actual navigation ---------- */
+  /* ---------- direct desktop navigation ---------- */
+
+  const navigateDirectly = useCallback((href: string) => {
+    const element = document.querySelector<HTMLElement>(href);
+
+    if (!element) {
+      console.warn(`Navigation target not found: ${href}`);
+      return;
+    }
+
+    setActiveHref(href);
+
+    requestAnimationFrame(() => {
+      scrollToTarget(element);
+    });
+  }, []);
+
+  /* ---------- actual mobile navigation ---------- */
 
   const navigateToTarget = useCallback((href: string) => {
     const element = document.querySelector<HTMLElement>(href);
@@ -165,10 +183,6 @@ function Navigation() {
       return;
     }
 
-    /*
-     * Give the browser one frame after removing menu-open.
-     * This is important because body overflow is restored here.
-     */
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         scrollToTarget(element);
@@ -176,7 +190,7 @@ function Navigation() {
     });
   }, []);
 
-  /* ---------- open menu ---------- */
+  /* ---------- open mobile menu ---------- */
 
   const openMenu = () => {
     pendingNavigationRef.current = null;
@@ -190,7 +204,7 @@ function Navigation() {
     });
   };
 
-  /* ---------- close menu ---------- */
+  /* ---------- close mobile menu ---------- */
 
   const closeMenu = useCallback(() => {
     pendingNavigationRef.current = null;
@@ -201,9 +215,6 @@ function Navigation() {
 
     setIsOpen(false);
 
-    /*
-     * Always restore body scrolling after the close animation.
-     */
     gsap.delayedCall(0.95, () => {
       if (!pendingNavigationRef.current) {
         document.body.classList.remove("menu-open");
@@ -211,7 +222,7 @@ function Navigation() {
     });
   }, []);
 
-  /* ---------- menu item navigation ---------- */
+  /* ---------- mobile menu item navigation ---------- */
 
   const handleMenuItemClick = useCallback(
     (href: string) => {
@@ -222,23 +233,24 @@ function Navigation() {
         return;
       }
 
-      /*
-       * Store the requested destination BEFORE closing the menu.
-       */
+      setActiveHref(href);
+
       pendingNavigationRef.current = href;
 
       /*
-       * Reverse the menu.
+       * Move focus outside the navigation panel BEFORE
+       * aria-hidden becomes true.
+       *
+       * This prevents the browser warning:
+       * "Blocked aria-hidden on an element because its
+       * descendant retained focus."
        */
+      menuButtonRef.current?.focus();
+
       menuTimelineRef.current?.reverse();
 
       setIsOpen(false);
 
-      /*
-       * The menu animation is 0.9s.
-       * Wait until it has visually disappeared, then restore
-       * page scrolling and start Lenis.
-       */
       gsap.delayedCall(0.95, () => {
         const target = pendingNavigationRef.current;
 
@@ -278,13 +290,14 @@ function Navigation() {
       className={`vivid-navigation${scrolled ? " is-scrolled" : ""}`}
     >
       <div className="vivid-navigation__bar">
+        {/* Brand */}
         <a
           href="#home"
           className="vivid-navigation__brand"
           aria-label="Vivid Interiors home"
           onClick={(event) => {
             event.preventDefault();
-            handleMenuItemClick("#home");
+            navigateDirectly("#home");
           }}
         >
           <img
@@ -296,9 +309,41 @@ function Navigation() {
           <span className="vivid-navigation__brand-text">Vivid Interiors</span>
         </a>
 
+        {/* Desktop Navigation */}
+        <nav
+          className="vivid-navigation__desktop-links"
+          aria-label="Primary navigation"
+        >
+          {menuItems.map((item) => (
+            <a
+              key={item.number}
+              href={item.href}
+              className={activeHref === item.href ? "is-active" : undefined}
+              onClick={(event) => {
+                event.preventDefault();
+                navigateDirectly(item.href);
+              }}
+            >
+              <span className="vivid-navigation__desktop-label">
+                {item.label}
+              </span>
+
+              <span
+                className="vivid-navigation__active-line"
+                aria-hidden="true"
+              >
+                <span className="vivid-navigation__active-line-red" />
+                <span className="vivid-navigation__active-line-pista" />
+              </span>
+            </a>
+          ))}
+        </nav>
+
+        {/* Actions */}
         <div className="vivid-navigation__actions">
           <ThemeToggle />
 
+          {/* Mobile Menu Button */}
           <button
             ref={menuButtonRef}
             type="button"
@@ -319,6 +364,11 @@ function Navigation() {
         </div>
       </div>
 
+      {/* =====================================================
+          MOBILE MENU PANEL
+          Kept for mobile navigation
+      ===================================================== */}
+
       <div
         ref={menuPanelRef}
         id="vivid-navigation-menu"
@@ -331,6 +381,7 @@ function Navigation() {
               <a
                 key={item.number}
                 href={item.href}
+                className={activeHref === item.href ? "is-active" : undefined}
                 data-image="/images/01_Emirus_801/01_07_emirus_801_baner_pune_p010.jpeg"
                 onClick={(event) => {
                   event.preventDefault();
@@ -342,6 +393,14 @@ function Navigation() {
                 <span className="vivid-navigation__label">{item.label}</span>
 
                 <span className="vivid-navigation__arrow">↗</span>
+
+                <span
+                  className="vivid-navigation__mobile-active-line"
+                  aria-hidden="true"
+                >
+                  <span className="vivid-navigation__active-line-red" />
+                  <span className="vivid-navigation__active-line-pista" />
+                </span>
               </a>
             ))}
           </div>

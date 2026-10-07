@@ -33,7 +33,7 @@
 :root[data-theme="light"] {
   color-scheme: light;
 
-  --fg-rgb: 20 20 20;
+  --fg-rgb: 10 10 10;
 
   /*
     Border lines use a separate RGB token so changing them to
