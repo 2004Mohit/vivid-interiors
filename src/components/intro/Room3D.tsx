@@ -337,7 +337,6 @@ function Room3D() {
     let moved = 0;
     let startX = 0;
     let startOffset = 0;
-    let yawOffset = 0;
     let yawTarget = 0;
     let px = 0;
     let py = 0;
