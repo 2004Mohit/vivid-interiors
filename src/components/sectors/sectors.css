@@ -90,7 +90,7 @@
 .vivid-sectors__eyebrow span {
   color: var(--vivid-red);
 
-  font-size: 0.65rem;
+  font-size: 0.95rem;
 
   letter-spacing: 0.2em;
 }
@@ -98,7 +98,7 @@
 .vivid-sectors__eyebrow p {
   margin: 0;
 
-  font-size: 0.65rem;
+  font-size: 0.95rem;
 
   letter-spacing: 0.25em;
 
@@ -119,7 +119,17 @@
   letter-spacing: -0.065em;
 }
 
-.vivid-sectors h2 span {
+/* =========================================================
+   ACCENT TYPOGRAPHY
+   First letter = RED
+   Remaining letters = PISTA
+========================================================= */
+
+.vivid-sectors h2 .vivid-accent__first {
+  color: var(--vivid-red);
+}
+
+.vivid-sectors h2 .vivid-accent__rest {
   color: var(--pista-text);
 }
 
@@ -128,13 +138,13 @@
 
   margin: 3rem 0 0 auto;
 
-  color: rgb(var(--fg-rgb) / 0.66);
+  color: var(--text-soft);
 
-  font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  font-size: clamp(1rem, 1.05vw, 1.15rem);
 
   font-weight: 300;
 
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 /* =========================================================
@@ -152,7 +162,7 @@
 
   grid-template-columns:
     minmax(0, 1.35fr)
-    minmax(320px, 0.65fr);
+    minmax(0, 0.65fr);
 
   align-items: center;
 
@@ -379,6 +389,14 @@
   justify-content: center;
 
   min-width: 0;
+
+  /*
+   * Typography inside this column must respond to the
+   * actual available width, not the browser viewport.
+   */
+  container-type: inline-size;
+
+  max-width: 100%;
 }
 
 .vivid-sectors__counter {
@@ -406,11 +424,19 @@
 }
 
 .vivid-sectors h3 {
+  width: 100%;
+  max-width: 100%;
+
   margin: 0;
 
   color: var(--pista-text);
 
-  font-size: clamp(3rem, 5vw, 6rem);
+  /*
+   * Scale against the actual right-hand content column.
+   * This prevents "Studio Apartment" and similar titles
+   * from escaping the glass section during browser zoom-out.
+   */
+  font-size: clamp(3rem, 17cqi, 6rem);
 
   font-weight: 300;
 
@@ -418,21 +444,26 @@
 
   letter-spacing: -0.06em;
 
+  overflow-wrap: normal;
+
+  word-break: normal;
+
   animation: vivid-sector-copy-in 0.75s ease-in-out 0.3s both;
 }
 
 .vivid-sectors__content > p {
+  width: 100%;
   max-width: 440px;
 
   margin: 2rem 0 2.8rem;
 
-  color: rgb(var(--fg-rgb) / 0.65);
-
-  font-size: 0.95rem;
+  font-size: clamp(1rem, 1.05vw, 1.12rem);
 
   font-weight: 300;
 
   line-height: 1.75;
+
+  overflow-wrap: break-word;
 
   animation: vivid-sector-copy-in 0.75s ease-in-out 0.35s both;
 }

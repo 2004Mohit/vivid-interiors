@@ -74,3 +74,27 @@ p .vivid-accent__rest {
 p .vivid-accent__first {
   color: var(--vivid-red);
 }
+
+/* =========================================================
+   READABLE BODY COPY
+   Keep secondary/explanatory text readable across the
+   website, including browser zoom levels.
+========================================================= */
+
+.vivid-hero__subtitle,
+.vivid-intro__copy p,
+.vivid-services__intro,
+.vivid-services__detail-copy > p:not(.vivid-services__counter),
+.vivid-sectors__intro,
+.vivid-sectors__content > p,
+.vivid-projects__project-copy p,
+.vivid-clients__header > p,
+.vivid-contact__detail-block address {
+  color: var(--text-soft);
+
+  font-size: clamp(1rem, 1.05vw, 1.15rem);
+
+  font-weight: 300;
+
+  line-height: 1.75;
+}

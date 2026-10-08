@@ -79,14 +79,14 @@
 
 .vivid-clients__eyebrow span {
   color: var(--vivid-red);
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   letter-spacing: 0.2em;
 }
 
 .vivid-clients__eyebrow p {
   margin: 0;
   color: rgb(var(--fg-rgb) / 0.8);
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
 }
@@ -111,7 +111,17 @@
   z-index: 3;
 }
 
-.vivid-clients__header h2 span {
+/* =========================================================
+   ACCENT TYPOGRAPHY
+   First letter = RED
+   Remaining letters = PISTA
+========================================================= */
+
+.vivid-clients h2 .vivid-accent__first {
+  color: var(--vivid-red);
+}
+
+.vivid-clients h2 .vivid-accent__rest {
   color: var(--pista-text);
 }
 
@@ -120,11 +130,13 @@
 
   margin: 0;
 
-  color: rgb(var(--fg-rgb) / 0.62);
+  color: var(--text-soft);
 
-  font-size: 0.82rem;
+  font-size: clamp(1rem, 1.02vw, 1.12rem);
 
-  line-height: 1.7;
+  font-weight: 300;
+
+  line-height: 1.75;
 }
 
 /* =========================================================

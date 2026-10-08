@@ -54,14 +54,14 @@
 
 .vivid-projects__eyebrow span {
   color: var(--vivid-red);
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   letter-spacing: 0.2em;
 }
 
 .vivid-projects__eyebrow p {
   margin: 0;
 
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
 }
@@ -76,7 +76,17 @@
   letter-spacing: -0.065em;
 }
 
-.vivid-projects h2 span {
+/* =========================================================
+   ACCENT TYPOGRAPHY
+   First letter = RED
+   Remaining letters = PISTA
+========================================================= */
+
+.vivid-projects h2 .vivid-accent__first {
+  color: var(--vivid-red);
+}
+
+.vivid-projects h2 .vivid-accent__rest {
   color: var(--pista-text);
 }
 
@@ -192,10 +202,9 @@
 
   margin: 1.5rem 0 0;
 
-  color: rgb(var(--fg-rgb) / 0.72);
-
-  font-size: 0.82rem;
-  line-height: 1.7;
+  font-size: clamp(1rem, 1.02vw, 1.12rem);
+  font-weight: 300;
+  line-height: 1.75;
   letter-spacing: 0.01em;
 }
 
@@ -310,7 +319,7 @@
 }
 
 .vivid-projects__card-label span:last-child {
-  color: var(--pista-text);
+  color: var(--card-solid);
 
   font-size: 0.48rem;
 }

@@ -99,7 +99,7 @@ function Hero() {
 
       <div ref={contentRef} className="vivid-hero__content">
         <p ref={eyebrowRef} className="vivid-hero__eyebrow">
-          Vivid Interiors <span>&</span> The Studio Velvet
+          Vivid Interiors
         </p>
 
         <h1 ref={titleRef}>
@@ -109,9 +109,11 @@ function Hero() {
         </h1>
 
         <p ref={subtitleRef} className="vivid-hero__subtitle">
-          Interior architecture shaped around
+          Spaces designed around you, your lifestyle and
           <br />
-          personality, material and light.
+          the way you want to feel in them —
+          <br />
+          thoughtfully planned, beautifully crafted and truly yours.
         </p>
       </div>
 

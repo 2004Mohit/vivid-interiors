@@ -18,7 +18,7 @@
 .vivid-cursor-follower {
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(198, 219, 98, 0.7);
+  border: 4px solid rgba(198, 219, 98, 0.7);
 }
 
 .vivid-cursor span {

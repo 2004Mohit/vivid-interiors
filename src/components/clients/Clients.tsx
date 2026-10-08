@@ -32,9 +32,13 @@ const clients: Client[] = [
   },
   {
     name: "Bhansali Developers",
+    image: "/images/clients/bhansali-developers.png",
+    alt: "Bhansali Developers",
   },
   {
     name: "Amanora – City Corporation",
+    image: "/images/clients/amanora.png",
+    alt: "Amanora – City Corporation",
   },
   {
     name: "Nagarkar Jewellers",
@@ -43,6 +47,8 @@ const clients: Client[] = [
   },
   {
     name: "Jehangir Hospital",
+    image: "/images/clients/jehangir-hospital.png",
+    alt: "Jehangir Hospital",
   },
   {
     name: "HCJMRI",
@@ -99,7 +105,7 @@ function Clients() {
     >
       <div className="vivid-clients__header">
         <div className="vivid-clients__eyebrow" data-reveal="right">
-          <span>06</span>
+          <span>05</span>
           <p>CLIENTS</p>
         </div>
 

@@ -139,7 +139,7 @@ function VividLoader({ onComplete }: VividLoaderProps) {
 
         <h1 ref={titleRef}>Vivid Interiors</h1>
 
-        <p ref={subtitleRef}>The Studio Velvet</p>
+        <p ref={subtitleRef}>Interior Architecture Studio</p>
 
         <div className="vivid-loader__progress">
           <div ref={progressRef} />

@@ -20,19 +20,25 @@ function Intro() {
           </p>
 
           <h2 data-reveal="up" data-reveal-delay="0.1">
-            Vivid Interiors
+            <Accent>Vivid Interiors</Accent>
             <br />
-            <Accent>&amp; The Studio Velvet</Accent>
           </h2>
 
-          <div className="vivid-intro__accent" data-reveal="right" data-reveal-delay="0.3" />
+          <div
+            className="vivid-intro__accent"
+            data-reveal="right"
+            data-reveal-delay="0.3"
+          />
         </div>
 
-        <div className="vivid-intro__copy" data-reveal="stagger" data-reveal-delay="0.15">
+        <div
+          className="vivid-intro__copy"
+          data-reveal="stagger"
+          data-reveal-delay="0.15"
+        >
           <p>
-            Since two decades,{" "}
-            <Accent>Vivid Interiors</Accent>{" "}
-            &amp; The Studio Velvet has believed in creating original spaces.
+            Since two decades, <Accent>Vivid Interiors</Accent> has believed in
+            creating original spaces.
           </p>
 
           <p>
@@ -49,7 +55,11 @@ function Intro() {
       </div>
 
       <div className="vivid-intro__visual">
-        <div className="vivid-intro__image-frame" data-reveal="mask" data-reveal-duration="1.4">
+        <div
+          className="vivid-intro__image-frame"
+          data-reveal="mask"
+          data-reveal-duration="1.4"
+        >
           <div className="vivid-intro__scene">
             <Room3D />
           </div>

@@ -453,7 +453,7 @@ body.menu-open .vivid-navigation::before {
 .vivid-navigation__meta strong {
   color: rgb(var(--fg-rgb) / 0.8);
 
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   font-weight: 400;
 
   letter-spacing: 0.08em;

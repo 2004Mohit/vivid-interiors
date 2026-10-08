@@ -246,7 +246,7 @@ function Projects() {
 
       <div className="vivid-projects__header">
         <div className="vivid-projects__eyebrow" data-reveal="right">
-          <span>05</span>
+          <span>04</span>
           <p>Projects</p>
         </div>
 

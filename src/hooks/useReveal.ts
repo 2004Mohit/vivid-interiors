@@ -15,7 +15,15 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from "../lib/gsap";
  * played backwards) when it leaves, in both scroll directions.
  */
 
-type Variant = "up" | "down" | "left" | "right" | "fade" | "scale" | "mask" | "stagger";
+type Variant =
+  | "up"
+  | "down"
+  | "left"
+  | "right"
+  | "fade"
+  | "scale"
+  | "mask"
+  | "stagger";
 
 const FROM: Record<Variant, gsap.TweenVars> = {
   up: { opacity: 0, y: 56 },

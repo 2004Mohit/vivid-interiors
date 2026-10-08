@@ -1,43 +1,41 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/vivid-logo.png" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <meta
-      name="description"
-      content="Vivid Interiors & The Studio Velvet — interior architecture shaped around personality, material and light. Pune, India."
-    />
-    <meta name="theme-color" content="#050505" />
-    <title>Vivid Interiors &amp; The Studio Velvet</title>
 
-    <!-- Apply the saved / system theme BEFORE first paint (no flash) -->
-    <script>
-      (function () {
-        var theme = "dark";
-        try {
-          var saved = localStorage.getItem("vivid-theme");
-          if (saved === "light" || saved === "dark") {
-            theme = saved;
-          } else if (
-            window.matchMedia &&
-            window.matchMedia("(prefers-color-scheme: light)").matches
-          ) {
-            theme = "light";
-          }
-        } catch (e) {}
-        document.documentElement.setAttribute("data-theme", theme);
-      })();
-    </script>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/vivid-logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description"
+    content="Vivid Interiors — interior architecture shaped around personality, material and light. Pune, India." />
+  <meta name="theme-color" content="#050505" />
+  <title>Vivid Interiors</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <!-- Apply the saved / system theme BEFORE first paint (no flash) -->
+  <script>
+    (function () {
+      var theme = "dark";
+      try {
+        var saved = localStorage.getItem("vivid-theme");
+        if (saved === "light" || saved === "dark") {
+          theme = saved;
+        } else if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: light)").matches
+        ) {
+          theme = "light";
+        }
+      } catch (e) { }
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

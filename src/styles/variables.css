@@ -43,9 +43,9 @@
   --border-rgb: 0 0 0;
 
   --text: #0b0b0b;
-  --text-soft: rgb(var(--fg-rgb) / 0.72);
-  --text-muted: rgb(var(--fg-rgb) / 0.55);
-  --text-faint: rgb(var(--fg-rgb) / 0.4);
+  --text-soft: rgb(var(--fg-rgb) / 0.78);
+  --text-muted: rgb(var(--fg-rgb) / 0.64);
+  --text-faint: rgb(var(--fg-rgb) / 0.5);
 
   --bg: #f1f1f1;
   --bg-elevated: #fafaf7;
@@ -129,9 +129,9 @@
   --border-rgb: 255 255 255;
 
   --text: #f7f7f2;
-  --text-soft: rgb(var(--fg-rgb) / 0.72);
-  --text-muted: rgb(var(--fg-rgb) / 0.55);
-  --text-faint: rgb(var(--fg-rgb) / 0.36);
+  --text-soft: rgb(var(--fg-rgb) / 0.8);
+  --text-muted: rgb(var(--fg-rgb) / 0.64);
+  --text-faint: rgb(var(--fg-rgb) / 0.48);
 
   --bg: #050505;
   --bg-elevated: #0c0e0b;

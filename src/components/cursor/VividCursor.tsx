@@ -22,10 +22,22 @@ function VividCursor() {
     }
 
     // quickTo reuses a single tween per axis: no tween spam on every mousemove
-    const cursorX = gsap.quickTo(cursor, "x", { duration: 0.08, ease: "power2.out" });
-    const cursorY = gsap.quickTo(cursor, "y", { duration: 0.08, ease: "power2.out" });
-    const followerX = gsap.quickTo(follower, "x", { duration: 0.5, ease: "power3.out" });
-    const followerY = gsap.quickTo(follower, "y", { duration: 0.5, ease: "power3.out" });
+    const cursorX = gsap.quickTo(cursor, "x", {
+      duration: 0.08,
+      ease: "power2.out",
+    });
+    const cursorY = gsap.quickTo(cursor, "y", {
+      duration: 0.08,
+      ease: "power2.out",
+    });
+    const followerX = gsap.quickTo(follower, "x", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
+    const followerY = gsap.quickTo(follower, "y", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
 
     const moveCursor = (event: MouseEvent) => {
       cursorX(event.clientX);

@@ -83,7 +83,7 @@ function Sectors() {
 
       <div className="vivid-sectors__header">
         <div className="vivid-sectors__eyebrow" data-reveal="right">
-          <span>04</span>
+          <span>03</span>
           <p>Sectors</p>
         </div>
 
@@ -98,8 +98,9 @@ function Sectors() {
           data-reveal="up"
           data-reveal-delay="0.2"
         >
-          VIVID&apos;s documented work spans residential, commercial, jewellery
-          shops, studio apartments, sample flats, IT offices and hospitality.
+          From personal homes to distinctive workplaces and memorable
+          hospitality spaces, VIVID creates interiors shaped around purpose,
+          personality and the people who experience them.
         </p>
       </div>
 

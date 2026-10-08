@@ -5,10 +5,8 @@ import useReveal from "../../hooks/useReveal";
 import Accent from "../ui/Accent";
 import "./contact.css";
 
-const CONTACT_EMAILS = [
-  "thestudiovelvet21@gmail.com",
-  "vividinteriors16@gmail.com",
-];
+const CONTACT_EMAIL = "vividinteriors16@gmail.com";
+const WHATSAPP_NUMBER = "919021094622";
 
 const ADDRESS =
   "ESTONIA APARTMENT, 9/1, Gulawani Maharaj Road, Swaroop Society, Vakil Nagar, Erandwane, Pune, Maharashtra 411004";
@@ -19,10 +17,10 @@ function Contact() {
 
   const [submitted, setSubmitted] = useState(false);
 
-  // enter / exit animation for every [data-reveal] element in this section
+  // Enter / exit animation for every [data-reveal] element in this section
   useReveal(sectionRef);
 
-  // slow ambient drift of the background grid
+  // Slow ambient drift of the background grid
   useLayoutEffect(() => {
     const grid = gridRef.current;
 
@@ -76,10 +74,32 @@ function Contact() {
       "Submitted through the Vivid Interiors website.",
     ].join("\n");
 
-    const mailto = `mailto:${CONTACT_EMAILS.join(",")}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`;
+    /*
+     * WHATSAPP
+     *
+     * The complete enquiry is opened in WhatsApp with
+     * all details already filled in.
+     *
+     * The visitor must press Send inside WhatsApp.
+     */
+    const encodedMessage = encodeURIComponent(`${subject}\n\n${body}`);
 
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+
+    /*
+     * EMAIL
+     *
+     * Keep the existing working email flow.
+     */
+    const mailto =
+      `mailto:${CONTACT_EMAIL}` +
+      `?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`;
+
+    // Open WhatsApp with the complete enquiry pre-filled.
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+    // Open the existing email application.
     setSubmitted(true);
     window.location.href = mailto;
   };
@@ -90,7 +110,7 @@ function Contact() {
 
       <div className="vivid-contact__inner">
         <div className="vivid-contact__eyebrow" data-reveal="right">
-          <span>07</span>
+          <span>06</span>
           <p>Let&apos;s Talk</p>
         </div>
 
@@ -147,13 +167,21 @@ function Contact() {
                   <option value="" disabled>
                     Select project type
                   </option>
+
                   <option value="Residential">Residential</option>
+
                   <option value="Bungalow">Bungalow</option>
+
                   <option value="Studio Apartment">Studio Apartment</option>
+
                   <option value="Commercial">Commercial</option>
+
                   <option value="Jewellery Shop">Jewellery Shop</option>
+
                   <option value="IT Office">IT Office</option>
+
                   <option value="Hospitality">Hospitality</option>
+
                   <option value="Other">Other</option>
                 </select>
               </label>
@@ -174,17 +202,24 @@ function Contact() {
                   <option value="" disabled>
                     Select budget
                   </option>
+
                   <option value="Below ₹10 Lakhs">Below ₹10 Lakhs</option>
+
                   <option value="₹10–25 Lakhs">₹10–25 Lakhs</option>
+
                   <option value="₹25–50 Lakhs">₹25–50 Lakhs</option>
+
                   <option value="₹50 Lakhs–₹1 Crore">₹50 Lakhs–₹1 Crore</option>
+
                   <option value="Above ₹1 Crore">Above ₹1 Crore</option>
+
                   <option value="To be discussed">To be discussed</option>
                 </select>
               </label>
 
               <label className="vivid-contact__field--full">
                 <span>Message</span>
+
                 <textarea
                   name="message"
                   placeholder="Tell us about your project..."
@@ -196,12 +231,13 @@ function Contact() {
 
             <button type="submit" className="vivid-contact__submit">
               <span>{submitted ? "Enquiry prepared" : "Send enquiry"}</span>
+
               <i aria-hidden="true">↗</i>
             </button>
 
             <p className="vivid-contact__form-note">
-              Your enquiry will open in your email application addressed to both
-              Vivid Interiors and The Studio Velvet.
+              Your enquiry will open in your email application and WhatsApp with
+              all submitted details pre-filled. Please press Send in WhatsApp.
             </p>
           </form>
 
@@ -209,6 +245,7 @@ function Contact() {
             <div className="vivid-contact__details" data-reveal="right">
               <div className="vivid-contact__detail-block">
                 <span className="vivid-contact__detail-number">02</span>
+
                 <p>Contact</p>
 
                 <a href="tel:+919021094622">+91 90210 94622</a>
@@ -216,21 +253,22 @@ function Contact() {
                 <a href="mailto:vividinteriors16@gmail.com">
                   vividinteriors16@gmail.com
                 </a>
-
-                <a href="mailto:thestudiovelvet21@gmail.com">
-                  thestudiovelvet21@gmail.com
-                </a>
               </div>
 
               <div className="vivid-contact__detail-block">
                 <span className="vivid-contact__detail-number">03</span>
+
                 <p>Studio</p>
 
                 <address>{ADDRESS}</address>
               </div>
             </div>
 
-            <div className="vivid-contact__map" data-reveal="scale" data-reveal-delay="0.1">
+            <div
+              className="vivid-contact__map"
+              data-reveal="scale"
+              data-reveal-delay="0.1"
+            >
               <a
                 href="https://www.google.com/maps/search/?api=1&query=SS+Estonia,+Gulawani+Maharaj+Road,+Erandwane,+Pune,+Maharashtra+411004"
                 target="_blank"

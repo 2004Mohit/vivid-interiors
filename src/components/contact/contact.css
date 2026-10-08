@@ -60,14 +60,14 @@
 
 .vivid-contact__eyebrow span {
   color: var(--vivid-red);
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   letter-spacing: 0.2em;
 }
 
 .vivid-contact__eyebrow p {
   margin: 0;
   color: rgb(var(--fg-rgb) / 0.8);
-  font-size: 0.65rem;
+  font-size: 0.95rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
 }
@@ -81,8 +81,18 @@
   letter-spacing: -0.065em;
 }
 
-.vivid-contact h2 span {
-  color: var(--vivid-pista);
+/* =========================================================
+   ACCENT TYPOGRAPHY
+   First letter = RED
+   Remaining letters = PISTA
+========================================================= */
+
+.vivid-contact h2 .vivid-accent__first {
+  color: var(--vivid-red);
+}
+
+.vivid-contact h2 .vivid-accent__rest {
+  color: var(--pista-text);
 }
 
 .vivid-contact h2 b {
@@ -119,7 +129,7 @@
 
 .vivid-contact__form-heading h3 {
   margin: 0;
-  color: var(--vivid-pista);
+  color: var(--vivid-charcoal);
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -139,7 +149,7 @@
 }
 
 .vivid-contact__fields label > span {
-  color: rgb(var(--fg-rgb) / 0.48);
+  color: rgb(var(--fg-rgb) / 0.8);
   font-size: 0.56rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -285,10 +295,16 @@
 
 .vivid-contact__detail-block address {
   max-width: 360px;
-  color: rgb(var(--fg-rgb) / 0.58);
-  font-size: 0.78rem;
+
+  color: var(--text-soft);
+
+  font-size: clamp(0.95rem, 1vw, 1.08rem);
+
   font-style: normal;
-  line-height: 1.7;
+
+  font-weight: 300;
+
+  line-height: 1.75;
 }
 
 .vivid-contact__map {

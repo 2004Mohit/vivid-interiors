@@ -3,12 +3,8 @@ import useReveal from "../../hooks/useReveal";
 import { scrollToTarget } from "../../lib/lenis";
 import Accent from "../ui/Accent";
 import { services, type Service } from "../../data/services";
-import { projects } from "../../data/projects";
-import "./services.css";
 
-const expertiseImages = projects
-  .flatMap((project) => project.images)
-  .slice(0, services.length);
+import "./services.css";
 
 function Services() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -18,7 +14,7 @@ function Services() {
   const [transitionKey, setTransitionKey] = useState(0);
 
   const service = services[activeService];
-  const currentImage = expertiseImages[activeService] ?? "";
+  const currentImage = service?.image ?? "";
 
   // enter / exit animation for every [data-reveal] element in this section
   useReveal(sectionRef);
@@ -195,7 +191,7 @@ function Services() {
 
       <div className="vivid-services__header vivid-services__hero-copy">
         <div className="vivid-services__eyebrow" data-reveal="right">
-          <span>03</span>
+          <span>02</span>
           <p>Expertise</p>
         </div>
 
@@ -235,7 +231,7 @@ function Services() {
               {currentImage ? (
                 <img
                   src={currentImage}
-                  alt={service.imageAlt ?? `${service.title} — Vivid Interiors`}
+                  alt={service.imageAlt}
                   className="vivid-services__image"
                 />
               ) : null}
