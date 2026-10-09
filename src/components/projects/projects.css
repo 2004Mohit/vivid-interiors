@@ -610,8 +610,13 @@
   }
 
   .vivid-projects h2 {
-    font-size: clamp(3.2rem, 15vw, 5rem);
-    line-height: 0.9;
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(2.8rem, 11vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.055em;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   .vivid-projects__layout {

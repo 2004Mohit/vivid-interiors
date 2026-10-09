@@ -46,7 +46,7 @@ export const sectors: Sector[] = [
     number: "04",
     title: "Studio Apartments",
     description:
-      "We turn compact spaces into thoughtful homes where every square foot has a purpose. Smart planning, integrated storage, proportion and carefully selected materials create spaces that feel open, comfortable and complete.",
+      "We create thoughtful, space-efficient homes with smart layouts, integrated storage and carefully chosen materials.",
     image:
       "/images/05_Sky_I_Manas_Lake/05_12_sky_i_manas_lake_bhugaon_p067.jpeg",
     imageAlt: "VIVID Interiors studio apartment interior",

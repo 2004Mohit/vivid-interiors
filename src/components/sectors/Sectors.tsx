@@ -1,45 +1,68 @@
-import { useRef, useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Expand, X } from "lucide-react";
 import useReveal from "../../hooks/useReveal";
 import Accent from "../ui/Accent";
 import { sectors } from "../../data/sectors";
+import { createPortal } from "react-dom";
 import "./sectors.css";
 
 function Sectors() {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeSector, setActiveSector] = useState(0);
-
-  // enter / exit animation for every [data-reveal] element in this section
-  useReveal(sectionRef);
+  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<"next" | "previous">(
+    "next",
+  );
 
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
 
-  const sector = sectors[activeSector];
-
-  // Keep each image mounted with a stable key. Changing its list position
-  // animates its geometry, matching the original append/prepend carousel.
-  const carouselSectors = sectors.map(
-    (_, position) =>
-      sectors[(activeSector - 1 + position + sectors.length) % sectors.length],
-  );
+  useReveal(sectionRef);
 
   const totalSectors = sectors.length;
+  const sector = sectors[activeSector];
 
   const goToSector = (index: number) => {
     if (totalSectors === 0) return;
-    const nextIndex = (index + totalSectors) % totalSectors;
-
-    setActiveSector(nextIndex);
+    setActiveSector((index + totalSectors) % totalSectors);
   };
 
   const nextSector = () => {
+    setSlideDirection("next");
     goToSector(activeSector + 1);
   };
-
   const previousSector = () => {
+    setSlideDirection("previous");
     goToSector(activeSector - 1);
   };
+
+  useEffect(() => {
+    if (!isImageViewerOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsImageViewerOpen(false);
+      }
+
+      if (event.key === "ArrowRight") {
+        setActiveSector((current) => (current + 1) % totalSectors);
+      }
+
+      if (event.key === "ArrowLeft") {
+        setActiveSector(
+          (current) => (current - 1 + totalSectors) % totalSectors,
+        );
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [isImageViewerOpen, totalSectors]);
 
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     touchStartX.current = event.touches[0]?.clientX ?? null;
@@ -60,10 +83,6 @@ function Sectors() {
     touchStartX.current = null;
     touchStartY.current = null;
 
-    /*
-     * Only treat the gesture as a sector swipe when
-     * horizontal movement is clearly greater than vertical movement.
-     */
     if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY)) {
       return;
     }
@@ -117,6 +136,13 @@ function Sectors() {
         aria-label="Sector carousel"
         aria-roledescription="carousel"
         onKeyDown={(event) => {
+          if (
+            event.target instanceof HTMLElement &&
+            event.target.closest("button")
+          ) {
+            return;
+          }
+
           if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
             event.preventDefault();
             goToSector(activeSector + (event.key === "ArrowRight" ? 1 : -1));
@@ -130,13 +156,25 @@ function Sectors() {
         >
           <div className="vivid-sectors__image-frame">
             <ul className="vivid-sectors__slider" aria-label="Sector images">
-              {carouselSectors.map((item) => {
-                if (!item) return null;
+              {sectors.map((item, index) => {
+                let position = "hidden";
+
+                if (index === activeSector) {
+                  position = "active";
+                } else if (
+                  index ===
+                  (activeSector - 1 + totalSectors) % totalSectors
+                ) {
+                  position = "previous";
+                } else if (index === (activeSector + 1) % totalSectors) {
+                  position = "next";
+                }
+
                 return (
                   <li
                     key={item.id}
-                    className="vivid-sectors__slide"
-                    aria-hidden={item.id !== sector.id}
+                    className={`vivid-sectors__slide vivid-sectors__slide--${position}`}
+                    aria-hidden={position !== "active"}
                   >
                     <img
                       src={item.image}
@@ -152,43 +190,148 @@ function Sectors() {
 
             <div className="vivid-sectors__image-overlay" />
 
-            <div className="vivid-sectors__image-meta">
-              <span>VIVID INTERIORS</span>
+            {/* Sector information displayed over the active image */}
+            <div className="vivid-sectors__image-content" aria-live="polite">
+              <div className="vivid-sectors__image-counter">
+                <span>{sector.number}</span>
+                <span>/ {String(totalSectors).padStart(2, "0")}</span>
+              </div>
 
-              <span>{sector.title}</span>
+              <h3 key={`title-${sector.id}`}>{sector.title}</h3>
+
+              <p key={`description-${sector.id}`}>{sector.description}</p>
+
+              {/* Full-screen image viewer control */}
+              <button
+                type="button"
+                className="vivid-sectors__expand"
+                onClick={() => setIsImageViewerOpen(true)}
+                aria-label={`Open ${sector.title} image in full screen`}
+                title="View image in full screen"
+              >
+                <Expand aria-hidden="true" />
+                <span>View image</span>
+              </button>
             </div>
-          </div>
-        </div>
 
-        <div
-          className="vivid-sectors__content"
-          data-reveal="right"
-          data-reveal-delay="0.15"
-        >
-          <div className="vivid-sectors__navigation">
+            {/* Previous and next controls positioned on image edges */}
             <button
+              key={`arrow-prev-${activeSector}`}
               type="button"
+              className={`vivid-sectors__image-arrow vivid-sectors__image-arrow--previous vivid-sectors__image-arrow--slide-${slideDirection}`}
               onClick={previousSector}
               aria-label="Previous sector"
             >
               <ArrowLeft aria-hidden="true" />
             </button>
 
-            <button type="button" onClick={nextSector} aria-label="Next sector">
+            <button
+              key={`arrow-next-${activeSector}`}
+              type="button"
+              className={`vivid-sectors__image-arrow vivid-sectors__image-arrow--next vivid-sectors__image-arrow--slide-${slideDirection}`}
+              onClick={nextSector}
+              aria-label="Next sector"
+            >
               <ArrowRight aria-hidden="true" />
             </button>
+
+            {/* Existing VIVID branding */}
+            <div className="vivid-sectors__image-meta">
+              <span>
+                <Accent>VIVID INTERIORS</Accent>
+              </span>
+              <span>{sector.title}</span>
+            </div>
           </div>
-          <div className="vivid-sectors__counter">
-            <span>{sector.number}</span>
 
-            <span>/ {String(totalSectors).padStart(2, "0")}</span>
+          {/* Existing sector pagination */}
+          <div
+            className="vivid-sectors__pagination"
+            aria-label="Choose a sector"
+          >
+            {sectors.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                className={
+                  index === activeSector
+                    ? "vivid-sectors__dot vivid-sectors__dot--active"
+                    : "vivid-sectors__dot"
+                }
+                onClick={() => goToSector(index)}
+                aria-label={`Go to ${item.title}`}
+                aria-current={index === activeSector ? "true" : undefined}
+              />
+            ))}
           </div>
-
-          <h3 key={`title-${sector.id}`}>{sector.title}</h3>
-
-          <p key={`description-${sector.id}`}>{sector.description}</p>
         </div>
       </div>
+
+      {/* Full-screen image viewer */}
+      {isImageViewerOpen &&
+        createPortal(
+          <div
+            className="vivid-sectors__lightbox"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${sector.title} project image`}
+            onClick={() => setIsImageViewerOpen(false)}
+          >
+            <button
+              type="button"
+              className="vivid-sectors__lightbox-close"
+              onClick={() => setIsImageViewerOpen(false)}
+              aria-label="Close image viewer"
+              autoFocus
+            >
+              <X aria-hidden="true" />
+            </button>
+
+            <button
+              type="button"
+              className="vivid-sectors__lightbox-arrow vivid-sectors__lightbox-arrow--previous"
+              onClick={(event) => {
+                event.stopPropagation();
+                previousSector();
+              }}
+              aria-label="Previous sector image"
+            >
+              <ArrowLeft aria-hidden="true" />
+            </button>
+
+            <figure
+              className="vivid-sectors__lightbox-figure"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <img
+                key={sector.id}
+                src={sector.image}
+                alt={sector.imageAlt}
+                className="vivid-sectors__lightbox-image"
+              />
+
+              <figcaption>
+                <span>{sector.title}</span>
+                <span>
+                  {sector.number} / {String(totalSectors).padStart(2, "0")}
+                </span>
+              </figcaption>
+            </figure>
+
+            <button
+              type="button"
+              className="vivid-sectors__lightbox-arrow vivid-sectors__lightbox-arrow--next"
+              onClick={(event) => {
+                event.stopPropagation();
+                nextSector();
+              }}
+              aria-label="Next sector image"
+            >
+              <ArrowRight aria-hidden="true" />
+            </button>
+          </div>,
+          document.body,
+        )}
     </section>
   );
 }
