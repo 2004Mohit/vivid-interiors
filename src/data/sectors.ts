@@ -14,7 +14,7 @@ export const sectors: Sector[] = [
     title: "Residential",
     description:
       "We create homes that feel personal, comfortable and naturally connected to the way you live. From spatial planning to the smallest detail, every element is considered to make your everyday space feel truly yours.",
-    image: "/images/01_Emirus_801/01_01_emirus_801_baner_pune_p006.jpeg",
+    image: "/images/01_Emirus_801/01_07_emirus_801_baner_pune_p010.jpeg",
     imageAlt: "VIVID Interiors residential interior at Emirus 801, Pune",
   },
 
@@ -25,7 +25,7 @@ export const sectors: Sector[] = [
     description:
       "We design commercial spaces that balance brand identity, functionality and experience. Every space is planned to work efficiently while creating an environment that people remember.",
     image:
-      "/images/07_BramhaCorp_Kalyani_Nagar/07_01_bramhacorp_kalyani_nagar_p076.jpeg",
+      "/images/07_BramhaCorp_Kalyani_Nagar/07_04_bramhacorp_kalyani_nagar_p078.jpeg",
     imageAlt: "VIVID Interiors commercial interior at BramhaCorp, Pune",
   },
 
@@ -47,7 +47,8 @@ export const sectors: Sector[] = [
     title: "Studio Apartments",
     description:
       "We turn compact spaces into thoughtful homes where every square foot has a purpose. Smart planning, integrated storage, proportion and carefully selected materials create spaces that feel open, comfortable and complete.",
-    image: "/images/02_Emirus_701/02_01_emirus_701_baner_pune_p022.jpeg",
+    image:
+      "/images/05_Sky_I_Manas_Lake/05_12_sky_i_manas_lake_bhugaon_p067.jpeg",
     imageAlt: "VIVID Interiors studio apartment interior",
   },
 
@@ -57,7 +58,7 @@ export const sectors: Sector[] = [
     title: "Sample Flats",
     description:
       "We design sample flats that help people imagine themselves living in a space. From the layout and materials to lighting and styling, every detail is created to communicate the possibilities of the finished home.",
-    image: "/images/04_Swarnvilas/04_01_swarnvilas_baner_sus_road_p045.jpeg",
+    image: "/images/04_Swarnvilas/04_04_swarnvilas_baner_sus_road_p047.jpeg",
     imageAlt: "VIVID Interiors sample flat interior at Swarnvilas",
   },
 
@@ -68,7 +69,7 @@ export const sectors: Sector[] = [
     description:
       "We create workplaces designed for the way modern teams work. Collaboration, focus, movement, technology and company culture are brought together to create productive spaces with a clear identity.",
     image:
-      "/images/06_Vivid_Office/06_01_vivid_interiors_office_erandwane_pune_p071.jpeg",
+      "/images/12_Gartech_Chale/12_02_gartech_engineering_poultry_chale_pune_p120.jpeg",
     imageAlt: "VIVID Interiors office interior in Erandwane, Pune",
   },
 
@@ -79,7 +80,7 @@ export const sectors: Sector[] = [
     description:
       "We design hospitality spaces around atmosphere and experience. Thoughtful layouts, materials, lighting and detailing work together to create places that feel welcoming, distinctive and memorable.",
     image:
-      "/images/05_Sky_I_Manas_Lake/05_01_sky_i_manas_lake_bhugaon_p057.jpeg",
+      "/images/05_Sky_I_Manas_Lake/05_02_sky_i_manas_lake_bhugaon_p058.jpeg",
     imageAlt: "VIVID Interiors hospitality-inspired interior",
   },
 ];
